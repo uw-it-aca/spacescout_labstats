@@ -1,3 +1,5 @@
 Django==1.4
 oauth2
 simplejson>=2.1
+soappy
+poster
