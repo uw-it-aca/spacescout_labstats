@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     help='This will set the updater to run as a daemon.'),
         make_option('--update-delay',
                     dest='update_delay',
-                    type='float',
+                    type='int',
                     default=5,
                     help='The number of minutes between update attempts.'),
         make_option('--run-once',
@@ -113,10 +113,17 @@ class Command(BaseCommand):
                                     # g.groupName g.availableCount g.groupId g.inUseCount g.offCount g.percentInUse g.totalCount g.unavailableCount
 
                                 if space['extended_info']['labstats_id'] == g.groupName:
+
+                                    available = int(g.availableCount)
+                                    total = int(g.totalCount)
+                                    off = int(g.offCount)
+                                    if (total - available) < 3:
+                                        available = total - 3
+
                                     space['extended_info'].update({
-                                        'auto_labstats_available': g.availableCount,
-                                        'auto_labstats_total': g.totalCount,
-                                        'auto_labstats_off': g.offCount
+                                        'auto_labstats_available': available,
+                                        'auto_labstats_total': total,
+                                        'auto_labstats_off': off
                                     })
 
                                     upload_spaces.append({
