@@ -117,7 +117,7 @@ class Command(BaseCommand):
                                     available = int(g.availableCount)
                                     total = int(g.totalCount)
                                     off = int(g.offCount)
-                                    if (total - available) < 3:
+                                    if (total > 3) and ((total - available) < 3):
                                         available = total - 3
 
                                     space['extended_info'].update({
