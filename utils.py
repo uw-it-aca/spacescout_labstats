@@ -53,18 +53,6 @@ def upload_data(data):
         if spot_id:
             spot_url = "%s/%s" % (url, spot_id)
             method = 'PUT'
-            #get the existing spot for its etag
-            resp, content = client.request(spot_url, 'GET')
-            if resp['status'] != '200':
-                hold = {
-                    'fname': spot_name,
-                    'flocation': 'id',
-                    'freason': 'id not found, spot does not exist',
-                }
-                failure_descs.append(hold)
-                continue  # immediately restarts at the beginning of the loop
-            if not etag:
-                etag = resp['etag']
             spot_headers['If-Match'] = etag
         resp, content = client.request(spot_url, method, datum, headers=spot_headers)
 
@@ -101,42 +89,6 @@ def upload_data(data):
                 warning_descs.append(hold)
                 break
 
-            #jury rigging the oauth_signature
-            consumer = oauth.Consumer(key=settings.SS_WEB_OAUTH_KEY, secret=settings.SS_WEB_OAUTH_SECRET)
-            client = oauth.Client(consumer)
-            resp, content = client.request(url, 'GET')
-            i = resp['content-location'].find('oauth_signature=')
-            i += len('oauth_signature=')
-            signature = resp['content-location'][i:]
-
-            #there is no language for if the url doesn't work
-            if method == 'POST':
-                for image in images:
-                    try:
-                        img = urllib2.urlopen(image)
-                        f = open('image.jpg', 'w')
-                        f.write(img.read())
-                        f.close()
-                        f = open('image.jpg', 'rb')
-
-                        body = {"description": "yay", "oauth_signature": signature, "oauth_signature_method": "HMAC-SHA1", "oauth_timestamp": int(time.time()), "oauth_nonce": oauth.generate_nonce, "oauth_consumer_key": settings.SS_WEB_OAUTH_KEY, "image": f}
-                        #poster code
-                        register_openers()
-                        datagen, headers = multipart_encode(body)
-                        headers["XOAUTH_USER"] = "%s" % "labstats_daemon"
-                        req = urllib2.Request(url1, datagen, headers)
-                        response = urllib2.urlopen(req)
-                    except:
-                        hold = {
-                            'fname': spot_name,
-                            'flocation': image,
-                            'freason': "invalid image",
-                        }
-                        warning_descs.append(hold)
-            #might need to use https://gist.github.com/1558113 instead for the oauth request
-            #content_type = 'multipart/form-data;' #boundary=%s' % BOUNDARY
-            #oauthrequest-i have it commented for mine since i was testing poster
-            #resp, content = client.request(url, "POST", body=, headers)
         if method == 'POST':
             posts.append(spot_name)
         elif method == 'PUT':

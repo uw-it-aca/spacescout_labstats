@@ -7,7 +7,6 @@ from django.core.management.base import BaseCommand
 from spacescout_labstats.utils import upload_data
 from django.conf import settings
 from optparse import make_option
-from datetime import datetime
 from SOAPpy import WSDL
 import os
 import sys
@@ -17,7 +16,7 @@ import oauth2
 import json
 import logging
 
-logging.basicConfig()
+logging.basicConfig(filename='/tmp/updater/logs/file.log', level=logging.DEBUG, filemode='w')
 logger = logging.getLogger(__name__)
 
 
@@ -129,10 +128,25 @@ class Command(BaseCommand):
                                     upload_spaces.append({
                                         'data': json.dumps(space),
                                         'id': space['id'],
-                                        #'etag': space['etag']
+                                        'etag': space['etag']
                                     })
 
                         except Exception as ex:
+                            if space['extended_info']['auto_labstats_total'] or space['extended_info']['auto_labstats_total'] == 0:
+                                del space['extended_info']['auto_labstats_available']
+                                del space['extended_info']['auto_labstats_total']
+                                del space['extended_info']['auto_labstats_off']
+
+                                upload_spaces.append({
+                                    'data': json.dumps(space),
+                                    'id': space['id'],
+                                    'etag': space['etag']
+                                })
+                            logger.debug("An error occured updating labstats spot %s: %s", (space.name, str(ex)))
+
+                except Exception as ex:
+                    for space in labstats_spaces:
+                        if space['extended_info']['auto_labstats_total'] or space['extended_info']['auto_labstats_total'] == 0:
                             del space['extended_info']['auto_labstats_available']
                             del space['extended_info']['auto_labstats_total']
                             del space['extended_info']['auto_labstats_off']
@@ -140,29 +154,26 @@ class Command(BaseCommand):
                             upload_spaces.append({
                                 'data': json.dumps(space),
                                 'id': space['id'],
-                                #'etag': space['etag']
+                                'etag': space['etag']
                             })
-
-                            logger.debug("An error occured updating labstats spot %s: %s", (space.name, str(ex)))
-
-
-                except Exception as ex:
-                    for space in labstats_spaces:
-                        del space['extended_info']['auto_labstats_available']
-                        del space['extended_info']['auto_labstats_total']
-                        del space['extended_info']['auto_labstats_off']
-
-                        upload_spaces.append({
-                            'data': json.dumps(space),
-                            'id': space['id'],
-                            #'etag': space['etag']
-                        })
                     logger.debug("Error getting labstats stats: %s", str(ex))
 
             except Exception as ex:
                 logger.debug("Error making the get request to the server: %s", str(ex))
 
             response = upload_data(upload_spaces)
+            # If there are errors, email them to the appropriate user
+            if response['failure_descs']:
+                errors = {}
+                for failure in response['failure_descs']:
+                    if type(failure['freason']) == list:
+                        errors.update({failure['flocation']: []})
+                        for reason in failure['freason']:
+                            errors[failure['flocation']].append(reason)
+                    else:
+                        errors.update({failure['flocation']: failure['freason']})
+
+                logger.error("Errors putting to the server: %s", str(errors))
 
             if not run_once:
                 for i in range(update_delay * 60):
