@@ -120,11 +120,14 @@ class Command(BaseCommand):
                                     if (total > 3) and ((total - available) < 3):
                                         available = total - 3
 
-                                    space['extended_info'].update({
-                                        'auto_labstats_available': available,
-                                        'auto_labstats_total': total,
-                                        'auto_labstats_off': off
-                                    })
+                                    space['extended_info'].update(
+                                        auto_labstats_available = available,
+                                        auto_labstats_total = total,
+                                        auto_labstats_off = off
+                                    )
+
+                                    space['location']['longitude'] = str(space['location']['longitude'])
+                                    space['location']['latitude'] = str(space['location']['latitude'])
 
                                     upload_spaces.append({
                                         'data': json.dumps(space),
@@ -133,9 +136,12 @@ class Command(BaseCommand):
                                     })
 
                         except Exception as ex:
-                            del space['extended_info']['auto_labstats_available']
-                            del space['extended_info']['auto_labstats_total']
-                            del space['extended_info']['auto_labstats_off']
+                            if space['extended_info']['auto_labstats_available']:
+                                del space['extended_info']['auto_labstats_available']
+                            if space['extended_info']['auto_labstats_total']:
+                                del space['extended_info']['auto_labstats_total']
+                            if space['extended_info']['auto_labstats_off']:
+                                del space['extended_info']['auto_labstats_off']
 
                             upload_spaces.append({
                                 'data': json.dumps(space),
@@ -148,9 +154,12 @@ class Command(BaseCommand):
 
                 except Exception as ex:
                     for space in labstats_spaces:
-                        del space['extended_info']['auto_labstats_available']
-                        del space['extended_info']['auto_labstats_total']
-                        del space['extended_info']['auto_labstats_off']
+                        if space['extended_info']['auto_labstats_available']:
+                            del space['extended_info']['auto_labstats_available']
+                        if space['extended_info']['auto_labstats_total']:
+                            del space['extended_info']['auto_labstats_total']
+                        if space['extended_info']['auto_labstats_off']:
+                            del space['extended_info']['auto_labstats_off']
 
                         upload_spaces.append({
                             'data': json.dumps(space),
