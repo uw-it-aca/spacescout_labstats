@@ -53,7 +53,7 @@ class Command(BaseCommand):
         daemon = options["daemon"]
 
         if daemon:
-            logger.debug("starting the updater as a daemon")
+            logger.info("starting the updater as a daemon")
             pid = os.fork()
             if pid == 0:
                 os.setsid()
@@ -72,7 +72,7 @@ class Command(BaseCommand):
                 logger.error("Error running the controller: %s", str(ex))
 
         else:
-            logger.debug("starting the updater as an interactive process")
+            logger.info("starting the updater as an interactive process")
             self.create_pid_file()
             self.controller(options["update_delay"], options["run_once"])
 
@@ -149,7 +149,7 @@ class Command(BaseCommand):
                                 #'etag': space['etag']
                             })
 
-                            logger.debug("An error occured updating labstats spot %s: %s", (space.name, str(ex)))
+                            logger.error("An error occured updating labstats spot %s: %s", (space.name, str(ex)))
 
 
                 except Exception as ex:
@@ -166,10 +166,10 @@ class Command(BaseCommand):
                             'id': space['id'],
                             #'etag': space['etag']
                         })
-                    logger.debug("Error getting labstats stats: %s", str(ex))
+                    logger.error("Error getting labstats stats: %s", str(ex))
 
             except Exception as ex:
-                logger.debug("Error making the get request to the server: %s", str(ex))
+                logger.error("Error making the get request to the server: %s", str(ex))
 
             response = upload_data(upload_spaces)
 
