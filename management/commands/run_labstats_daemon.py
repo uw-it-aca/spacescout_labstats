@@ -52,7 +52,7 @@ class Command(BaseCommand):
         daemon = options["daemon"]
 
         if daemon:
-            logger.debug("starting the updater as a daemon")
+            logger.info("starting the updater as a daemon")
             pid = os.fork()
             if pid == 0:
                 os.setsid()
@@ -71,7 +71,7 @@ class Command(BaseCommand):
                 logger.error("Error running the controller: %s", str(ex))
 
         else:
-            logger.debug("starting the updater as an interactive process")
+            logger.info("starting the updater as an interactive process")
             self.create_pid_file()
             self.controller(options["update_delay"], options["run_once"])
 
@@ -119,11 +119,14 @@ class Command(BaseCommand):
                                     if (total > 3) and ((total - available) < 3):
                                         available = total - 3
 
-                                    space['extended_info'].update({
-                                        'auto_labstats_available': available,
-                                        'auto_labstats_total': total,
-                                        'auto_labstats_off': off
-                                    })
+                                    space['extended_info'].update(
+                                        auto_labstats_available = available,
+                                        auto_labstats_total = total,
+                                        auto_labstats_off = off
+                                    )
+
+                                    space['location']['longitude'] = str(space['location']['longitude'])
+                                    space['location']['latitude'] = str(space['location']['latitude'])
 
                                     upload_spaces.append({
                                         'data': json.dumps(space),
@@ -132,37 +135,45 @@ class Command(BaseCommand):
                                     })
 
                         except Exception as ex:
-                            if space['extended_info']['auto_labstats_total'] or space['extended_info']['auto_labstats_total'] == 0:
+                            if space['extended_info']['auto_labstats_available'] or space['extended_info']['auto_labstats_available'] == 0:
                                 del space['extended_info']['auto_labstats_available']
+                            if space['extended_info']['auto_labstats_total'] or space['extended_info']['auto_labstats_total'] == 0:
                                 del space['extended_info']['auto_labstats_total']
+                            if space['extended_info']['auto_labstats_off'] or space['extended_info']['auto_labstats_off'] == 0:
                                 del space['extended_info']['auto_labstats_off']
-
-                                upload_spaces.append({
-                                    'data': json.dumps(space),
-                                    'id': space['id'],
-                                    'etag': space['etag']
-                                })
-                            logger.debug("An error occured updating labstats spot %s: %s", (space.name, str(ex)))
-
-                except Exception as ex:
-                    for space in labstats_spaces:
-                        if space['extended_info']['auto_labstats_total'] or space['extended_info']['auto_labstats_total'] == 0:
-                            del space['extended_info']['auto_labstats_available']
-                            del space['extended_info']['auto_labstats_total']
-                            del space['extended_info']['auto_labstats_off']
 
                             upload_spaces.append({
                                 'data': json.dumps(space),
                                 'id': space['id'],
                                 'etag': space['etag']
                             })
-                    logger.debug("Error getting labstats stats: %s", str(ex))
+
+                            logger.error("An error occured updating labstats spot %s: %s", (space.name, str(ex)))
+
+
+                except Exception as ex:
+                    for space in labstats_spaces:
+                        if space['extended_info']['auto_labstats_available'] or space['extended_info']['auto_labstats_available'] == 0:
+                            del space['extended_info']['auto_labstats_available']
+                        if space['extended_info']['auto_labstats_total'] or space['extended_info']['auto_labstats_total'] == 0:
+                            del space['extended_info']['auto_labstats_total']
+                        if space['extended_info']['auto_labstats_off'] or space['extended_info']['auto_labstats_off'] == 0:
+                            del space['extended_info']['auto_labstats_off']
+
+                        upload_spaces.append({
+                            'data': json.dumps(space),
+                            'id': space['id'],
+                            'etag': space['etag']
+                        })
+
+                    logger.error("Error getting labstats stats: %s", str(ex))
 
             except Exception as ex:
-                logger.debug("Error making the get request to the server: %s", str(ex))
+                logger.error("Error making the get request to the server: %s", str(ex))
 
             response = upload_data(upload_spaces)
-            # If there are errors, email them to the appropriate user
+
+            # If there are errors, log them
             if response['failure_descs']:
                 errors = {}
                 for failure in response['failure_descs']:
