@@ -111,7 +111,7 @@ class Command(BaseCommand):
                                 # Available data fields froms the labstats groups:
                                     # g.groupName g.availableCount g.groupId g.inUseCount g.offCount g.percentInUse g.totalCount g.unavailableCount
 
-                                if space['extended_info']['labstats_id'] == g.groupName:
+                                if space['extended_info']['labstats_id'] == g.groupId:
 
                                     available = int(g.availableCount)
                                     total = int(g.totalCount)
