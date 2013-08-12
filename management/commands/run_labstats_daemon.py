@@ -16,7 +16,8 @@ import oauth2
 import json
 import logging
 
-logging.basicConfig(filename='/tmp/updater/logs/file.log', level=logging.DEBUG, filemode='w')
+#TODO: how should the log location be set?
+logging.basicConfig(filename='/tmp/labstats_updater.log', level=logging.DEBUG, filemode='w')
 logger = logging.getLogger(__name__)
 
 
