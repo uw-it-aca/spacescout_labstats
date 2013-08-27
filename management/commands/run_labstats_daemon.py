@@ -16,7 +16,7 @@ import oauth2
 import json
 import logging
 
-logging.basicConfig(filename='/tmp/updater/logs/file.log', level=logging.DEBUG, filemode='w')
+logging.basicConfig(filename='/tmp/labstats_updater.log', level=logging.DEBUG, filemode='w')
 logger = logging.getLogger(__name__)
 
 
@@ -120,9 +120,8 @@ class Command(BaseCommand):
                                         available = total - 3
 
                                     space['extended_info'].update(
-                                        auto_labstats_available = available,
+                                        auto_labstats_available = available + off,
                                         auto_labstats_total = total,
-                                        auto_labstats_off = off
                                     )
 
                                     space['location']['longitude'] = str(space['location']['longitude'])
