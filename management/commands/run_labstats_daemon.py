@@ -96,8 +96,14 @@ class Command(BaseCommand):
 
             upload_spaces = []
 
+            if not hasattr(settings, 'LS_CENTER_LAT'):
+                raise(Exception("Required setting missing: LS_CENTER_LAT"))
+            if not hasattr(settings, 'LS_CENTER_LON'):
+                raise(Exception("Required setting missing: LS_CENTER_LON"))
+            if not hasattr(settings, 'LS_SEARCH_DISTANCE'):
+                raise(Exception("Required setting missing: LS_SEARCH_DISTANCE"))
             try:
-                url = "%s/api/v1/spot/?extended_info:has_labstats=true" % (settings.SS_WEB_SERVER_HOST)
+                url = "%s/api/v1/spot/?extended_info:has_labstats=true&center_latitude=%s&center_longitude=%s&distance=%s&limit=0" % (settings.SS_WEB_SERVER_HOST, settings.LS_CENTER_LAT, settings.LS_CENTER_LON, settings.LS_SEARCH_DISTANCE)
                 resp, content = client.request(url, 'GET')
                 labstats_spaces = json.loads(content)
 
