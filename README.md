@@ -39,3 +39,8 @@ Longitude for a center point to begin the search for Spaced to update from.
 
 *LS_SEARCH_DISTANCEi* (string)
 The distance from the center point in meters to search.
+
+Some sample settings:
+LS_CENTER_LAT = '47.655003'
+LS_CENTER_LON = '-122.306864'
+LS_SEARCH_DISTANCE = '3000'
