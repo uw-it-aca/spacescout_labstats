@@ -16,8 +16,9 @@ import oauth2
 import json
 import logging
 
-#TODO: how should the log location be set?
-#logging.basicConfig(filename='/tmp/labstats_updater.log', level=logging.DEBUG, filemode='w')
+# TODO: how should the log location be set?
+# logging.basicConfig(filename='/tmp/labstats_updater.log',
+#                     level=logging.DEBUG, filemode='w')
 logger = logging.getLogger(__name__)
 
 
@@ -83,56 +84,79 @@ class Command(BaseCommand):
         """
         if not hasattr(settings, 'SS_WEB_SERVER_HOST'):
             raise(Exception("Required setting missing: SS_WEB_SERVER_HOST"))
-        consumer = oauth2.Consumer(key=settings.SS_WEB_OAUTH_KEY, secret=settings.SS_WEB_OAUTH_SECRET)
+        consumer = oauth2.Consumer(key=settings.SS_WEB_OAUTH_KEY,
+                                   secret=settings.SS_WEB_OAUTH_SECRET)
         client = oauth2.Client(consumer)
 
         while True:
             if self.should_stop():
                 sys.exit()
 
-            # This allows for a one time run via interactive process for automated testing
+            # This allows for a one time run via interactive process for
+            # automated testing
             if run_once:
                 self.create_stop_file()
 
             upload_spaces = []
 
             if not hasattr(settings, 'LS_CENTER_LAT'):
-                raise(Exception("Required setting missing: LS_CENTER_LAT"))
+                raise(Exception("Required setting missing: "
+                                "LS_CENTER_LAT"))
             if not hasattr(settings, 'LS_CENTER_LON'):
-                raise(Exception("Required setting missing: LS_CENTER_LON"))
+                raise(Exception("Required setting missing: "
+                                "LS_CENTER_LON"))
             if not hasattr(settings, 'LS_SEARCH_DISTANCE'):
-                raise(Exception("Required setting missing: LS_SEARCH_DISTANCE"))
+                raise(Exception("Required setting missing: "
+                                "LS_SEARCH_DISTANCE"))
             try:
-                url = "%s/api/v1/spot/?extended_info:has_labstats=true&center_latitude=%s&center_longitude=%s&distance=%s&limit=0" % (settings.SS_WEB_SERVER_HOST, settings.LS_CENTER_LAT, settings.LS_CENTER_LON, settings.LS_SEARCH_DISTANCE)
+                url = "%s/api/v1/spot/?extended_info:has_labstats=true&"
+                "center_latitude=%s&center_longitude=%s&distance=%s&limit=0"
+                % (settings.SS_WEB_SERVER_HOST,
+                   settings.LS_CENTER_LAT,
+                   settings.LS_CENTER_LON,
+                   settings.LS_SEARCH_DISTANCE)
                 resp, content = client.request(url, 'GET')
                 labstats_spaces = json.loads(content)
 
                 try:
-                    # Updates the num_machines_available extended_info field for spots that have corresponding labstats.
+                    # Updates the num_machines_available extended_info field
+                    # for spots that have corresponding labstats.
                     stats = WSDL.Proxy(settings.LABSTATS_URL)
                     groups = stats.GetGroupedCurrentStats().GroupStat
 
                     for space in labstats_spaces:
                         try:
                             for g in groups:
-                                # Available data fields froms the labstats groups:
-                                    # g.groupName g.availableCount g.groupId g.inUseCount g.offCount g.percentInUse g.totalCount g.unavailableCount
+                                # Available data fields froms the
+                                #       labstats groups:
+                                    # g.groupName
+                                    # g.availableCount
+                                    # g.groupId
+                                    # g.inUseCount
+                                    # g.offCount
+                                    # g.percentInUse
+                                    # g.totalCount
+                                    # g.unavailableCount
 
-                                if space['extended_info']['labstats_id'] == g.groupId:
+                                if space['extended_info'][
+                                        'labstats_id'] == g.groupId:
 
                                     available = int(g.availableCount)
                                     total = int(g.totalCount)
                                     off = int(g.offCount)
-                                    if (total > 3) and ((total - available) < 3):
+                                    if ((total > 3) and
+                                            ((total - available) < 3)):
                                         available = total - 3
 
                                     space['extended_info'].update(
-                                        auto_labstats_available = available + off,
-                                        auto_labstats_total = total,
+                                        auto_labstats_available=available+off,
+                                        auto_labstats_total=total,
                                     )
 
-                                    space['location']['longitude'] = str(space['location']['longitude'])
-                                    space['location']['latitude'] = str(space['location']['latitude'])
+                                    space['location']['longitude'] = \
+                                        str(space['location']['longitude'])
+                                    space['location']['latitude'] = \
+                                        str(space['location']['latitude'])
 
                                     upload_spaces.append({
                                         'data': json.dumps(space),
@@ -141,11 +165,21 @@ class Command(BaseCommand):
                                     })
 
                         except Exception as ex:
-                            if space['extended_info']['auto_labstats_available'] or space['extended_info']['auto_labstats_available'] == 0:
-                                del space['extended_info']['auto_labstats_available']
-                            if space['extended_info']['auto_labstats_total'] or space['extended_info']['auto_labstats_total'] == 0:
-                                del space['extended_info']['auto_labstats_total']
-                            if space['extended_info']['auto_labstats_off'] or space['extended_info']['auto_labstats_off'] == 0:
+                            if (space['extended_info'][
+                                        'auto_labstats_available'] or
+                                    space['extended_info'][
+                                        'auto_labstats_available'] == 0):
+                                del space['extended_info'][
+                                    'auto_labstats_available']
+                            if (space['extended_info'][
+                                        'auto_labstats_total'] or
+                                    space['extended_info'][
+                                        'auto_labstats_total'] == 0):
+                                del space['extended_info'][
+                                    'auto_labstats_total']
+                            if (space['extended_info']['auto_labstats_off'] or
+                                    space['extended_info'][
+                                        'auto_labstats_off'] == 0):
                                 del space['extended_info']['auto_labstats_off']
 
                             upload_spaces.append({
@@ -154,16 +188,24 @@ class Command(BaseCommand):
                                 'etag': space['etag']
                             })
 
-                            logger.error("An error occured updating labstats spot %s: %s", (space.name, str(ex)))
-
+                            logger.error("An error occured updating labstats "
+                                         "spot %s: %s", (space.name, str(ex)))
 
                 except Exception as ex:
                     for space in labstats_spaces:
-                        if space['extended_info']['auto_labstats_available'] or space['extended_info']['auto_labstats_available'] == 0:
-                            del space['extended_info']['auto_labstats_available']
-                        if space['extended_info']['auto_labstats_total'] or space['extended_info']['auto_labstats_total'] == 0:
+                        if (space['extended_info'][
+                                    'auto_labstats_available'] or
+                                space['extended_info'][
+                                    'auto_labstats_available'] == 0):
+                            del space['extended_info'][
+                                'auto_labstats_available']
+                        if (space['extended_info']['auto_labstats_total'] or
+                                space['extended_info'][
+                                    'auto_labstats_total'] == 0):
                             del space['extended_info']['auto_labstats_total']
-                        if space['extended_info']['auto_labstats_off'] or space['extended_info']['auto_labstats_off'] == 0:
+                        if (space['extended_info']['auto_labstats_off'] or
+                                space['extended_info'][
+                                    'auto_labstats_off'] == 0):
                             del space['extended_info']['auto_labstats_off']
 
                         upload_spaces.append({
@@ -175,7 +217,8 @@ class Command(BaseCommand):
                     logger.error("Error getting labstats stats: %s", str(ex))
 
             except Exception as ex:
-                logger.error("Error making the get request to the server: %s", str(ex))
+                logger.error("Error making the get request to the "
+                             "server: %s", str(ex))
 
             response = upload_data(upload_spaces)
 
@@ -188,7 +231,8 @@ class Command(BaseCommand):
                         for reason in failure['freason']:
                             errors[failure['flocation']].append(reason)
                     else:
-                        errors.update({failure['flocation']: failure['freason']})
+                        errors.update({failure['flocation']:
+                                       failure['freason']})
 
                 logger.error("Errors putting to the server: %s", str(errors))
 
