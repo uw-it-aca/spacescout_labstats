@@ -8,7 +8,8 @@ import json
 import time
 
 
-# This function was copy and pasted, for the most part, from spacescout_admin utils.py
+# This function was copy and pasted, for the most part,
+# from spacescout_admin utils.py
 def upload_data(data):
     # Required settings for the client
     if not hasattr(settings, 'SS_WEB_SERVER_HOST'):
@@ -32,7 +33,8 @@ def upload_data(data):
         datum = datum["data"]
 
         info = json.loads(datum)
-        consumer = oauth.Consumer(key=settings.SS_WEB_OAUTH_KEY, secret=settings.SS_WEB_OAUTH_SECRET)
+        consumer = oauth.Consumer(key=settings.SS_WEB_OAUTH_KEY,
+                                  secret=settings.SS_WEB_OAUTH_SECRET)
         try:
             images = info['images']
         except:
@@ -46,17 +48,22 @@ def upload_data(data):
         client = oauth.Client(consumer)
         url = "%s/api/v1/spot" % settings.SS_WEB_SERVER_HOST
 
-        spot_headers = {"XOAUTH_USER": "%s" % "labstats_daemon", "Content-Type": "application/json", "Accept": "application/json"}
+        spot_headers = {"X-OAuth-User": "%s" % "labstats_daemon",
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"}
         spot_url = url
         method = 'POST'
-        #use PUT when spot id is prodived to update the spot
+        # use PUT when spot id is prodived to update the spot
         if spot_id:
             spot_url = "%s/%s" % (url, spot_id)
             method = 'PUT'
             spot_headers['If-Match'] = etag
-        resp, content = client.request(spot_url, method, datum, headers=spot_headers)
+        resp, content = client.request(spot_url,
+                                       method,
+                                       datum,
+                                       headers=spot_headers)
 
-        #Responses 200 and 201 mean you done good.
+        # Responses 200 and 201 mean you done good.
         if resp['status'] != '200' and resp['status'] != '201':
             try:
                 error = json.loads(content)
@@ -66,7 +73,7 @@ def upload_data(data):
                 flocation = resp['status']
                 freason = content
 
-            #Add spot attempt to the list of failures
+            # Add spot attempt to the list of failures
             hold = {
                 'fname': spot_name,
                 'flocation': flocation,
