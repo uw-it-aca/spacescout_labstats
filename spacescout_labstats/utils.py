@@ -48,7 +48,7 @@ def upload_data(data):
         client = oauth.Client(consumer)
         url = "%s/api/v1/spot" % settings.SS_WEB_SERVER_HOST
 
-        spot_headers = {"XOAUTH_USER": "%s" % "labstats_daemon",
+        spot_headers = {"X-OAuth-User": "%s" % "labstats_daemon",
                         "Content-Type": "application/json",
                         "Accept": "application/json"}
         spot_url = url
