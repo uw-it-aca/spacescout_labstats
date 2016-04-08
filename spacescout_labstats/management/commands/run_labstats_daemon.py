@@ -109,8 +109,8 @@ class Command(BaseCommand):
                 raise(Exception("Required setting missing: "
                                 "LS_SEARCH_DISTANCE"))
             try:
-                url = "%s/api/v1/spot/?extended_info:has_labstats=true&"
-                "center_latitude=%s&center_longitude=%s&distance=%s&limit=0" \
+                url = ("%s/api/v1/spot/?extended_info:has_labstats=true&"
+                "center_latitude=%s&center_longitude=%s&distance=%s&limit=0") \
                 % (settings.SS_WEB_SERVER_HOST,
                    settings.LS_CENTER_LAT,
                    settings.LS_CENTER_LON,
