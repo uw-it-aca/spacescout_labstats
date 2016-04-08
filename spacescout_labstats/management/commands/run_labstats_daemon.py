@@ -112,10 +112,10 @@ class Command(BaseCommand):
                 url = ("%s/api/v1/spot/?extended_info:has_labstats=true"
                        "&center_latitude=%s&center_longitude=%s&distance=%s"
                        "&limit=0") \
-                    % (settings.SS_WEB_SERVER_HOST,
-                       settings.LS_CENTER_LAT,
-                       settings.LS_CENTER_LON,
-                       settings.LS_SEARCH_DISTANCE)
+                       % (settings.SS_WEB_SERVER_HOST,
+                          settings.LS_CENTER_LAT,
+                          settings.LS_CENTER_LON,
+                          settings.LS_SEARCH_DISTANCE)
                 resp, content = client.request(url, 'GET')
                 labstats_spaces = json.loads(content)
 
