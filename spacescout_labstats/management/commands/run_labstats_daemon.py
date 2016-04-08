@@ -109,12 +109,13 @@ class Command(BaseCommand):
                 raise(Exception("Required setting missing: "
                                 "LS_SEARCH_DISTANCE"))
             try:
-                url = ("%s/api/v1/spot/?extended_info:has_labstats=true&"
-                "center_latitude=%s&center_longitude=%s&distance=%s&limit=0") \
-                % (settings.SS_WEB_SERVER_HOST,
-                   settings.LS_CENTER_LAT,
-                   settings.LS_CENTER_LON,
-                   settings.LS_SEARCH_DISTANCE)
+                url = ("%s/api/v1/spot/?extended_info:has_labstats=true"
+                       "&center_latitude=%s&center_longitude=%s&distance=%s"
+                       "&limit=0") \
+                    % (settings.SS_WEB_SERVER_HOST,
+                       settings.LS_CENTER_LAT,
+                       settings.LS_CENTER_LON,
+                       settings.LS_SEARCH_DISTANCE)
                 resp, content = client.request(url, 'GET')
                 labstats_spaces = json.loads(content)
 
@@ -166,13 +167,13 @@ class Command(BaseCommand):
 
                         except Exception as ex:
                             if (space['extended_info'][
-                                        'auto_labstats_available'] or
+                                'auto_labstats_available'] or
                                     space['extended_info'][
                                         'auto_labstats_available'] == 0):
                                 del space['extended_info'][
                                     'auto_labstats_available']
                             if (space['extended_info'][
-                                        'auto_labstats_total'] or
+                                'auto_labstats_total'] or
                                     space['extended_info'][
                                         'auto_labstats_total'] == 0):
                                 del space['extended_info'][
@@ -194,7 +195,7 @@ class Command(BaseCommand):
                 except Exception as ex:
                     for space in labstats_spaces:
                         if (space['extended_info'][
-                                    'auto_labstats_available'] or
+                            'auto_labstats_available'] or
                                 space['extended_info'][
                                     'auto_labstats_available'] == 0):
                             del space['extended_info'][
