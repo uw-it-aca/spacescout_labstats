@@ -18,7 +18,8 @@ class Command(BaseCommand):
                     dest='force',
                     default=False,
                     action="store_true",
-                    help='This will forceably terminate any running updaters. Not recommended.'),
+                    help='This will forceably terminate any running updaters. '
+                         'Not recommended.'),
     )
 
     def handle(self, *args, **options):
