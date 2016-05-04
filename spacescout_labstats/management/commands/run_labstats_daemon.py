@@ -187,8 +187,8 @@ class Command(BaseCommand):
                                     ]['auto_labstats_available'] or
                                     space['extended_info'
                                          ]['auto_labstats_available'] == 0:
-                                del space['extended_info'
-                                         ]['auto_labstats_available']
+                                del space['extended_info']['auto_labstats_\
+                                    available']
                             if space['extended_info'][
                                 'auto_labstats_total'] or
                                     space['extended_info'][
