@@ -10,6 +10,7 @@ import sys
 import re
 import stop_process
 
+
 class Command(BaseCommand):
     help = "This stops any running labstats updaters."
 

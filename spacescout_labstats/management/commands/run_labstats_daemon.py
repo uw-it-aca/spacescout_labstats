@@ -18,9 +18,9 @@ import json
 import logging
 import stop_process
 
-#TODO: how should the log location be set?
-#logging.basicConfig(filename='/tmp/labstats_updater.log',
-#level=logging.DEBUG, filemode='w')
+# TODO: how should the log location be set?
+# logging.basicConfig(filename='/tmp/labstats_updater.log',
+# level=logging.DEBUG, filemode='w')
 logger = logging.getLogger(__name__)
 
 
@@ -128,7 +128,8 @@ class Command(BaseCommand):
             if not hasattr(settings, 'LS_CENTER_LON'):
                 raise(Exception("Required setting missing: LS_CENTER_LON"))
             if not hasattr(settings, 'LS_SEARCH_DISTANCE'):
-                raise(Exception("Required setting missing: LS_SEARCH_DISTANCE"))
+                raise(Exception("Required setting missing:"
+                                "LS_SEARCH_DISTANCE"))
             try:
                 url = ("%s/api/v1/spot/?extended_info:has_labstats=true"
                        "&center_latitude=%s&center_longitude=%s&distance=%s"
@@ -162,7 +163,7 @@ class Command(BaseCommand):
                                     total = int(g.totalCount)
                                     off = int(g.offCount)
                                     if (total > 3) and
-                                            ((total - available) < 3):
+                                        ((total - available) < 3):
                                         available = total - 3
 
                                     space['extended_info'].update(

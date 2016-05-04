@@ -16,6 +16,7 @@ import oauth2
 import json
 import logging
 
+
 def stop_process(pid, verbose):
     if verbose:
         print "Stopping process: %s" % pid
