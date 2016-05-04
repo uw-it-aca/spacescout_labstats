@@ -30,7 +30,7 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--daemonize',
                     dest='daemon',
-                    default=True,
+                    default=True,z
                     action='store_true',
                     help='This will set the updater to run as a daemon.'),
         make_option('--update-delay',
@@ -168,7 +168,7 @@ class Command(BaseCommand):
 
                                     space['extended_info'].update(
                                         auto_labstats_available=available+off,
-                                        auto_labstats_total=total,
+                                        auto_labstats_total = total,
                                     )
 
                                     space['location']['longitude'] = \
@@ -185,20 +185,20 @@ class Command(BaseCommand):
                         except Exception as ex:
                             if space['extended_info'][
                                 'auto_labstats_available'] or
-                                space['extended_info'][
-                                    'auto_labstats_available'] == 0:
+                                    space['extended_info'][
+                                        'auto_labstats_available'] == 0:
                                 del space['extended_info'][
                                     'auto_labstats_available']
                             if space['extended_info'][
                                 'auto_labstats_total'] or
-                                space['extended_info'][
-                                    'auto_labstats_total'] == 0:
+                                    space['extended_info'][
+                                        'auto_labstats_total'] == 0:
                                 del space['extended_info'][
                                     'auto_labstats_total']
                             if space['extended_info'][
                                 'auto_labstats_off'] or
-                                space['extended_info'][
-                                    'auto_labstats_off'] == 0:
+                                    space['extended_info'][
+                                        'auto_labstats_off'] == 0:
                                 del space['extended_info']['auto_labstats_off']
 
                             upload_spaces.append({
