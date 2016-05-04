@@ -30,7 +30,7 @@ class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--daemonize',
                     dest='daemon',
-                    default=True,z
+                    default=True,
                     action='store_true',
                     help='This will set the updater to run as a daemon.'),
         make_option('--update-delay',
@@ -133,11 +133,11 @@ class Command(BaseCommand):
             try:
                 url = ("%s/api/v1/spot/?extended_info:has_labstats=true"
                        "&center_latitude=%s&center_longitude=%s&distance=%s"
-                       "&limit=0")\
-                       % (settings.SS_WEB_SERVER_HOST,
-                          settings.LS_CENTER_LAT,
-                          settings.LS_CENTER_LON,
-                          settings.LS_SEARCH_DISTANCE)
+                       "&limit=0") % \
+                    (settings.SS_WEB_SERVER_HOST,
+                     settings.LS_CENTER_LAT,
+                     settings.LS_CENTER_LON,
+                     settings.LS_SEARCH_DISTANCE)
                 resp, content = client.request(url, 'GET')
                 labstats_spaces = json.loads(content)
 
@@ -156,19 +156,18 @@ class Command(BaseCommand):
                                     # g.inUseCount g.offCount g.percentInUse
                                     # g.totalCount g.unavailableCount
 
-                                if space['extended_info'][
-                                         'labstats_id'] == g.groupId:
+                                if space['extended_info']['labstats_id'] ==
+                                g.groupId:
 
                                     available = int(g.availableCount)
                                     total = int(g.totalCount)
                                     off = int(g.offCount)
-                                    if (total > 3) and
-                                        ((total - available) < 3):
+                                    if (total > 3)and(total - available) < 3:
                                         available = total - 3
 
                                     space['extended_info'].update(
                                         auto_labstats_available=available+off,
-                                        auto_labstats_total = total,
+                                        auto_labstats_total=total,
                                     )
 
                                     space['location']['longitude'] = \
@@ -183,22 +182,20 @@ class Command(BaseCommand):
                                     })
 
                         except Exception as ex:
-                            if (space['extended_info'][
-                                'auto_labstats_available']) or
-                                (space['extended_info'][
-                                    'auto_labstats_available'] == 0):
-                                del (space['extended_info'][
-                                    'auto_labstats_available'])
+                            if space['extended_info'][
+                                'auto_labstats_available'] or
+                            space['extended_info']['auto_labstats_available']
+                            == 0:
+                                del space['extended_info'][
+                                    'auto_labstats_available']
                             if space['extended_info'][
                                 'auto_labstats_total'] or
-                                    space['extended_info'][
-                                        'auto_labstats_total'] == 0:
+                            space['extended_info']['auto_labstats_total'] == 0:
                                 del space['extended_info'][
                                     'auto_labstats_total']
                             if space['extended_info'][
                                 'auto_labstats_off'] or
-                                    space['extended_info'][
-                                        'auto_labstats_off'] == 0:
+                            space['extended_info']['auto_labstats_off'] == 0:
                                 del space['extended_info']['auto_labstats_off']
 
                             upload_spaces.append({
@@ -210,24 +207,20 @@ class Command(BaseCommand):
                             logger.error("An error occured updating labstats "
                                          "spot %s: %s", (space.name, str(ex)))
 
-
                 except Exception as ex:
                     for space in labstats_spaces:
                         if space['extended_info'][
                             'auto_labstats_available'] or
-                                space['extended_info'][
-                                    'auto_labstats_available'] == 0:
+                        space['extended_info']['auto_labstats_available'] == 0:
                             del space['extended_info'][
                                 'auto_labstats_available']
                         if space['extended_info'][
                             'auto_labstats_total'] or
-                                space['extended_info'][
-                                    'auto_labstats_total'] == 0:
+                        space['extended_info']['auto_labstats_total'] == 0:
                             del space['extended_info']['auto_labstats_total']
                         if space['extended_info'][
                             'auto_labstats_off'] or
-                                space['extended_info'][
-                                    'auto_labstats_off'] == 0:
+                        space['extended_info']['auto_labstats_off'] == 0:
                             del space['extended_info']['auto_labstats_off']
 
                         upload_spaces.append({
