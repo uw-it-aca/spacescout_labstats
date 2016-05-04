@@ -183,12 +183,12 @@ class Command(BaseCommand):
                                     })
 
                         except Exception as ex:
-                            if space['extended_info'][
-                                'auto_labstats_available'] or
-                                    space['extended_info'][
-                                        'auto_labstats_available'] == 0:
-                                del space['extended_info'][
-                                    'auto_labstats_available']
+                            if space['extended_info'
+                                    ]['auto_labstats_available'] or
+                                    space['extended_info'
+                                         ]['auto_labstats_available'] == 0:
+                                del space['extended_info'
+                                         ]['auto_labstats_available']
                             if space['extended_info'][
                                 'auto_labstats_total'] or
                                     space['extended_info'][
