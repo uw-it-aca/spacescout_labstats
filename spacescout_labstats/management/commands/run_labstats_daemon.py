@@ -67,21 +67,21 @@ class Command(BaseCommand):
             except OSError:
                 sys.exit(0)
             for filename in files:
-                matches = re.match(r"^([0-9]+).pid$", filename)
+                matches = re.match(r"^([0-9]+).pid$", filename) # see if file is pid
                 if matches:
                     pid = matches.group(1)
                     verbose = options["verbose"]
                     stop_process.stop_process(pid, verbose)
 
-        atexit.register(self.remove_pid_file)
+        atexit.register(self.remove_pid_file) # do not know
 
-        daemon = options["daemon"]
+        daemon = options["daemon"] # get the flag
 
         if daemon:
             logger.info("starting the updater as a daemon")
-            pid = os.fork()
+            pid = os.fork() # do not know (fork a child process)
             if pid == 0:
-                os.setsid()
+                os.setsid() # do not know unix related
 
                 pid = os.fork()
                 if pid != 0:
@@ -123,6 +123,7 @@ class Command(BaseCommand):
 
             upload_spaces = []
 
+            # rise different exceptions
             if not hasattr(settings, 'LS_CENTER_LAT'):
                 raise(Exception("Required setting missing: LS_CENTER_LAT"))
             if not hasattr(settings, 'LS_CENTER_LON'):
@@ -130,6 +131,8 @@ class Command(BaseCommand):
             if not hasattr(settings, 'LS_SEARCH_DISTANCE'):
                 raise(Exception("Required setting missing:"
                                 "LS_SEARCH_DISTANCE"))
+
+            ## get data from SS server
             try:
                 url = ("%s/api/v1/spot/?extended_info:has_labstats=true"
                        "&center_latitude=%s&center_longitude=%s&distance=%s"
@@ -156,7 +159,7 @@ class Command(BaseCommand):
                                     # g.inUseCount g.offCount g.percentInUse
                                     # g.totalCount g.unavailableCount
 
-                                if space['extended_info']['labstats_id'] ==
+                                if space['extended_info']['labstats_id'] == \
                                 g.groupId:
 
                                     available = int(g.availableCount)
@@ -267,9 +270,9 @@ class Command(BaseCommand):
         return False
 
     def create_pid_file(self):
-        handle = open(self._get_pid_file_path(), 'w')
-        handle.write(str(os.getpid()))
-        handle.close()
+        handle = open(self._get_pid_file_path(), 'w') # return file object
+        handle.write(str(os.getpid())) # write process id into file
+        handle.close() # no longer writable and readable
         return
 
     def create_stop_file(self):
@@ -299,7 +302,7 @@ class Command(BaseCommand):
                 return True
         return False
 
-    def _get_pid_file_path(self):
+    def _get_pid_file_path(self): # no file path, creats one; otherwise, return new file path
         if not os.path.isdir("/tmp/updater/"):
             os.mkdir("/tmp/updater/", 0700)
         return "/tmp/updater/%s.pid" % (str(os.getpid()))
