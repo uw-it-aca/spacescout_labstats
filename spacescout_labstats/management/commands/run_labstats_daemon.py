@@ -67,21 +67,21 @@ class Command(BaseCommand):
             except OSError:
                 sys.exit(0)
             for filename in files:
-                matches = re.match(r"^([0-9]+).pid$", filename) # see if file is pid
+                matches = re.match(r"^([0-9]+).pid$", filename)  # check if pid
                 if matches:
                     pid = matches.group(1)
                     verbose = options["verbose"]
                     stop_process.stop_process(pid, verbose)
 
-        atexit.register(self.remove_pid_file) # do not know
+        atexit.register(self.remove_pid_file)
 
-        daemon = options["daemon"] # get the flag
+        daemon = options["daemon"]  # get the flag
 
         if daemon:
             logger.info("starting the updater as a daemon")
-            pid = os.fork() # do not know (fork a child process)
+            pid = os.fork()
             if pid == 0:
-                os.setsid() # do not know unix related
+                os.setsid()
 
                 pid = os.fork()
                 if pid != 0:
@@ -132,7 +132,7 @@ class Command(BaseCommand):
                 raise(Exception("Required setting missing:"
                                 "LS_SEARCH_DISTANCE"))
 
-            ## get data from SS server
+            # get data from SS server
             try:
                 url = ("%s/api/v1/spot/?extended_info:has_labstats=true"
                        "&center_latitude=%s&center_longitude=%s&distance=%s"
@@ -160,7 +160,7 @@ class Command(BaseCommand):
                                     # g.totalCount g.unavailableCount
 
                                 if space['extended_info']['labstats_id'] == \
-                                g.groupId:
+                                        g.groupId:
 
                                     available = int(g.availableCount)
                                     total = int(g.totalCount)
@@ -186,19 +186,21 @@ class Command(BaseCommand):
 
                         except Exception as ex:
                             if space['extended_info'][
-                                'auto_labstats_available'] or
-                            space['extended_info']['auto_labstats_available']
-                            == 0:
+                                'auto_labstats_available'] or \
+                                    space['extended_info'][
+                                        'auto_labstats_available'] == 0:
                                 del space['extended_info'][
                                     'auto_labstats_available']
                             if space['extended_info'][
-                                'auto_labstats_total'] or
-                            space['extended_info']['auto_labstats_total'] == 0:
+                                'auto_labstats_total'] or \
+                                    space['extended_info'][
+                                        'auto_labstats_total'] == 0:
                                 del space['extended_info'][
                                     'auto_labstats_total']
                             if space['extended_info'][
-                                'auto_labstats_off'] or
-                            space['extended_info']['auto_labstats_off'] == 0:
+                                'auto_labstats_off'] or \
+                                    space['extended_info'][
+                                        'auto_labstats_off'] == 0:
                                 del space['extended_info']['auto_labstats_off']
 
                             upload_spaces.append({
@@ -213,17 +215,20 @@ class Command(BaseCommand):
                 except Exception as ex:
                     for space in labstats_spaces:
                         if space['extended_info'][
-                            'auto_labstats_available'] or
-                        space['extended_info']['auto_labstats_available'] == 0:
+                            'auto_labstats_available'] or \
+                                space['extended_info'][
+                                    'auto_labstats_available'] == 0:
                             del space['extended_info'][
                                 'auto_labstats_available']
                         if space['extended_info'][
-                            'auto_labstats_total'] or
-                        space['extended_info']['auto_labstats_total'] == 0:
+                            'auto_labstats_total'] or \
+                                space['extended_info'][
+                                    'auto_labstats_total'] == 0:
                             del space['extended_info']['auto_labstats_total']
                         if space['extended_info'][
-                            'auto_labstats_off'] or
-                        space['extended_info']['auto_labstats_off'] == 0:
+                            'auto_labstats_off'] or \
+                                space['extended_info'][
+                                    'auto_labstats_off'] == 0:
                             del space['extended_info']['auto_labstats_off']
 
                         upload_spaces.append({
@@ -270,9 +275,9 @@ class Command(BaseCommand):
         return False
 
     def create_pid_file(self):
-        handle = open(self._get_pid_file_path(), 'w') # return file object
-        handle.write(str(os.getpid())) # write process id into file
-        handle.close() # no longer writable and readable
+        handle = open(self._get_pid_file_path(), 'w')  # return file object
+        handle.write(str(os.getpid()))  # write process id into file
+        handle.close()  # no longer writable and readable
         return
 
     def create_stop_file(self):
@@ -302,7 +307,8 @@ class Command(BaseCommand):
                 return True
         return False
 
-    def _get_pid_file_path(self): # no file path, creats one; otherwise, return new file path
+    # no file path, creats one; otherwise, return new file path
+    def _get_pid_file_path(self):
         if not os.path.isdir("/tmp/updater/"):
             os.mkdir("/tmp/updater/", 0700)
         return "/tmp/updater/%s.pid" % (str(os.getpid()))
