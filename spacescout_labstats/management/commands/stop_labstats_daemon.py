@@ -8,6 +8,7 @@ import signal
 import os
 import sys
 import re
+import stop_process
 
 
 class Command(BaseCommand):
@@ -20,6 +21,11 @@ class Command(BaseCommand):
                     action="store_true",
                     help='This will forceably terminate any running updaters. '
                          'Not recommended.'),
+        make_option('--verbose',
+                    dest='verbose',
+                    default=False,
+                    action='store_true',
+                    help='print out detailed log in console'),
     )
 
     def handle(self, *args, **options):
@@ -36,7 +42,8 @@ class Command(BaseCommand):
                 if force:
                     self.kill_process(pid)
                 else:
-                    if self.stop_process(pid):
+                    verbose = options["verbose"]
+                    if stop_process.stop_process(pid, verbose):
                         sys.exit(0)
                     else:
                         sys.exit(1)
@@ -57,24 +64,3 @@ class Command(BaseCommand):
                 os.remove("/tmp/updater/%s.pid" % pid)
         except:
             pass
-
-    def stop_process(self, pid):
-        print "Stopping process: %s" % pid
-        handle = open("/tmp/updater/%s.stop" % pid, "w")
-        handle.close()
-        if os.getpgid(int(pid)):
-            sys.stdout.write("Waiting")
-            sys.stdout.flush()
-            for i in range(0, 15):
-                sys.stdout.write(".")
-                sys.stdout.flush()
-                time.sleep(1)
-                try:
-                    os.getpgid(int(pid))
-                except:
-                    print " Done"
-                    return True
-            os.remove("/tmp/updater/%s.stop" % pid)
-            print " Process did not end"
-            return False
-        return True
