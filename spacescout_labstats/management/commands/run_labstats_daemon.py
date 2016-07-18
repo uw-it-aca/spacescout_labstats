@@ -57,20 +57,23 @@ class Command(BaseCommand):
         """
 
         """
-        Everytime if a user tries to run a new process while an old process is
-        running. The old process will be terminated before the new process
-        could start.
+        Before starting this daemon, this will check for another version of
+        this process by checking for a file in the temporary folder, and then
+        if another version exists it will close that process.
         """
         if (self.process_exists()):
             try:
-                files = os.listdir("/tmp/updater")
+                files = os.listdir(self._get_tmp_directory())
             except OSError:
+                logger.error("OSError encountered when attempting to get " +
+                             "temporary files")
                 sys.exit(0)
             for filename in files:
                 matches = re.match(r"^([0-9]+).pid$", filename)  # check if pid
                 if matches:
                     pid = matches.group(1)
                     verbose = options["verbose"]
+                    print "stopping"
                     stop_process.stop_process(pid, verbose)
 
         atexit.register(self.remove_pid_file)
@@ -78,7 +81,7 @@ class Command(BaseCommand):
         daemon = options["daemon"]  # get the flag
 
         if daemon:
-            logger.info("starting the updater as a daemon")
+            logger.info("Starting the updater as a daemon")
             pid = os.fork()
             if pid == 0:
                 os.setsid()
@@ -97,7 +100,7 @@ class Command(BaseCommand):
                 logger.error("Error running the controller: %s", str(ex))
 
         else:
-            logger.info("starting the updater as an interactive process")
+            logger.info("Starting the updater as an interactive process")
             self.create_pid_file()
             self.controller(options["update_delay"], options["run_once"])
 
@@ -106,8 +109,16 @@ class Command(BaseCommand):
         This is responsible for the workflow of orchestrating
         the updater process.
         """
+        # TODO : determine where this exception is handled
         if not hasattr(settings, 'SS_WEB_SERVER_HOST'):
             raise(Exception("Required setting missing: SS_WEB_SERVER_HOST"))
+
+        if not hasattr(settings, 'SS_WEB_OAUTH_KEY'):
+            raise(Exception("Required setting missing: SS_WEB_OAUTH_KEY"))
+
+        if not hasattr(settings, 'SS_WEB_OAUTH_KEY'):
+            raise(Exception("Required setting missing: SS_WEB_OAUTH_SECRET"))
+
         consumer = oauth2.Consumer(key=settings.SS_WEB_OAUTH_KEY,
                                    secret=settings.SS_WEB_OAUTH_SECRET)
         client = oauth2.Client(consumer)
@@ -123,7 +134,7 @@ class Command(BaseCommand):
 
             upload_spaces = []
 
-            # rise different exceptions
+            # raise different exceptions
             if not hasattr(settings, 'LS_CENTER_LAT'):
                 raise(Exception("Required setting missing: LS_CENTER_LAT"))
             if not hasattr(settings, 'LS_CENTER_LON'):
@@ -298,7 +309,7 @@ class Command(BaseCommand):
     # Returns true if an instance of the daemon is already running
     def process_exists(self):
         try:
-            files = os.listdir("/tmp/updater")
+            files = os.listdir(self._get_tmp_directory())
         except OSError:
             sys.exit(0)
         for filename in files:
@@ -307,11 +318,16 @@ class Command(BaseCommand):
                 return True
         return False
 
-    # no file path, creats one; otherwise, return new file path
+    # Returns the path for the file storing this process' PID
     def _get_pid_file_path(self):
+        return self._get_tmp_directory() + "%s.pid" % (str(os.getpid()))
+
+    # Returns the directory in which labstats temp files will be stored, and
+    # creates it if it does not exist
+    def _get_tmp_directory(self):
         if not os.path.isdir("/tmp/updater/"):
             os.mkdir("/tmp/updater/", 0700)
-        return "/tmp/updater/%s.pid" % (str(os.getpid()))
+        return "/tmp/updater/"
 
     def should_stop(self):
         if os.path.isfile(self._get_stopfile_path()):
@@ -320,6 +336,4 @@ class Command(BaseCommand):
         return False
 
     def _get_stopfile_path(self):
-        if not os.path.isdir("/tmp/updater/"):
-            os.mkdir("/tmp/updater/", 0700)
-        return "/tmp/updater/%s.stop" % (str(os.getpid()))
+        return self._get_tmp_directory() + "%s.stop" % (str(os.getpid()))

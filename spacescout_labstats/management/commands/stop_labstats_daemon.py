@@ -32,7 +32,7 @@ class Command(BaseCommand):
         force = options["force"]
 
         try:
-            files = os.listdir("/tmp/updater")
+            files = os.listdir(self._get_tmp_directory())
         except OSError:
             sys.exit(0)
         for filename in files:
@@ -57,10 +57,17 @@ class Command(BaseCommand):
                 os.kill(int(pid), signal.SIGKILL)
             except:
                 pass
-            if os.path.isfile("/tmp/updater/%s.stop" % pid):
-                os.remove("/tmp/updater/%s.stop" % pid)
+            if os.path.isfile(self._get_tmp_directory() + "%s.stop" % pid):
+                os.remove(self._get_tmp_directory() + "%s.stop" % pid)
 
-            if os.path.isfile("/tmp/updater/%s.pid" % pid):
-                os.remove("/tmp/updater/%s.pid" % pid)
+            if os.path.isfile(self._get_tmp_directory() + "%s.pid" % pid):
+                os.remove(self._get_tmp_directory() + "%s.pid" % pid)
         except:
             pass
+
+    # Returns the directory in which labstats temp files will be stored, and
+    # creates it if it does not exist
+    def _get_tmp_directory(self):
+        if not os.path.isdir("/tmp/updater/"):
+            os.mkdir("/tmp/updater/", 0700)
+            return "/tmp/updater/"
