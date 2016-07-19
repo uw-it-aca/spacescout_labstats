@@ -44,3 +44,5 @@ Some sample settings:
 LS_CENTER_LAT = '47.655003'
 LS_CENTER_LON = '-122.306864'
 LS_SEARCH_DISTANCE = '3000'
+
+You will also need to ensure that "labstats_daemon" is added to your spotseeker_server's SPOTSEEKER_AUTH_ADMINS
