@@ -73,7 +73,7 @@ class Command(BaseCommand):
                 if matches:
                     pid = matches.group(1)
                     verbose = options["verbose"]
-                    print "stopping"
+                    logger.info("stopping")
                     stop_process.stop_process(pid, verbose)
 
         atexit.register(self.remove_pid_file)
