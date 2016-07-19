@@ -116,7 +116,7 @@ class Command(BaseCommand):
         if not hasattr(settings, 'SS_WEB_OAUTH_KEY'):
             raise(Exception("Required setting missing: SS_WEB_OAUTH_KEY"))
 
-        if not hasattr(settings, 'SS_WEB_OAUTH_KEY'):
+        if not hasattr(settings, 'SS_WEB_OAUTH_SECRET'):
             raise(Exception("Required setting missing: SS_WEB_OAUTH_SECRET"))
 
         consumer = oauth2.Consumer(key=settings.SS_WEB_OAUTH_KEY,
