@@ -70,4 +70,4 @@ class Command(BaseCommand):
     def _get_tmp_directory(self):
         if not os.path.isdir("/tmp/updater/"):
             os.mkdir("/tmp/updater/", 0700)
-            return "/tmp/updater/"
+        return "/tmp/updater/"
