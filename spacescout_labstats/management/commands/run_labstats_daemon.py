@@ -147,11 +147,8 @@ class Command(BaseCommand):
                 resp, content = client.request(url, 'GET')
                 labstats_spaces = json.loads(content)
 
-                print "labstats_spaces"
-
                 upload_spaces = seattle_labstats.get_labstats_data(
                                                 labstats_spaces)
-                print "Upload spaces:"
 
             except Exception as ex:
                 logger.error("Error making the get request to the server: %s",

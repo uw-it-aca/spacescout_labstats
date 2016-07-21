@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import logging
 from django.conf import settings
 from spacescout_labstats.utils import clean_spaces_labstats
@@ -83,3 +84,6 @@ def get_labstats_data(labstats_spaces):
         logger.error("Error getting labstats stats: %s", str(ex))
 
     return upload_spaces
+
+
+logger = logging.getLogger(__name__)
