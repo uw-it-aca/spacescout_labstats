@@ -1,0 +1,19 @@
+{
+    "good_uuids": ["7d115cc0-7c3d-448f-a89e-b4953f666949",
+        "397557e3-cd05-4b80-862a-6737ccbf1e51",
+        "2eca9f78-5c87-4a4f-92df-26c950e419e9",
+        "67705b87-1598-4569-8b88-5b4a66976bc5",
+        "c7c9b0c4-b6ad-41cc-9dfd-c11b75479d69"
+    ],
+
+    "malformed_uuids": ["53s38dbea-3a65-4151-8a78-011ef3b8ec77",
+        "e137ac3e-0cz28-49e2-ad07-d351670875b5",
+        "gb3d7a94-af10-4769-8cc8-93a25e8f157f",
+        "db3d7a94-af10-j769-8cc8-93a25e8f157f",
+        "db3d7a94-af10-47x69-8cc8-93a25e8f157f",
+        "db3d7a94-af10-4769-8ccb8-93a25e8f157f",
+        "64ba6597-bdfe-460a-aeb1-cdfee71e7415b",
+        "64ba6597-bdfe-460a-aeb1-cfze71e7415b"
+    ]
+
+}
