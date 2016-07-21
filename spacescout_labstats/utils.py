@@ -108,3 +108,27 @@ def upload_data(data):
         'posts': posts,
         'puts': puts,
     }
+
+
+def clean_spaces_labstats(labstats_spaces):
+    """
+    Removes all the labstats info from the spaces in case of an error, so that
+    we don't give incorrect or outdated info to users.
+    """
+    for space in labstats_spaces:
+        if space['extended_info'][
+            'auto_labstats_available'] or \
+                space['extended_info'][
+                    'auto_labstats_available'] == 0:
+            del space['extended_info'][
+                'auto_labstats_available']
+        if space['extended_info'][
+            'auto_labstats_total'] or \
+                space['extended_info'][
+                    'auto_labstats_total'] == 0:
+            del space['extended_info']['auto_labstats_total']
+        if space['extended_info'][
+            'auto_labstats_off'] or \
+                space['extended_info'][
+                    'auto_labstats_off'] == 0:
+            del space['extended_info']['auto_labstats_off']

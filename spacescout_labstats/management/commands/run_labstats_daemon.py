@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from spacescout_labstats.utils import upload_data
 from django.conf import settings
 from optparse import make_option
-from SOAPpy import WSDL
+from spacescout_labstats.endpoints import seattle_labstats
 import os
 import sys
 import time
@@ -132,8 +132,6 @@ class Command(BaseCommand):
             if run_once:
                 self.create_stop_file()
 
-            upload_spaces = []
-
             # raise different exceptions
             if not hasattr(settings, 'LS_CENTER_LAT'):
                 raise(Exception("Required setting missing: LS_CENTER_LAT"))
@@ -145,114 +143,19 @@ class Command(BaseCommand):
 
             # get data from SS server
             try:
-                url = ("%s/api/v1/spot/?extended_info:has_labstats=true"
-                       "&center_latitude=%s&center_longitude=%s&distance=%s"
-                       "&limit=0") % \
-                    (settings.SS_WEB_SERVER_HOST,
-                     settings.LS_CENTER_LAT,
-                     settings.LS_CENTER_LON,
-                     settings.LS_SEARCH_DISTANCE)
+                url = seattle_labstats.get_spot_search_parameters()
                 resp, content = client.request(url, 'GET')
                 labstats_spaces = json.loads(content)
 
-                try:
-                    # Updates the num_machines_available extended_info field
-                    # for spots that have corresponding labstats.
-                    stats = WSDL.Proxy(settings.LABSTATS_URL)
-                    groups = stats.GetGroupedCurrentStats().GroupStat
+                print "labstats_spaces"
 
-                    for space in labstats_spaces:
-                        try:
-                            for g in groups:
-                                # Available data fields froms the labstats
-                                # groups:
-                                    # g.groupName g.availableCount g.groupId
-                                    # g.inUseCount g.offCount g.percentInUse
-                                    # g.totalCount g.unavailableCount
-
-                                if space['extended_info']['labstats_id'] == \
-                                        g.groupId:
-
-                                    available = int(g.availableCount)
-                                    total = int(g.totalCount)
-                                    off = int(g.offCount)
-                                    if (total > 3)and(total - available) < 3:
-                                        available = total - 3
-
-                                    space['extended_info'].update(
-                                        auto_labstats_available=available+off,
-                                        auto_labstats_total=total,
-                                    )
-
-                                    space['location']['longitude'] = \
-                                        str(space['location']['longitude'])
-                                    space['location']['latitude'] = \
-                                        str(space['location']['latitude'])
-
-                                    upload_spaces.append({
-                                        'data': json.dumps(space),
-                                        'id': space['id'],
-                                        'etag': space['etag']
-                                    })
-
-                        except Exception as ex:
-                            if space['extended_info'][
-                                'auto_labstats_available'] or \
-                                    space['extended_info'][
-                                        'auto_labstats_available'] == 0:
-                                del space['extended_info'][
-                                    'auto_labstats_available']
-                            if space['extended_info'][
-                                'auto_labstats_total'] or \
-                                    space['extended_info'][
-                                        'auto_labstats_total'] == 0:
-                                del space['extended_info'][
-                                    'auto_labstats_total']
-                            if space['extended_info'][
-                                'auto_labstats_off'] or \
-                                    space['extended_info'][
-                                        'auto_labstats_off'] == 0:
-                                del space['extended_info']['auto_labstats_off']
-
-                            upload_spaces.append({
-                                'data': json.dumps(space),
-                                'id': space['id'],
-                                'etag': space['etag']
-                            })
-
-                            logger.error("An error occured updating labstats "
-                                         "spot %s: %s", (space.name, str(ex)))
-
-                except Exception as ex:
-                    for space in labstats_spaces:
-                        if space['extended_info'][
-                            'auto_labstats_available'] or \
-                                space['extended_info'][
-                                    'auto_labstats_available'] == 0:
-                            del space['extended_info'][
-                                'auto_labstats_available']
-                        if space['extended_info'][
-                            'auto_labstats_total'] or \
-                                space['extended_info'][
-                                    'auto_labstats_total'] == 0:
-                            del space['extended_info']['auto_labstats_total']
-                        if space['extended_info'][
-                            'auto_labstats_off'] or \
-                                space['extended_info'][
-                                    'auto_labstats_off'] == 0:
-                            del space['extended_info']['auto_labstats_off']
-
-                        upload_spaces.append({
-                            'data': json.dumps(space),
-                            'id': space['id'],
-                            'etag': space['etag']
-                        })
-
-                    logger.error("Error getting labstats stats: %s", str(ex))
+                upload_spaces = seattle_labstats.get_labstats_data(
+                                                labstats_spaces)
+                print "Upload spaces:"
 
             except Exception as ex:
-                logger.error("Error making the get request to the "
-                             "server: %s", str(ex))
+                logger.error("Error making the get request to the server: %s",
+                             str(ex))
 
             response = upload_data(upload_spaces)
 
