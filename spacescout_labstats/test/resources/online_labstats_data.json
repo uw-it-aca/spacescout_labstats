@@ -1,0 +1,119 @@
+{
+  "PublicApiStationSetId": 1002,
+  "Name": "Lab Scout v0.4",
+  "ChangeSpeed": 8,
+  "Groups": [
+    {
+      "Label": "Open Learning Lab (UW2-140) Mac",
+      "InUse": 0,
+      "Available": 17,
+      "Offline": 0,
+      "TurnedOn": 17,
+      "Total": 17,
+      "OrderNum": 1
+    },
+    {
+      "Label": "Open Learning Lab (UW2-140) Pc",
+      "InUse": 2,
+      "Available": 22,
+      "Offline": 2,
+      "TurnedOn": 24,
+      "Total": 26,
+      "OrderNum": 2
+    },
+    {
+      "Label": "UW1 First Floor Kiosks",
+      "InUse": 1,
+      "Available": 3,
+      "Offline": 1,
+      "TurnedOn": 4,
+      "Total": 5,
+      "OrderNum": 3
+    },
+    {
+      "Label": "UW1 Second Floor Kiosks",
+      "InUse": 0,
+      "Available": 4,
+      "Offline": 0,
+      "TurnedOn": 4,
+      "Total": 4,
+      "OrderNum": 4
+    },
+    {
+      "Label": "UW1 Third Floor Kiosks",
+      "InUse": 0,
+      "Available": 2,
+      "Offline": 0,
+      "TurnedOn": 2,
+      "Total": 2,
+      "OrderNum": 5
+    },
+    {
+      "Label": "UW2 First Floor Kiosks",
+      "InUse": 0,
+      "Available": 2,
+      "Offline": 0,
+      "TurnedOn": 2,
+      "Total": 2,
+      "OrderNum": 6
+    },
+    {
+      "Label": "UW2 Second Floor Kiosks",
+      "InUse": 1,
+      "Available": 1,
+      "Offline": 0,
+      "TurnedOn": 2,
+      "Total": 2,
+      "OrderNum": 7
+    },
+    {
+      "Label": "UW Husky Village Kiosks",
+      "InUse": 0,
+      "Available": 1,
+      "Offline": 0,
+      "TurnedOn": 1,
+      "Total": 1,
+      "OrderNum": 8
+    },
+    {
+      "Label": "UW Husky Hall Kiosks",
+      "InUse": 0,
+      "Available": 2,
+      "Offline": 0,
+      "TurnedOn": 2,
+      "Total": 2,
+      "OrderNum": 9
+    },
+    {
+      "Label": "UW ELC Kiosks",
+      "InUse": 0,
+      "Available": 4,
+      "Offline": 0,
+      "TurnedOn": 4,
+      "Total": 4,
+      "OrderNum": 10
+    },
+    {
+      "Label": "UW2 Lower Level Kiosks",
+      "InUse": 0,
+      "Available": 2,
+      "Offline": 0,
+      "TurnedOn": 2,
+      "Total": 2,
+      "OrderNum": 11
+    },
+    {
+      "Label": " UW Beardslee Building Kiosks",
+      "InUse": 0,
+      "Available": 9,
+      "Offline": 1,
+      "TurnedOn": 9,
+      "Total": 10,
+      "OrderNum": 12
+    }
+  ],
+  "InUse": 4,
+  "Available": 69,
+  "Offline": 4,
+  "Total": 77
+}

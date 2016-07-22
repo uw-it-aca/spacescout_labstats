@@ -1,9 +1,10 @@
 """
 A file containing utilities used by the test suite for spacescout_labstats.
 """
+import os
 
 
-def get_test_data_directory(self):
+def get_test_data_directory():
     """
     Retrieves the directory in which the test resources are kept
     """

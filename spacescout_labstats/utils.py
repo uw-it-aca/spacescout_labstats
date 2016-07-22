@@ -6,19 +6,29 @@ import oauth2 as oauth
 import urllib2
 import json
 import time
+import os
+import re
+import sys
 
 
-# This function was copy and pasted, for the most part,
-# from spacescout_admin utils.py
 def upload_data(data):
+    """
+    Uploads the provided spots to the spotseeker_server instane provided in
+    settings.py.
+
+    This function was copy and pasted, for the most part,
+    from spacescout_admin utils.py
+    """
     # Required settings for the client
     if not hasattr(settings, 'SS_WEB_SERVER_HOST'):
         raise(Exception("Required setting missing: SS_WEB_SERVER_HOST"))
+
     success_names = []
     failure_descs = []
     warning_descs = []
     puts = []
     posts = []
+
     for datum in data:
         try:
             spot_id = datum["id"]
@@ -110,25 +120,91 @@ def upload_data(data):
     }
 
 
+def stop_process(pid, verbose):
+    """
+    This function stops the process with the given PID. Used to stop existing
+    labstats daemons.
+    """
+    if verbose:
+        print "Stopping process: %s" % pid
+    try:
+        handle = open(_get_tmp_directory() + "%s.stop" % pid, "w")
+        handle.close()
+        if os.getpgid(int(pid)):
+            if verbose:
+                sys.stdout.write("Waiting")
+            sys.stdout.flush()
+            for i in range(0, 15):
+                if verbose:
+                    sys.stdout.write(".")
+                sys.stdout.flush()
+                time.sleep(1)
+                try:
+                    os.getpgid(int(pid))
+                except:
+                    if verbose:
+                        print " Done"
+                    return True
+            os.remove(_get_tmp_directory() + "%s.stop" % pid)
+            if verbose:
+                print " Process did not end"
+            return False
+    except OSError:
+        os.remove((_get_tmp_directory() + "/%s.pid" % pid))
+        os.remove((_get_tmp_directory() + "/%s.stop" % pid))
+        if verbose:
+            print "Old process %s not Found" % pid
+    return True
+
+
 def clean_spaces_labstats(labstats_spaces):
     """
     Removes all the labstats info from the spaces in case of an error, so that
     we don't give incorrect or outdated info to users.
     """
     for space in labstats_spaces:
-        if space['extended_info'][
-            'auto_labstats_available'] or \
-                space['extended_info'][
-                    'auto_labstats_available'] == 0:
-            del space['extended_info'][
-                'auto_labstats_available']
-        if space['extended_info'][
-            'auto_labstats_total'] or \
-                space['extended_info'][
-                    'auto_labstats_total'] == 0:
+        if 'auto_labstats_available' in space['extended_info']:
+            del space['extended_info']['auto_labstats_available']
+        if 'auto_labstats_total' in space['extended_info']:
             del space['extended_info']['auto_labstats_total']
-        if space['extended_info'][
-            'auto_labstats_off'] or \
-                space['extended_info'][
-                    'auto_labstats_off'] == 0:
+        if 'auto_labstats_off' in space['extended_info']:
             del space['extended_info']['auto_labstats_off']
+
+    return labstats_spaces
+
+
+def is_valid_uuid(uuid):
+    """
+    Checks to see if the string passed is a valid v4 UUID.
+
+    Returns a MatchObject which evaluates to true (but is not equal to) if
+    the UUID string is valid, and None if it is not.
+    """
+    # check the length, as the regex will not catch additional characters
+    if len(uuid) is not 36:
+        return None
+
+    pattern = re.compile("[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab]"
+                         "[0-9a-f]{3}-[0-9a-f]{12}")
+    return pattern.match(uuid)
+
+
+def get_spot_from_spots(spots, spot_id):
+    """
+    Returns a given spot out of a list of spots, matching by id.
+    """
+    for spot in spots:
+        if spot['id'] == spot_id:
+            return spot
+
+    return None
+
+
+def _get_tmp_directory():
+    """
+    Returns the directory in which labstats temp files will be stored, and
+    creates it if it does not exist
+    """
+    if not os.path.isdir("/tmp/updater/"):
+        os.mkdir("/tmp/updater/", 0700)
+    return "/tmp/updater/"

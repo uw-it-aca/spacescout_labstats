@@ -4,10 +4,11 @@ the spots that have corresponding labstats information with the number of
 machines available and similar information.
 """
 from django.core.management.base import BaseCommand
-from spacescout_labstats.utils import upload_data
+from spacescout_labstats.utils import (upload_data, stop_process,
+                                       _get_tmp_directory)
 from django.conf import settings
 from optparse import make_option
-from spacescout_labstats.endpoints import seattle_labstats
+from spacescout_labstats.endpoints import seattle_labstats, online_labstats
 import os
 import sys
 import time
@@ -16,7 +17,6 @@ import atexit
 import oauth2
 import json
 import logging
-import stop_process
 
 # TODO: how should the log location be set?
 # logging.basicConfig(filename='/tmp/labstats_updater.log',
@@ -33,16 +33,19 @@ class Command(BaseCommand):
                     default=True,
                     action='store_true',
                     help='This will set the updater to run as a daemon.'),
+
         make_option('--update-delay',
                     dest='update_delay',
                     type='int',
                     default=5,
                     help='The number of minutes between update attempts.'),
+
         make_option('--run-once',
                     dest='run_once',
                     default=False,
                     action='store_true',
                     help='This will allow the updater to run just once.'),
+
         make_option('--verbose',
                     dest='verbose',
                     default=False,
@@ -62,19 +65,21 @@ class Command(BaseCommand):
         if another version exists it will close that process.
         """
         if (self.process_exists()):
+            # TODO : refactor into utils for DRY
             try:
-                files = os.listdir(self._get_tmp_directory())
+                files = os.listdir(_get_tmp_directory())
             except OSError:
                 logger.error("OSError encountered when attempting to get " +
-                             "temporary files")
-                sys.exit(0)
+                             "temporary files.")
             for filename in files:
-                matches = re.match(r"^([0-9]+).pid$", filename)  # check if pid
+                # check for file containing pid
+                matches = re.match(r"^([0-9]+).pid$", filename)
+                # if it exists, then stop the process
                 if matches:
                     pid = matches.group(1)
                     verbose = options["verbose"]
-                    logger.info("stopping")
-                    stop_process.stop_process(pid, verbose)
+                    logger.info("Stopping an existing labstats_daemon")
+                    stop_process(pid, verbose)
 
         atexit.register(self.remove_pid_file)
 
@@ -119,9 +124,9 @@ class Command(BaseCommand):
         if not hasattr(settings, 'SS_WEB_OAUTH_SECRET'):
             raise(Exception("Required setting missing: SS_WEB_OAUTH_SECRET"))
 
-        consumer = oauth2.Consumer(key=settings.SS_WEB_OAUTH_KEY,
-                                   secret=settings.SS_WEB_OAUTH_SECRET)
-        client = oauth2.Client(consumer)
+        self.consumer = oauth2.Consumer(key=settings.SS_WEB_OAUTH_KEY,
+                                        secret=settings.SS_WEB_OAUTH_SECRET)
+        self.client = oauth2.Client(self.consumer)
 
         while True:
             if self.should_stop():
@@ -142,17 +147,11 @@ class Command(BaseCommand):
                                 "LS_SEARCH_DISTANCE"))
 
             # get data from SS server
-            try:
-                url = seattle_labstats.get_spot_search_parameters()
-                resp, content = client.request(url, 'GET')
-                labstats_spaces = json.loads(content)
+            upload_spaces = self.get_seattle_labstats()
 
-                upload_spaces = seattle_labstats.get_labstats_data(
-                                                labstats_spaces)
+            response = upload_data(upload_spaces)
 
-            except Exception as ex:
-                logger.error("Error making the get request to the server: %s",
-                             str(ex))
+            upload_spaces = self.get_online_labstats()
 
             response = upload_data(upload_spaces)
 
@@ -209,7 +208,7 @@ class Command(BaseCommand):
     # Returns true if an instance of the daemon is already running
     def process_exists(self):
         try:
-            files = os.listdir(self._get_tmp_directory())
+            files = os.listdir(_get_tmp_directory())
         except OSError:
             sys.exit(0)
         for filename in files:
@@ -220,14 +219,7 @@ class Command(BaseCommand):
 
     # Returns the path for the file storing this process' PID
     def _get_pid_file_path(self):
-        return self._get_tmp_directory() + "%s.pid" % (str(os.getpid()))
-
-    # Returns the directory in which labstats temp files will be stored, and
-    # creates it if it does not exist
-    def _get_tmp_directory(self):
-        if not os.path.isdir("/tmp/updater/"):
-            os.mkdir("/tmp/updater/", 0700)
-        return "/tmp/updater/"
+        return _get_tmp_directory() + "%s.pid" % (str(os.getpid()))
 
     def should_stop(self):
         if os.path.isfile(self._get_stopfile_path()):
@@ -236,4 +228,39 @@ class Command(BaseCommand):
         return False
 
     def _get_stopfile_path(self):
-        return self._get_tmp_directory() + "%s.stop" % (str(os.getpid()))
+        return _get_tmp_directory() + "%s.stop" % (str(os.getpid()))
+
+    def get_seattle_labstats(self):
+        """
+        This method handles the updating of the seattle labstats with the
+        following steps:
+        """
+        try:
+            # get the search parameters and then load the seattle spots
+            url = seattle_labstats.get_spot_search_parameters()
+            resp, content = client.request(url, 'GET')
+            labstats_spaces = json.loads(content)
+
+            # send the spots to seattle_labstats to be updated
+            return seattle_labstats.get_labstats_data(labstats_spaces)
+
+        except Exception as ex:
+            logger.error("Error updating seattle labstats : %s",
+                         str(ex))
+
+    def get_online_labstats(self):
+        """
+        This method handles the updating of the online labstats along the
+        same lines of get_seattle_labstats
+        """
+        try:
+            url = seattle_labstats.get_spot_search_parameters()
+            resp, content = client.request(url, 'GET')
+            labstats_spaces = json.loads(content)
+
+            # send the spots to online_labstats to be updated
+            return online_labstats.get_labstats_data(labstats_spaces)
+
+        except Exception as ex:
+            logger.error("Error updating seattle labstats : %s",
+                         str(ex))

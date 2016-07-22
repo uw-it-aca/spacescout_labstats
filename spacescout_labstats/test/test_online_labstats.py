@@ -3,9 +3,11 @@ This file contians tests for online_labstats.py
 """
 from django.test import TestCase
 from spacescout_labstats.endpoints import online_labstats
+from utils_test import get_test_data_directory
+import json
 
 
-class LabstatsDaemonTest(TestCase):
+class OnlineLabstatsTest(TestCase):
 
     def test_get_labstats_customers(self):
         """
@@ -14,7 +16,7 @@ class LabstatsDaemonTest(TestCase):
         """
 
         # load the content and garbage collect the file object
-        with open(self.get_test_data_directory() +
+        with open(get_test_data_directory() +
                   "bothell_labstats_spaces.json") as test_data_file:
             test_json = json.load(test_data_file)
 
@@ -35,3 +37,61 @@ class LabstatsDaemonTest(TestCase):
         customers = online_labstats.get_customers(test_json)
 
         self.assertEqual(customers, customers_dict)
+
+    def test_get_labstat_by_label(self):
+        with open(get_test_data_directory() +
+                  "online_labstats_data.json") as test_data_file:
+            online_labstats_data = json.load(test_data_file)
+
+        lab = online_labstats.get_labstat_entry_by_label(online_labstats_data,
+                                                         "Open Learning Lab "
+                                                         "(UW2-140) Mac")
+
+        intended_lab = """{
+          \"Label\": \"Open Learning Lab (UW2-140) Mac\",
+          "InUse": 0,
+          "Available": 17,
+          "Offline": 0,
+          "TurnedOn": 17,
+          "Total": 17,
+          "OrderNum": 1
+        }"""
+
+        intended_lab = json.loads(intended_lab)
+
+        self.assertEqual(lab, intended_lab)
+
+        lab = online_labstats.get_labstat_entry_by_label(online_labstats_data,
+                                                         "nfeshufa;elks")
+
+        self.assertTrue(lab is None)
+
+    def test_load_labstats_data(self):
+        # TODO : test this with bad data somehow
+        """
+        This tests the utility method that performs the loading of the online
+        labstats data into the spaces.
+        """
+        with open(get_test_data_directory() +
+                  "bothell_labstats_spaces.json") as test_data_file:
+            labstats_spaces = json.load(test_data_file)
+
+        with open(get_test_data_directory() +
+                  "loaded_bothell_labstats_spaces.json") as test_data_file:
+            loaded_labstats_spaces = json.load(test_data_file)
+
+        with open(get_test_data_directory() +
+                  "online_labstats_data.json") as test_data_file:
+            online_labstats_data = json.load(test_data_file)
+
+        customers = online_labstats.get_customers(labstats_spaces)
+
+        customer = customers["749b5ac3-597f-4316-957c-abe939800634"]
+
+        page = customer[1002]
+
+        response = online_labstats.load_labstats_data(labstats_spaces,
+                                                      online_labstats_data,
+                                                      page)
+
+        self.assertEqual(response, loaded_labstats_spaces)

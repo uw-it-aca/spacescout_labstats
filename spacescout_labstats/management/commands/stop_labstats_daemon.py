@@ -3,6 +3,7 @@ This provides a management command that stops the labstats daemon
 """
 from django.core.management.base import BaseCommand
 from optparse import make_option
+from spacescout_labstats.utils import _get_tmp_directory
 import time
 import signal
 import os
@@ -21,6 +22,7 @@ class Command(BaseCommand):
                     action="store_true",
                     help='This will forceably terminate any running updaters. '
                          'Not recommended.'),
+
         make_option('--verbose',
                     dest='verbose',
                     default=False,
@@ -32,9 +34,13 @@ class Command(BaseCommand):
         force = options["force"]
 
         try:
-            files = os.listdir(self._get_tmp_directory())
+            files = os.listdir(_get_tmp_directory())
         except OSError:
+            logger.error("OSError encountered when attempting to get " +
+                         "temporary files. Daemon could not be stopped")
             sys.exit(0)
+
+        # get the file with the PID of the other labstats daemons
         for filename in files:
             matches = re.match(r"^([0-9]+).pid$", filename)
             if matches:
@@ -49,25 +55,22 @@ class Command(BaseCommand):
                         sys.exit(1)
 
     def kill_process(self, pid):
+        """
+        Kills the process with the passed PID and removes its PID file.
+        """
         try:
             os.kill(int(pid), signal.SIGTERM)
             time.sleep(1)
+
             try:
                 os.getpgid(int(pid))
                 os.kill(int(pid), signal.SIGKILL)
             except:
                 pass
-            if os.path.isfile(self._get_tmp_directory() + "%s.stop" % pid):
-                os.remove(self._get_tmp_directory() + "%s.stop" % pid)
+            if os.path.isfile(_get_tmp_directory() + "%s.stop" % pid):
+                os.remove(_get_tmp_directory() + "%s.stop" % pid)
 
-            if os.path.isfile(self._get_tmp_directory() + "%s.pid" % pid):
-                os.remove(self._get_tmp_directory() + "%s.pid" % pid)
+            if os.path.isfile(_get_tmp_directory() + "%s.pid" % pid):
+                os.remove(_get_tmp_directory() + "%s.pid" % pid)
         except:
             pass
-
-    # Returns the directory in which labstats temp files will be stored, and
-    # creates it if it does not exist
-    def _get_tmp_directory(self):
-        if not os.path.isdir("/tmp/updater/"):
-            os.mkdir("/tmp/updater/", 0700)
-        return "/tmp/updater/"

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import logging
 from django.conf import settings
 from spacescout_labstats.utils import clean_spaces_labstats
@@ -8,20 +7,27 @@ import json
 logger = logging.getLogger(__name__)
 
 
-# TODO : determine if this would be better as an object vs collection of
-# static methods
 def get_spot_search_parameters():
+    """
+    Returns the URL with which to send a GET request to spotseeker_server and
+    retrieve all the spots that need to be updated from seattle_labstats.
+    """
     url = ("%s/api/v1/spot/?extended_info:has_labstats=true&"
            "center_latitude=%s&center_longitude=%s&distance=%s"
            "&limit=0") \
-           % (settings.SS_WEB_SERVER_HOST,
-              settings.LS_CENTER_LAT,
-              settings.LS_CENTER_LON,
-              settings.LS_SEARCH_DISTANCE)
+        % (settings.SS_WEB_SERVER_HOST,
+           settings.LS_CENTER_LAT,
+           settings.LS_CENTER_LON,
+           settings.LS_SEARCH_DISTANCE)
     return url
 
 
 def get_labstats_data(labstats_spaces):
+    """
+    Takes in a list of spaces from the labstats_daemon and then retrieves their
+    labstats information from the seattle labstats service, at which point the
+    data is merged and returned.
+    """
     try:
         # Updates the num_machines_available extended_info field
         # for spots that have corresponding labstats.
@@ -84,6 +90,3 @@ def get_labstats_data(labstats_spaces):
         logger.error("Error getting labstats stats: %s", str(ex))
 
     return upload_spaces
-
-
-logger = logging.getLogger(__name__)
