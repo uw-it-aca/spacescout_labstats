@@ -1,5 +1,5 @@
 """
-This file contains methods which are used to update the online labstats spots.
+This file contains methods which are used to update the online labstats spaces.
 """
 import logging
 from spacescout_labstats import utils
@@ -16,9 +16,9 @@ requests.packages.urllib3.disable_warnings()
 logger = logging.getLogger(__name__)
 
 
-def get_spot_search_parameters():
+def get_space_search_parameters():
     """
-    This is the URL/the parameters that will be used to retrieve spots
+    This is the URL/the parameters that will be used to retrieve spaces
     using the cloud based version of labstats.
 
     has_online_labstats should be true if they are.
@@ -47,6 +47,9 @@ def get_endpoint_data(labstats_spaces):
         for page in customers[customer]:
             response = get_online_labstats_data(customer, page)
 
+            if response is None:
+                return None
+
             page = customers[customer][page]
 
             load_labstats_data(labstats_spaces, response, page)
@@ -54,54 +57,62 @@ def get_endpoint_data(labstats_spaces):
     return labstats_spaces
 
 
-def get_customers(spot_json):
+def get_customers(spaces):
         """
-        Takes in the JSON from querying spotseeker_server and formats it.
+        Takes in the JSON from querying spaceseeker_server and formats it.
 
-        # TODO : rewrite data description
         The data is organized in a dict, in which the customer_id(UUID string)
         is the first key, and then individual pages are listed, matching labels
-        to spot ids
+        to space ids
+
+        {
+        "749b5ac3-597f-4316-957c-abe939800634" : {
+            1002 : ["Label" : 248]
+            }
+        }
         """
         customers = {}
+        to_delete = []
 
-        for spot in spot_json:
-            # TODO : handle missing and malformed fields
-            # TODO : create json validation method?
-            if 'labstats_customer_id' not in spot['extended_info']:
-                logger.error("Customer ID missing in an online labstats spot")
+        for space in spaces:
+            if 'labstats_customer_id' not in space['extended_info']:
+                logger.error("Customer ID missing in an online labstats space")
+                to_delete.append(space)
                 continue
 
-            customer_id = spot['extended_info']['labstats_customer_id']
+            customer_id = space['extended_info']['labstats_customer_id']
 
-            # TODO : determine a way to have a reasonable amount of output
-            # and not be emailing the admins every 15 minutes
             # ensure that customer_id is a UUID and raise an error if not
             if not utils.is_valid_uuid(customer_id):
                 logger.error("Customer UUID " + customer_id + " is not valid"
-                             " for spot #" + spot['id'])
+                             " for space #" + space['id'])
+                to_delete.append(space)
                 continue
 
             # if customer_id is not in customers then create a dict
             if customer_id not in customers:
                 customers[customer_id] = dict()
-            page_id = int(spot['extended_info']['labstats_page_id'])
+            page_id = int(space['extended_info']['labstats_page_id'])
 
             # if page_id is not in customers then create a dict
             if page_id not in customers[customer_id]:
                 customers[customer_id][page_id] = {}
 
-            spot_label = spot['extended_info']["labstats_label"]
+            space_label = space['extended_info']["labstats_label"]
 
-            # make sure that there is only one spot with that label
-            if spot_label in customers[customer_id][page_id]:
-                other_id = customers[customer_id][page_id][spot_label]
-                logger.error("There appear to be multiple spots with the"
-                             "label \'" + spot_label+"\',spot #" + spot['id'] +
-                             " and " + str(other_id))
+            # make sure that there is only one space with that label
+            if space_label in customers[customer_id][page_id]:
+                other_id = customers[customer_id][page_id][space_label]
+                logger.error("There appear to be multiple spaces with the"
+                             "label \'" + space_label+"\',space #" +
+                             space['id'] + " and " + str(other_id))
                 continue
 
-            customers[customer_id][page_id][spot_label] = spot['id']
+            customers[customer_id][page_id][space_label] = space['id']
+
+        # remove all spaces that had an error and should not be updated
+        for space in to_delete:
+            spaces.remove(space)
 
         return customers
 
@@ -109,7 +120,7 @@ def get_customers(spot_json):
 def get_online_labstats_data(customer, page):
     """
     Hits the endpoint for online.labstats.com to retrieve the information
-    with which we'll update the spots.
+    with which we'll update the spaces.
 
     customer is an UUID, page is an int
     """
@@ -120,54 +131,62 @@ def get_online_labstats_data(customer, page):
                                 headers={"Authorization": customer},
                                 verify=False)
 
-        spots = response.json()
+        spaces = response.json()
     except Exception as ex:
-        logger.warning("Retrieving labstats page failed! Exception is"
-                       " %s", ex)
+        logger.error("Retrieving labstats page failed! Exception is"
+                     " %s", ex)
         return None
     except ValueError as ex:
-        logger.warning("Invalid json received from online labstats service!"
-                       "Body is " + response.content)
+        logger.error("Invalid json received from online labstats service!"
+                     "Body is " + response.content)
         return None
 
-    return spots
+    return spaces
 
 
-def load_labstats_data(spots, labstats_data, page_dict):
+def load_labstats_data(spaces, labstats_data, page_dict):
     """
     Loads the data retrieved from the online labstats service into the spaces.
     """
     # create the list of spaces to be uploaded
     upload_spaces = []
+    to_delete = []
 
-    for page_id, spot_id in page_dict.iteritems():
-        # get the spot by it's id in page_dict
-        spot = utils.get_spot_from_spots(spots, spot_id)
+    for page_id, space_id in page_dict.iteritems():
+        # get the space by it's id in page_dict
+        space = utils.get_space_from_spaces(spaces, space_id)
 
-        if spot is None:
-            logger.warning("Spot " + spot_id + " missing from spots!")
+        if space is None:
+            logger.warning("space " + space_id + " missing from spaces!")
+            continue
 
-        # retrieve the labstat info for this spot
-        spot_labstat = get_labstat_entry_by_label(labstats_data,
-                                                  spot["extended_info"]
-                                                  ["labstats_label"])
+        # retrieve the labstat info for this space
+        space_labstat = get_labstat_entry_by_label(labstats_data,
+                                                   space["extended_info"]
+                                                   ["labstats_label"])
 
-        if spot_labstat is None:
-            logger.warning("Labstat entry not found for label %s and spot id" +
-                           spot['id'], spot["extended_info"]["labstats_label"])
+        if space_labstat is None:
+            logger.warning("Labstat entry not found for label %s and space #" +
+                           space['id'], space["extended_info"]
+                           ["labstats_label"])
+            to_delete.append(space)
             continue
 
         # load the dict into a variable for easy access
-        extended_info = spot["extended_info"]
+        extended_info = space["extended_info"]
 
-        # load the new labstats info into the spot's extended_info
-        extended_info["auto_labstats_available"] = spot_labstat["Available"]
+        # load the new labstats info into the space's extended_info
+        extended_info["auto_labstats_available"] = space_labstat["Available"]
 
-        extended_info["auto_labstats_available"] += spot_labstat["Offline"]
+        extended_info["auto_labstats_available"] += space_labstat["Offline"]
 
-        extended_info["auto_labstats_total"] = spot_labstat["Total"]
+        extended_info["auto_labstats_total"] = space_labstat["Total"]
 
-    return spots
+    # remove all spaces that had an error and should not be updated
+    for space in to_delete:
+        spaces.remove(space)
+
+    return spaces
 
 
 def get_labstat_entry_by_label(labstats_data, label):

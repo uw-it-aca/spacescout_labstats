@@ -14,9 +14,9 @@ import sys
 logger = logging.getLogger(__name__)
 
 
-def upload_data(spots):
+def upload_data(spaces):
     """
-    Uploads the provided spots to the spotseeker_server instane provided in
+    Uploads the provided spaces to the spaceseeker_server instane provided in
     settings.py.
 
     This function was copy and pasted, for the most part,
@@ -40,33 +40,33 @@ def upload_data(spots):
 
     url = "%s/api/v1/spot" % settings.SS_WEB_SERVER_HOST
 
-    for spot in spots:
-        # if our spot is malformed, then continue and log the error
-        if not validate_spot(spot):
-            logger.error("Malformed spot encountered! Attmepting to log id")
-            if 'id' in spot.keys():
-                logger.error("Malformed spot id : " + str(spot['id']))
+    for space in spaces:
+        # if our space is malformed, then continue and log the error
+        if not validate_space(space):
+            logger.error("Malformed space encountered! Attmepting to log id")
+            if 'id' in space.keys():
+                logger.error("Malformed space id : " + str(space['id']))
 
             continue
 
         # prepare the request header and content
-        spot_json = json.dumps(spot)
-        spot_url = "%s/%s" % (url, spot["id"])
+        space_json = json.dumps(space)
+        space_url = "%s/%s" % (url, space["id"])
 
-        # should always be PUT since we are only updating spots
+        # should always be PUT since we are only updating spaces
         method = 'PUT'
 
-        spot_headers = {"X-OAuth-User": "%s" % "labstats_daemon",
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"}
+        space_headers = {"X-OAuth-User": "%s" % "labstats_daemon",
+                         "Content-Type": "application/json",
+                         "Accept": "application/json"}
 
-        spot_headers['If-Match'] = spot['etag']
+        space_headers['If-Match'] = space['etag']
 
         # fire the request
-        resp, content = client.request(spot_url,
+        resp, content = client.request(space_url,
                                        method,
-                                       spot_json,
-                                       headers=spot_headers)
+                                       space_json,
+                                       headers=space_headers)
 
         # Responses 200 and 201 mean we've succeeded
         # 200 is OK, 201 is Created
@@ -81,34 +81,34 @@ def upload_data(spots):
                 flocation = resp['status']
                 freason = content
 
-            # Add spot attempt to the list of failures
+            # Add space attempt to the list of failures
             hold = {
-                'fname': spot['name'],
+                'fname': space['name'],
                 'flocation': flocation,
                 'freason': freason,
             }
             failure_descs.append(hold)
         else:
             # log the success by adding it to the return data
-            success_names.append({'name': spot['name'], 'method': method})
+            success_names.append({'name': space['name'], 'method': method})
 
             if content:
-                url1 = spot_url
+                url1 = space_url
             elif resp['location']:
                 url1 = '%s/image' % resp['location']
             else:
                 hold = {
-                    'fname': spot['name'],
+                    'fname': space['name'],
                     'flocation': image,
-                    'freason': "could not find spot idea; images not posted",
+                    'freason': "could not find space idea; images not posted",
                 }
                 warning_descs.append(hold)
                 break
 
         if method == 'POST':
-            posts.append(spot['name'])
+            posts.append(space['name'])
         elif method == 'PUT':
-            puts.append(spot['name'])
+            puts.append(space['name'])
 
     # return results
     return {
@@ -198,13 +198,13 @@ def is_valid_uuid(uuid):
     return pattern.match(uuid)
 
 
-def get_spot_from_spots(spots, spot_id):
+def get_space_from_spaces(spaces, space_id):
     """
-    Returns a given spot out of a list of spots, matching by id.
+    Returns a given space out of a list of spaces, matching by id.
     """
-    for spot in spots:
-        if spot['id'] == spot_id:
-            return spot
+    for space in spaces:
+        if space['id'] == space_id:
+            return space
 
     return None
 
@@ -219,34 +219,34 @@ def _get_tmp_directory():
     return "/tmp/updater/"
 
 
-def validate_spot(spot):
+def validate_space(space):
     """
-    Validates that a given spot has all the fields required to return it to the
-    server. Checks id, etag, and name. Accepts both json and a dict.
+    Validates that a given space has all the fields required to return it to
+    the server. Checks id, etag, and name. Accepts both json and a dict.
 
     Returns True/False
     """
     try:
-        if isinstance(spot, basestring):
-            spot = json.loads(spot)
+        if isinstance(space, basestring):
+            space = json.loads(space)
 
     except JSONDecodeError as ex:
         logger.warning("Invalid JSON format.")
         return false
 
-    if not isinstance(spot, dict):
+    if not isinstance(space, dict):
         return False
 
     # check for keys in the dict
-    if ('id' not in spot.keys() or
-        'name' not in spot.keys() or
-            'etag' not in spot.keys()):
+    if ('id' not in space.keys() or
+        'name' not in space.keys() or
+            'etag' not in space.keys()):
         return False
 
     # ensure that the fields are the right type
-    if (not isinstance(spot['etag'], basestring) or
-        not isinstance(spot['id'], int) or
-            not isinstance(spot['id'], int)):
+    if (not isinstance(space['etag'], basestring) or
+        not isinstance(space['id'], int) or
+            not isinstance(space['id'], int)):
         return False
 
     return True

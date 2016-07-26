@@ -1,6 +1,6 @@
 """
 This provides a managament command to run a daemon that will frequently update
-the spots that have corresponding labstats information with the number of
+the spaces that have corresponding labstats information with the number of
 machines available and similar information.
 """
 from django.core.management.base import BaseCommand
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'This updates spots with labstats data'
+    help = 'This updates spaces with labstats data'
 
     option_list = BaseCommand.option_list + (
         make_option('--daemonize',
@@ -135,22 +135,18 @@ class Command(BaseCommand):
             if run_once:
                 self.create_stop_file()
 
-            # raise different exceptions
-            if not hasattr(settings, 'LS_CENTER_LAT'):
-                raise(Exception("Required setting missing: LS_CENTER_LAT"))
-            if not hasattr(settings, 'LS_CENTER_LON'):
-                raise(Exception("Required setting missing: LS_CENTER_LON"))
-            if not hasattr(settings, 'LS_SEARCH_DISTANCE'):
-                raise(Exception("Required setting missing:"
-                                "LS_SEARCH_DISTANCE"))
+            # add any additional endpoints here and at the import statement
+            # at the top of this file
+            endpoints = [seattle_labstats, online_labstats]
 
-            # load seattle_labstats data
-            self.load_endpoint_data(seattle_labstats)
+            for endpoint in endpoints:
+                try:
+                    self.load_endpoint_data(endpoint)
+                except Exception as ex:
+                    logger.error("Uncaught exception for endpoint " +
+                                 endpoint.get_name() + "\n" +
+                                 traceback.format_exc())
 
-            # load online labstats data
-            self.load_endpoint_data(online_labstats)
-
-            # TODO : refactor this into a wait method
             if not run_once:
                 for i in range(update_delay * 60):
                     if self.should_stop():
@@ -167,21 +163,23 @@ class Command(BaseCommand):
         interface.
         """
         try:
-            url = endpoint.get_spot_search_parameters()
+            url = endpoint.get_space_search_parameters()
             resp, content = self.client.request(url, 'GET')
-            spots = json.loads(content)
+            spaces = json.loads(content)
 
-        except Exception as ex:
-            logger.error("Error updating %s : %s", endpoint.get_name(),
-                         str(ex))
-            logger.debug(traceback.format_exc())
+        except ValueError as ex:
+            logger.warning("JSON Exception found! Malformed data passed from"
+                           "spotseeker_server")
             return
 
-        # send the spots to be modified to the endpoint to have data loaded
-        endpoint.get_endpoint_data(spots)
+        # send the spaces to be modified to the endpoint
+        response = endpoint.get_endpoint_data(spaces)
 
-        # upload the spot data to the server
-        response = upload_data(spots)
+        if response is None:
+            return
+
+        # upload the space data to the server
+        response = upload_data(spaces)
 
         # log any failures
         if response is not None and response['failure_descs']:
@@ -195,7 +193,7 @@ class Command(BaseCommand):
                     errors.update({failure['flocation']:
                                    failure['freason']})
 
-            logger.error("Errors putting to the server: %s", str(errors))
+            logger.warning("Errors putting to the server: %s", str(errors))
 
     def read_pid_file(self):
         if os.path.isfile(self._get_pid_file_path()):

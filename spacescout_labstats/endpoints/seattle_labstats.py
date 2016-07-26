@@ -8,10 +8,10 @@ import traceback
 logger = logging.getLogger(__name__)
 
 
-def get_spot_search_parameters():
+def get_space_search_parameters():
     """
-    Returns the URL with which to send a GET request to spotseeker_server and
-    retrieve all the spots that need to be updated from seattle_labstats.
+    Returns the URL with which to send a GET request to spaceseeker_server and
+    retrieve all the spaces that need to be updated from seattle_labstats.
     """
     url = ("%s/api/v1/spot/?extended_info:has_labstats=true&"
            "center_latitude=%s&center_longitude=%s&distance=%s"
@@ -30,26 +30,24 @@ def get_name():
     return "Seattle Labstats"
 
 
-def get_endpoint_data(labstats_spots):
+def get_endpoint_data(labstats_spaces):
     """
-    Takes in a list of spots from the labstats_daemon and then retrieves their
+    Takes in a list of spaces from the labstats_daemon and then retrieves their
     labstats information from the seattle labstats service, at which point the
     data is merged and returned.
     """
-    try:
-        # Updates the num_machines_available extended_info field
-        # for spots that have corresponding labstats.
-        upload_spots = []
+    # Updates the num_machines_available extended_info field
+    # for spaces that have corresponding labstats.
+    upload_spaces = []
 
-        groups = get_seattle_labstats_data()
-        load_labstats_data(labstats_spots, groups)
+    groups = get_seattle_labstats_data()
 
-    except Exception as ex:
-        clean_spaces_labstats(labstats_spots)
-        logger.error("Error getting labstats stats: %s", str(ex))
-        logger.debug(traceback.format_exc())
+    if groups is None:
+        raise Exception("Data not retrieved from " + get_name() + " endpoint!")
 
-    return upload_spots
+    load_labstats_data(labstats_spaces, groups)
+
+    return upload_spaces
 
 
 def get_seattle_labstats_data():
@@ -61,11 +59,11 @@ def get_seattle_labstats_data():
     return groups
 
 
-def load_labstats_data(labstats_spots, groups):
+def load_labstats_data(labstats_spaces, groups):
     """
     Applies the data loaded from the labstats webservice to
     """
-    for spot in labstats_spots:
+    for space in labstats_spaces:
         for g in groups:
             # Available data fields froms the labstats
             # groups:
@@ -73,7 +71,12 @@ def load_labstats_data(labstats_spots, groups):
                 # g.inUseCount g.offCount g.percentInUse
                 # g.totalCount g.unavailableCount
 
-            if spot['extended_info']['labstats_id'] == g.groupId:
+            if "labstats_id" not in space['extended_info']:
+                logger.warning("No labstats_id in space " + space['name'] +
+                               str(space['id']))
+                clean_spaces_labstats([space])
+
+            if space['extended_info']['labstats_id'] == g.groupId:
 
                 available = int(g.availableCount)
                 total = int(g.totalCount)
@@ -82,15 +85,15 @@ def load_labstats_data(labstats_spots, groups):
                 # if (total > 3) and (total - available) < 3:
                 #    available = total - 3
 
-                spot['extended_info'].update(
+                space['extended_info'].update(
                     auto_labstats_available=available+off,
                     auto_labstats_total=total,
                 )
 
                 # why is this here? - Ethan
-                spot['location']['longitude'] = \
-                    str(spot['location']['longitude'])
-                spot['location']['latitude'] = \
-                    str(spot['location']['latitude'])
+                space['location']['longitude'] = \
+                    str(space['location']['longitude'])
+                space['location']['latitude'] = \
+                    str(space['location']['latitude'])
 
-    return labstats_spots
+    return labstats_spaces
