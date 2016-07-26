@@ -16,11 +16,9 @@ import re
 import atexit
 import oauth2
 import json
+import traceback
 import logging
 
-# TODO: how should the log location be set?
-# logging.basicConfig(filename='/tmp/labstats_updater.log',
-# level=logging.DEBUG, filemode='w')
 logger = logging.getLogger(__name__)
 
 
@@ -65,7 +63,7 @@ class Command(BaseCommand):
         if another version exists it will close that process.
         """
         if (self.process_exists()):
-            # TODO : refactor into utils for DRY
+            # TODO : refactor into utils/stop_process for DRY
             try:
                 files = os.listdir(_get_tmp_directory())
             except OSError:
@@ -103,6 +101,7 @@ class Command(BaseCommand):
                 self.controller(options["update_delay"], options["run_once"])
             except Exception as ex:
                 logger.error("Error running the controller: %s", str(ex))
+                traceback.print_exc()
 
         else:
             logger.info("Starting the updater as an interactive process")
@@ -114,7 +113,6 @@ class Command(BaseCommand):
         This is responsible for the workflow of orchestrating
         the updater process.
         """
-        # TODO : determine where this exception is handled
         if not hasattr(settings, 'SS_WEB_SERVER_HOST'):
             raise(Exception("Required setting missing: SS_WEB_SERVER_HOST"))
 
@@ -146,29 +144,13 @@ class Command(BaseCommand):
                 raise(Exception("Required setting missing:"
                                 "LS_SEARCH_DISTANCE"))
 
-            # get data from SS server
-            upload_spaces = self.get_seattle_labstats()
+            # load seattle_labstats data
+            self.load_endpoint_data(seattle_labstats)
 
-            response = upload_data(upload_spaces)
+            # load online labstats data
+            self.load_endpoint_data(online_labstats)
 
-            upload_spaces = self.get_online_labstats()
-
-            response = upload_data(upload_spaces)
-
-            # If there are errors, log them
-            if response['failure_descs']:
-                errors = {}
-                for failure in response['failure_descs']:
-                    if type(failure['freason']) == list:
-                        errors.update({failure['flocation']: []})
-                        for reason in failure['freason']:
-                            errors[failure['flocation']].append(reason)
-                    else:
-                        errors.update({failure['flocation']:
-                                       failure['freason']})
-
-                logger.error("Errors putting to the server: %s", str(errors))
-
+            # TODO : refactor this into a wait method
             if not run_once:
                 for i in range(update_delay * 60):
                     if self.should_stop():
@@ -178,6 +160,42 @@ class Command(BaseCommand):
 
             else:
                 sys.exit()
+
+    def load_endpoint_data(self, endpoint):
+        """
+        This method handles the updating of an endpoint using the standard
+        interface.
+        """
+        try:
+            url = endpoint.get_spot_search_parameters()
+            resp, content = self.client.request(url, 'GET')
+            spots = json.loads(content)
+
+        except Exception as ex:
+            logger.error("Error updating %s : %s", endpoint.get_name(),
+                         str(ex))
+            logger.debug(traceback.format_exc())
+            return
+
+        # send the spots to be modified to the endpoint to have data loaded
+        endpoint.get_endpoint_data(spots)
+
+        # upload the spot data to the server
+        response = upload_data(spots)
+
+        # log any failures
+        if response is not None and response['failure_descs']:
+            errors = {}
+            for failure in response['failure_descs']:
+                if type(failure['freason']) == list:
+                    errors.update({failure['flocation']: []})
+                    for reason in failure['freason']:
+                        errors[failure['flocation']].append(reason)
+                else:
+                    errors.update({failure['flocation']:
+                                   failure['freason']})
+
+            logger.error("Errors putting to the server: %s", str(errors))
 
     def read_pid_file(self):
         if os.path.isfile(self._get_pid_file_path()):
@@ -229,38 +247,3 @@ class Command(BaseCommand):
 
     def _get_stopfile_path(self):
         return _get_tmp_directory() + "%s.stop" % (str(os.getpid()))
-
-    def get_seattle_labstats(self):
-        """
-        This method handles the updating of the seattle labstats with the
-        following steps:
-        """
-        try:
-            # get the search parameters and then load the seattle spots
-            url = seattle_labstats.get_spot_search_parameters()
-            resp, content = client.request(url, 'GET')
-            labstats_spaces = json.loads(content)
-
-            # send the spots to seattle_labstats to be updated
-            return seattle_labstats.get_labstats_data(labstats_spaces)
-
-        except Exception as ex:
-            logger.error("Error updating seattle labstats : %s",
-                         str(ex))
-
-    def get_online_labstats(self):
-        """
-        This method handles the updating of the online labstats along the
-        same lines of get_seattle_labstats
-        """
-        try:
-            url = seattle_labstats.get_spot_search_parameters()
-            resp, content = client.request(url, 'GET')
-            labstats_spaces = json.loads(content)
-
-            # send the spots to online_labstats to be updated
-            return online_labstats.get_labstats_data(labstats_spaces)
-
-        except Exception as ex:
-            logger.error("Error updating seattle labstats : %s",
-                         str(ex))

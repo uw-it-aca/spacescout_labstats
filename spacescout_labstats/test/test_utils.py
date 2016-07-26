@@ -42,3 +42,29 @@ class UtilsTest(TestCase):
         labstats_data = utils.clean_spaces_labstats(labstats_data)
 
         self.assertEqual(labstats_data, cleaned_labstats_data)
+
+    def validate_spot(self):
+        """
+        This validates a spot, ensuring that universal fields (id and etag)
+        haven't been corrupted.
+        """
+        with open(get_test_data_directory() +
+                  "bothell_labstats_spaces.json") as test_data_file:
+            test_json = json.load(test_data_file)
+
+        # test the validation against good data
+        for spot in test_json:
+            self.assertTrue(utils.validate_spot(spot))
+
+        # invalidate some spots and ensure that they fail
+        test_json[0].pop('id')
+        self.assertFalse(utils.validate_spot(test_json[0]))
+
+        test_json[1].pop('etag')
+        self.assertFalse(utils.validate_spot(test_json[1]))
+
+        test_json[2].pop('name')
+        self.assertFalse(utils.validate_spot(test_json[2]))
+
+        test_json[3]['id'] = str(test_json[0]['id'])
+        self.assertFalse(utils.validate_spot(test_json[3]))

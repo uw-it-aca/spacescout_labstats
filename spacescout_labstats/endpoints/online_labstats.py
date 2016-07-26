@@ -6,6 +6,7 @@ from spacescout_labstats import utils
 import requests
 import json
 import urllib3
+from django.conf import settings
 
 # we need to disable warnings because requests does not like our outdated
 # packages.
@@ -22,10 +23,20 @@ def get_spot_search_parameters():
 
     has_online_labstats should be true if they are.
     """
-    return "%s/api/v1/spot/?extended_info:has_online_labstats=true&limit=0"
+    url = "%s/api/v1/spot/?extended_info:has_online_labstats=true&limit=0"\
+          % (settings.SS_WEB_SERVER_HOST)
+
+    return url
 
 
-def get_labstats_data(labstats_spaces):
+def get_name():
+    """
+    Returns the name of the endpoint that this file will hit. For logging.
+    """
+    return "Online Labstats"
+
+
+def get_endpoint_data(labstats_spaces):
     """
     Retrieves the data relevant to the spaces passed to this method and then
     loads it into the spaces provided, which are then returned.
@@ -38,9 +49,9 @@ def get_labstats_data(labstats_spaces):
 
             page = customers[customer][page]
 
-            load_labstats_data(spots, json.loads(response), page)
+            load_labstats_data(labstats_spaces, response, page)
 
-    return spots
+    return labstats_spaces
 
 
 def get_customers(spot_json):
@@ -57,6 +68,10 @@ def get_customers(spot_json):
         for spot in spot_json:
             # TODO : handle missing and malformed fields
             # TODO : create json validation method?
+            if 'labstats_customer_id' not in spot['extended_info']:
+                logger.error("Customer ID missing in an online labstats spot")
+                continue
+
             customer_id = spot['extended_info']['labstats_customer_id']
 
             # TODO : determine a way to have a reasonable amount of output
@@ -122,8 +137,17 @@ def load_labstats_data(spots, labstats_data, page_dict):
     """
     Loads the data retrieved from the online labstats service into the spaces.
     """
+    # create the list of spaces to be uploaded
+    upload_spaces = []
+
     for page_id, spot_id in page_dict.iteritems():
+        # get the spot by it's id in page_dict
         spot = utils.get_spot_from_spots(spots, spot_id)
+
+        if spot is None:
+            logger.warning("Spot " + spot_id + " missing from spots!")
+
+        # retrieve the labstat info for this spot
         spot_labstat = get_labstat_entry_by_label(labstats_data,
                                                   spot["extended_info"]
                                                   ["labstats_label"])
@@ -133,8 +157,10 @@ def load_labstats_data(spots, labstats_data, page_dict):
                            spot['id'], spot["extended_info"]["labstats_label"])
             continue
 
+        # load the dict into a variable for easy access
         extended_info = spot["extended_info"]
 
+        # load the new labstats info into the spot's extended_info
         extended_info["auto_labstats_available"] = spot_labstat["Available"]
 
         extended_info["auto_labstats_available"] += spot_labstat["Offline"]
@@ -149,7 +175,6 @@ def get_labstat_entry_by_label(labstats_data, label):
     Takes in data retreived from the labstat service and loops through it,
     searching for a given label.
     """
-
     for labstat in labstats_data["Groups"]:
         if(labstat["Label"] == label):
             return labstat

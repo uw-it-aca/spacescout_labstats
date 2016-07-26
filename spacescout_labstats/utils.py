@@ -5,13 +5,16 @@ from django.conf import settings
 import oauth2 as oauth
 import urllib2
 import json
+import logging
 import time
 import os
 import re
 import sys
 
+logger = logging.getLogger(__name__)
 
-def upload_data(data):
+
+def upload_data(spots):
     """
     Uploads the provided spots to the spotseeker_server instane provided in
     settings.py.
@@ -23,58 +26,53 @@ def upload_data(data):
     if not hasattr(settings, 'SS_WEB_SERVER_HOST'):
         raise(Exception("Required setting missing: SS_WEB_SERVER_HOST"))
 
+    # create the results log objects
     success_names = []
     failure_descs = []
     warning_descs = []
     puts = []
     posts = []
 
-    for datum in data:
-        try:
-            spot_id = datum["id"]
-        except:
-            spot_id = None
-        try:
-            etag = datum["etag"]
-            if not etag:
-                etag = "There was an error!"
-        except:
-            etag = None
-        datum = datum["data"]
+    # create the OAuth client and consumer used to PUT the data
+    consumer = oauth.Consumer(key=settings.SS_WEB_OAUTH_KEY,
+                              secret=settings.SS_WEB_OAUTH_SECRET)
+    client = oauth.Client(consumer)
 
-        info = json.loads(datum)
-        consumer = oauth.Consumer(key=settings.SS_WEB_OAUTH_KEY,
-                                  secret=settings.SS_WEB_OAUTH_SECRET)
-        try:
-            images = info['images']
-        except:
-            images = []
+    url = "%s/api/v1/spot" % settings.SS_WEB_SERVER_HOST
 
-        if 'name' in info.keys():
-            spot_name = info['name']
-        else:
-            spot_name = 'NO NAME'
+    for spot in spots:
+        # if our spot is malformed, then continue and log the error
+        if not validate_spot(spot):
+            logger.error("Malformed spot encountered! Attmepting to log id")
+            if 'id' in spot.keys():
+                logger.error("Malformed spot id : " + str(spot['id']))
 
-        client = oauth.Client(consumer)
-        url = "%s/api/v1/spot" % settings.SS_WEB_SERVER_HOST
+            continue
+
+        # prepare the request header and content
+        spot_json = json.dumps(spot)
+        spot_url = "%s/%s" % (url, spot["id"])
+
+        # should always be PUT since we are only updating spots
+        method = 'PUT'
 
         spot_headers = {"X-OAuth-User": "%s" % "labstats_daemon",
                         "Content-Type": "application/json",
                         "Accept": "application/json"}
-        spot_url = url
-        method = 'POST'
-        # use PUT when spot id is prodived to update the spot
-        if spot_id:
-            spot_url = "%s/%s" % (url, spot_id)
-            method = 'PUT'
-            spot_headers['If-Match'] = etag
+
+        spot_headers['If-Match'] = spot['etag']
+
+        # fire the request
         resp, content = client.request(spot_url,
                                        method,
-                                       datum,
+                                       spot_json,
                                        headers=spot_headers)
 
-        # Responses 200 and 201 mean you done good.
+        # Responses 200 and 201 mean we've succeeded
+        # 200 is OK, 201 is Created
         if resp['status'] != '200' and resp['status'] != '201':
+            # if there's another status, log the error
+
             try:
                 error = json.loads(content)
                 flocation = error.keys()[0]
@@ -85,13 +83,14 @@ def upload_data(data):
 
             # Add spot attempt to the list of failures
             hold = {
-                'fname': spot_name,
+                'fname': spot['name'],
                 'flocation': flocation,
                 'freason': freason,
             }
             failure_descs.append(hold)
         else:
-            success_names.append({'name': spot_name, 'method': method})
+            # log the success by adding it to the return data
+            success_names.append({'name': spot['name'], 'method': method})
 
             if content:
                 url1 = spot_url
@@ -99,7 +98,7 @@ def upload_data(data):
                 url1 = '%s/image' % resp['location']
             else:
                 hold = {
-                    'fname': spot_name,
+                    'fname': spot['name'],
                     'flocation': image,
                     'freason': "could not find spot idea; images not posted",
                 }
@@ -107,10 +106,11 @@ def upload_data(data):
                 break
 
         if method == 'POST':
-            posts.append(spot_name)
+            posts.append(spot['name'])
         elif method == 'PUT':
-            puts.append(spot_name)
+            puts.append(spot['name'])
 
+    # return results
     return {
         'success_names': success_names,
         'failure_descs': failure_descs,
@@ -124,36 +124,45 @@ def stop_process(pid, verbose):
     """
     This function stops the process with the given PID. Used to stop existing
     labstats daemons.
+
+    This will remove the file in /tmp/updater/ that belongs to the old process.
+    Upon seeing this file deleted, the old process should shut down.
     """
     if verbose:
-        print "Stopping process: %s" % pid
+        logger.info("Stopping process: %s" % pid)
     try:
+        # remove the PID file of the other process
         handle = open(_get_tmp_directory() + "%s.stop" % pid, "w")
         handle.close()
+
         if os.getpgid(int(pid)):
             if verbose:
-                sys.stdout.write("Waiting")
-            sys.stdout.flush()
+                logger.info("Waiting")
+
+            # wait for 15 seconds for the other process to die
             for i in range(0, 15):
                 if verbose:
-                    sys.stdout.write(".")
-                sys.stdout.flush()
+                    logger.info(".")
                 time.sleep(1)
+
                 try:
                     os.getpgid(int(pid))
                 except:
+                    # if an exception is thrown, then the process is dead
                     if verbose:
-                        print " Done"
+                        logger.info(" Done")
                     return True
             os.remove(_get_tmp_directory() + "%s.stop" % pid)
-            if verbose:
-                print " Process did not end"
+
+            # notify admins that the old labstats is still running
+            logger.error("The old labstats daemon did not exit!")
             return False
     except OSError:
+        # if we get an error and the process doesn't exist, then remove files
         os.remove((_get_tmp_directory() + "/%s.pid" % pid))
         os.remove((_get_tmp_directory() + "/%s.stop" % pid))
         if verbose:
-            print "Old process %s not Found" % pid
+            logger.warning("Old process %s not Found" % pid)
     return True
 
 
@@ -208,3 +217,36 @@ def _get_tmp_directory():
     if not os.path.isdir("/tmp/updater/"):
         os.mkdir("/tmp/updater/", 0700)
     return "/tmp/updater/"
+
+
+def validate_spot(spot):
+    """
+    Validates that a given spot has all the fields required to return it to the
+    server. Checks id, etag, and name. Accepts both json and a dict.
+
+    Returns True/False
+    """
+    try:
+        if isinstance(spot, basestring):
+            spot = json.loads(spot)
+
+    except JSONDecodeError as ex:
+        logger.warning("Invalid JSON format.")
+        return false
+
+    if not isinstance(spot, dict):
+        return False
+
+    # check for keys in the dict
+    if ('id' not in spot.keys() or
+        'name' not in spot.keys() or
+            'etag' not in spot.keys()):
+        return False
+
+    # ensure that the fields are the right type
+    if (not isinstance(spot['etag'], basestring) or
+        not isinstance(spot['id'], int) or
+            not isinstance(spot['id'], int)):
+        return False
+
+    return True

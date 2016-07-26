@@ -3,7 +3,7 @@ This provides a management command that stops the labstats daemon
 """
 from django.core.management.base import BaseCommand
 from optparse import make_option
-from spacescout_labstats.utils import _get_tmp_directory
+from spacescout_labstats.utils import _get_tmp_directory, stop_process
 import time
 import signal
 import os
@@ -49,7 +49,7 @@ class Command(BaseCommand):
                     self.kill_process(pid)
                 else:
                     verbose = options["verbose"]
-                    if stop_process.stop_process(pid, verbose):
+                    if stop_process(pid, verbose):
                         sys.exit(0)
                     else:
                         sys.exit(1)

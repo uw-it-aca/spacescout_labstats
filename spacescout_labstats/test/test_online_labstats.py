@@ -95,3 +95,18 @@ class OnlineLabstatsTest(TestCase):
                                                       page)
 
         self.assertEqual(response, loaded_labstats_spaces)
+
+    def get_labstat_entry_by_label(self):
+        """
+        Tests the method to get a labstats entry by it's label.
+        """
+        with open(get_test_data_directory() +
+                  "online_labstats_data.json") as test_data_file:
+            online_labstats_data = json.load(test_data_file)
+
+        for labstat in online_labstats_data['Groups']:
+
+            returned_labstat = get_labstat_entry_by_label(labstat["Label"])
+            self.assertEqual(returned_labstat, labstat)
+
+        self.assertEqual(None, get_labstat_entry_by_label("swfjaeijs"))
