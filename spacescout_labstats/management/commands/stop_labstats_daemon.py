@@ -36,8 +36,8 @@ class Command(BaseCommand):
         try:
             files = os.listdir(_get_tmp_directory())
         except OSError:
-            logger.error("OSError encountered when attempting to get " +
-                         "temporary files. Daemon could not be stopped")
+            logger.warning("OSError encountered when attempting to get " +
+                           "temporary files. Daemon could not be stopped")
             sys.exit(0)
 
         # get the file with the PID of the other labstats daemons

@@ -1,6 +1,6 @@
 import logging
 from django.conf import settings
-from spacescout_labstats.utils import clean_space_labstats
+from spacescout_labstats.utils import clean_spaces_labstats
 from SOAPpy import WSDL
 import json
 import traceback
@@ -55,8 +55,11 @@ def get_endpoint_data(labstats_spaces):
 
     groups = get_seattle_labstats_data()
 
+    # if data retrieval failed, then clean the spaces and log the error
     if groups is None:
-        raise Exception("Data not retrieved from " + get_name() + " endpoint!")
+        utils.clean_spaces_labstats(labstats_spaces)
+        logger.error("Retrieving Seattle labstats data failed!")
+        return
 
     load_labstats_data(labstats_spaces, groups)
 
@@ -85,7 +88,7 @@ def load_labstats_data(labstats_spaces, groups):
             if "labstats_id" not in space['extended_info']:
                 logger.warning("No labstats_id in space " + space['name'] +
                                str(space['id']))
-                clean_space_labstats([space])
+                clean_spaces_labstats([space])
 
             if space['extended_info']['labstats_id'] == g.groupId:
 

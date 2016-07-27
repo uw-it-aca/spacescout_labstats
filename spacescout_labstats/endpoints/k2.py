@@ -54,8 +54,11 @@ def get_endpoint_data(k2_spaces):
     """
     k2_data = get_k2_data()
 
+    # if the k2 server is not working, then clean the spaces and return
     if k2_data is None:
-        return None
+        utils.clean_spaces_labstats(k2_spaces)
+        logger.errror("K2 data retrieval failed!")
+        return
 
     load_k2_data_into_spaces(k2_spaces, k2_data)
 
@@ -102,7 +105,7 @@ def load_k2_data_into_spaces(k2_spaces, k2_data):
         if data is None:
             logger.warning("Data not found as referenced by spot! Cleaning and"
                            " continuing")
-            utils.clean_space_labstats(data)
+            utils.clean_spaces_labstats(data)
             continue
 
         # get the total and available number of computers

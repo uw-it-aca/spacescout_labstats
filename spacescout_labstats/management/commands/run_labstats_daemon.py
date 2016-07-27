@@ -67,8 +67,8 @@ class Command(BaseCommand):
             try:
                 files = os.listdir(_get_tmp_directory())
             except OSError:
-                logger.error("OSError encountered when attempting to get " +
-                             "temporary files.")
+                logger.warning("OSError encountered when attempting to get " +
+                               "temporary files.")
             for filename in files:
                 # check for file containing pid
                 matches = re.match(r"^([0-9]+).pid$", filename)
@@ -100,8 +100,8 @@ class Command(BaseCommand):
             try:
                 self.controller(options["update_delay"], options["run_once"])
             except Exception as ex:
-                logger.error("Error running the controller: %s", str(ex))
-                traceback.print_exc()
+                logger.error("Error running the controller: %s", str(ex) +
+                             "\n" + traceback.format_exc())
 
         else:
             logger.info("Starting the updater as an interactive process")
@@ -147,13 +147,13 @@ class Command(BaseCommand):
                                  endpoint.get_name() + "\n" +
                                  traceback.format_exc())
 
+            # then wait for update_delay minutes (default 15)
             if not run_once:
                 for i in range(update_delay * 60):
                     if self.should_stop():
                         sys.exit()
                     else:
                         time.sleep(1)
-
             else:
                 sys.exit()
 
@@ -190,7 +190,7 @@ class Command(BaseCommand):
                 endpoint.validate_space(space)
             except Exception as ex:
                 logger.warning("Space invalid : " + str(ex))
-                utils.clean_space_labstats(space)
+                utils.clean_spaces_labstats(space)
                 to_clean.append(space)
 
         # if our endpoint rejects spaces, then save them until after the update
@@ -253,6 +253,7 @@ class Command(BaseCommand):
             files = os.listdir(_get_tmp_directory())
         except OSError:
             sys.exit(0)
+
         for filename in files:
             matches = re.match(r"^([0-9]+).pid$", filename)
             if matches:

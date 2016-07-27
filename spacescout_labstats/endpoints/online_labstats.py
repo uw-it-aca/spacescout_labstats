@@ -43,13 +43,19 @@ def validate_space(space):
     utils.validate_space
     """
     if "labstats_customer_id" not in space["extended_info"]:
-        raise Exception("Missing labstats_customer_id for space " + str)
+        raise Exception("Missing labstats_customer_id for space " +
+                        str(space["id"]))
+
+    if not utils.is_valid_uuid(space["extended_info"]["labstats_customer_id"]):
+        raise Exception("Customer ID is invalid for space " str(space["id"]))
 
     if "labstats_page_id" not in space["extended_info"]:
-        raise Exception("Missing labstats_page_id for space " + str)
+        raise Exception("Missing labstats_page_id for space " +
+                        str(space["id"]))
 
     if "labstats_label" not in space["extended_info"]:
-        raise Exception("Missing labstats_label for space " + str)
+        raise Exception("Missing labstats_label for space " +
+                        str(space["id"]))
 
 
 def get_endpoint_data(labstats_spaces):
@@ -63,8 +69,12 @@ def get_endpoint_data(labstats_spaces):
         for page in customers[customer]:
             response = get_online_labstats_data(customer, page)
 
+            # if we don't have any labstats data, log the error and delete the
+            # labstats data
             if response is None:
-                raise Exception("Online labstats data retrieval failed!")
+                utils.clean_spaces_labstats(labstats_spaces)
+                logger.error("Retrieval of labstats spaces failed")
+                return
 
             page = customers[customer][page]
 
@@ -86,22 +96,10 @@ def get_customers(spaces):
         }
         """
         customers = {}
-        to_delete = []
 
         for space in spaces:
-            if 'labstats_customer_id' not in space['extended_info']:
-                logger.error("Customer ID missing in an online labstats space")
-                to_delete.append(space)
-                continue
 
             customer_id = space['extended_info']['labstats_customer_id']
-
-            # ensure that customer_id is a UUID and raise an error if not
-            if not utils.is_valid_uuid(customer_id):
-                logger.error("Customer UUID " + customer_id + " is not valid"
-                             " for space #" + space['id'])
-                to_delete.append(space)
-                continue
 
             # if customer_id is not in customers then create a dict
             if customer_id not in customers:
@@ -117,9 +115,9 @@ def get_customers(spaces):
             # make sure that there is only one space with that label
             if space_label in customers[customer_id][page_id]:
                 other_id = customers[customer_id][page_id][space_label]
-                logger.error("There appear to be multiple spaces with the"
-                             "label \'" + space_label+"\',space #" +
-                             space['id'] + " and " + str(other_id))
+                logger.warning("There appear to be multiple spaces with the"
+                               "label \'" + space_label+"\',space #" +
+                               space['id'] + " and " + str(other_id))
                 continue
 
             customers[customer_id][page_id][space_label] = space['id']
@@ -162,10 +160,6 @@ def load_labstats_data(spaces, labstats_data, page_dict):
     """
     Loads the data retrieved from the online labstats service into the spaces.
     """
-    # create the list of spaces to be uploaded
-    upload_spaces = []
-    to_delete = []
-
     for page_id, space_id in page_dict.iteritems():
         # get the space by it's id in page_dict
         space = utils.get_space_from_spaces(spaces, space_id)
@@ -183,7 +177,7 @@ def load_labstats_data(spaces, labstats_data, page_dict):
             logger.warning("Labstat entry not found for label %s and space #" +
                            space['id'], space["extended_info"]
                            ["labstats_label"])
-            to_delete.append(space)
+            utils.clean_spaces_labstats([space])
             continue
 
         # load the dict into a variable for easy access
@@ -197,8 +191,6 @@ def load_labstats_data(spaces, labstats_data, page_dict):
         extended_info["auto_labstats_total"] = space_labstat["Total"]
 
     # remove all spaces that had an error and should not be updated
-    for space in to_delete:
-        spaces.remove(space)
 
 
 def get_labstat_entry_by_label(labstats_data, label):

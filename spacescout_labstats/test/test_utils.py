@@ -39,7 +39,7 @@ class UtilsTest(TestCase):
                   "seattle_labstats_cleaned.json") as test_data_file:
             cleaned_labstats_data = json.load(test_data_file)
 
-        labstats_data = utils.clean_space_labstats(labstats_data)
+        labstats_data = utils.clean_spaces_labstats(labstats_data)
 
         self.assertEqual(labstats_data, cleaned_labstats_data)
 

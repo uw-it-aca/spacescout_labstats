@@ -166,7 +166,7 @@ def stop_process(pid, verbose):
     return True
 
 
-def clean_space_labstats(labstats_spaces):
+def clean_spaces_labstats(labstats_spaces):
     """
     Removes all the labstats info from the spaces in case of an error, so that
     we don't give incorrect or outdated info to users.
