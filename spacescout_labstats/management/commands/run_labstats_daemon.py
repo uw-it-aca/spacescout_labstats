@@ -8,7 +8,7 @@ from spacescout_labstats.utils import (upload_data, stop_process,
                                        _get_tmp_directory)
 from django.conf import settings
 from optparse import make_option
-from spacescout_labstats.endpoints import seattle_labstats, online_labstats
+from spacescout_labstats.endpoints import seattle_labstats, online_labstats, k2
 import os
 import sys
 import time
@@ -137,7 +137,7 @@ class Command(BaseCommand):
 
             # add any additional endpoints here and at the import statement
             # at the top of this file
-            endpoints = [seattle_labstats, online_labstats]
+            endpoints = [seattle_labstats, online_labstats, k2]
 
             for endpoint in endpoints:
                 try:
@@ -172,11 +172,37 @@ class Command(BaseCommand):
                            "spotseeker_server")
             return
 
-        # send the spaces to be modified to the endpoint
-        response = endpoint.get_endpoint_data(spaces)
+        to_remove = []
+        # validate spaces against utils.validate_space
+        for space in spaces:
+            if not utils.validate_space(space):
+                to_remove.append(space)
 
-        if response is None:
-            return
+        # remove noncompliant spaces
+        for space in to_remove:
+            spaces.remove(space)
+
+        # get spaces that don't follow the endpoint standards
+        to_clean = []
+
+        for space in spaces:
+            try:
+                endpoint.validate_space(space)
+            except Exception as ex:
+                logger.warning("Space invalid : " + str(ex))
+                utils.clean_space_labstats(space)
+                to_clean.append(space)
+
+        # if our endpoint rejects spaces, then save them until after the update
+        for space in to_clean:
+            spaces.remove(space)
+
+        # send the spaces to be modified to the endpoint
+
+        endpoint.get_endpoint_data(spaces)
+
+        # add the to_clean spaces back in
+        spaces.append(to_clean)
 
         # upload the space data to the server
         response = upload_data(spaces)

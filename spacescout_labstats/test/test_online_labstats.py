@@ -90,23 +90,37 @@ class OnlineLabstatsTest(TestCase):
 
         page = customer[1002]
 
-        response = online_labstats.load_labstats_data(labstats_spaces,
-                                                      online_labstats_data,
-                                                      page)
+        online_labstats.load_labstats_data(labstats_spaces,
+                                           online_labstats_data,
+                                           page)
 
-        self.assertEqual(response, loaded_labstats_spaces)
+        self.assertEqual(labstats_spaces, loaded_labstats_spaces)
 
-    def get_labstat_entry_by_label(self):
+    def test_validate_space(self):
         """
-        Tests the method to get a labstats entry by it's label.
+        Tests the data validation specific to the online labstats endpoint
         """
         with open(get_test_data_directory() +
-                  "online_labstats_data.json") as test_data_file:
-            online_labstats_data = json.load(test_data_file)
+                  "bothell_labstats_spaces.json") as test_data_file:
+            labstats_spaces = json.load(test_data_file)
 
-        for labstat in online_labstats_data['Groups']:
+        for space in labstats_spaces:
+            try:
+                online_labstats.validate_space(space)
+            except Exception as ex:
+                self.fail("Good data should not fail validation")
 
-            returned_labstat = get_labstat_entry_by_label(labstat["Label"])
-            self.assertEqual(returned_labstat, labstat)
+        labstats_spaces[0]['extended_info'].pop('labstats_customer_id')
 
-        self.assertEqual(None, get_labstat_entry_by_label("swfjaeijs"))
+        with self.assertRaises(Exception):
+            online_labstats.validate_space(labstats_spaces[0])
+
+        labstats_spaces[1]['extended_info'].pop('labstats_label')
+
+        with self.assertRaises(Exception):
+            online_labstats.validate_space(labstats_spaces[1])
+
+        labstats_spaces[2]['extended_info'].pop('labstats_page_id')
+
+        with self.assertRaises(Exception):
+            online_labstats.validate_space(labstats_spaces[2])

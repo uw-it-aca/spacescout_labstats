@@ -26,6 +26,22 @@ class SeattleLabstatsTest(TestCase):
 
         self.assertEqual(loaded_data, intended_result)
 
+    def test_validate_space(self):
+        with open(get_test_data_directory() +
+                  "seattle_labstats.json") as test_data_file:
+            test_json = json.load(test_data_file)
+
+        for space in test_json:
+            try:
+                seattle_labstats.validate_space(space)
+            except Exception as ex:
+                self.fail("Valid data should not fail validation!")
+
+        test_json[0]['extended_info'].pop("labstats_id", None)
+
+        with self.assertRaises(Exception):
+            seattle_labstats.validate_space(test_json[0])
+
 
 class Expando(object):
     pass

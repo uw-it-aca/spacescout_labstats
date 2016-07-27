@@ -1,6 +1,6 @@
 import logging
 from django.conf import settings
-from spacescout_labstats.utils import clean_spaces_labstats
+from spacescout_labstats.utils import clean_space_labstats
 from SOAPpy import WSDL
 import json
 import traceback
@@ -30,6 +30,19 @@ def get_name():
     return "Seattle Labstats"
 
 
+def validate_space(space):
+    """
+    This method will validate a space, thus ensuring that it is compliant with
+    the standards requisite for being updated by the seattle labstats endpoint.
+
+    This method should only be called with spaces already validated by the
+    utils.validate_space
+    """
+    if "labstats_id" not in space["extended_info"]:
+        raise Exception("labstats_id not present in space #" +
+                        str(space['id']))
+
+
 def get_endpoint_data(labstats_spaces):
     """
     Takes in a list of spaces from the labstats_daemon and then retrieves their
@@ -46,8 +59,6 @@ def get_endpoint_data(labstats_spaces):
         raise Exception("Data not retrieved from " + get_name() + " endpoint!")
 
     load_labstats_data(labstats_spaces, groups)
-
-    return upload_spaces
 
 
 def get_seattle_labstats_data():
@@ -74,7 +85,7 @@ def load_labstats_data(labstats_spaces, groups):
             if "labstats_id" not in space['extended_info']:
                 logger.warning("No labstats_id in space " + space['name'] +
                                str(space['id']))
-                clean_spaces_labstats([space])
+                clean_space_labstats([space])
 
             if space['extended_info']['labstats_id'] == g.groupId:
 

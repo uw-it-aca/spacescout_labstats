@@ -166,7 +166,7 @@ def stop_process(pid, verbose):
     return True
 
 
-def clean_spaces_labstats(labstats_spaces):
+def clean_space_labstats(labstats_spaces):
     """
     Removes all the labstats info from the spaces in case of an error, so that
     we don't give incorrect or outdated info to users.
@@ -222,7 +222,8 @@ def _get_tmp_directory():
 def validate_space(space):
     """
     Validates that a given space has all the fields required to return it to
-    the server. Checks id, etag, and name. Accepts both json and a dict.
+    the server. Checks id, etag, name and extended_info. Accepts both json
+    and a dict.
 
     Returns True/False
     """
@@ -240,12 +241,14 @@ def validate_space(space):
     # check for keys in the dict
     if ('id' not in space.keys() or
         'name' not in space.keys() or
+        'extended_info' not in space.keys() or
             'etag' not in space.keys()):
         return False
 
     # ensure that the fields are the right type
     if (not isinstance(space['etag'], basestring) or
         not isinstance(space['id'], int) or
+        not isinstance(space['extended_info'], dict) or
             not isinstance(space['id'], int)):
         return False
 

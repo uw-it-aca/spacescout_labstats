@@ -8,8 +8,6 @@ import json
 import urllib3
 from django.conf import settings
 
-# we need to disable warnings because requests does not like our outdated
-# packages.
 requests.packages.urllib3.disable_warnings()
 
 
@@ -36,6 +34,24 @@ def get_name():
     return "Online Labstats"
 
 
+def validate_space(space):
+    """
+    This method will validate a space, thus ensuring that it is compliant with
+    the standards requisite for being updated by the online labstatsd endpoint.
+
+    This method should only be called with spaces already validated by the
+    utils.validate_space
+    """
+    if "labstats_customer_id" not in space["extended_info"]:
+        raise Exception("Missing labstats_customer_id for space " + str)
+
+    if "labstats_page_id" not in space["extended_info"]:
+        raise Exception("Missing labstats_page_id for space " + str)
+
+    if "labstats_label" not in space["extended_info"]:
+        raise Exception("Missing labstats_label for space " + str)
+
+
 def get_endpoint_data(labstats_spaces):
     """
     Retrieves the data relevant to the spaces passed to this method and then
@@ -48,13 +64,11 @@ def get_endpoint_data(labstats_spaces):
             response = get_online_labstats_data(customer, page)
 
             if response is None:
-                return None
+                raise Exception("Online labstats data retrieval failed!")
 
             page = customers[customer][page]
 
             load_labstats_data(labstats_spaces, response, page)
-
-    return labstats_spaces
 
 
 def get_customers(spaces):
@@ -185,8 +199,6 @@ def load_labstats_data(spaces, labstats_data, page_dict):
     # remove all spaces that had an error and should not be updated
     for space in to_delete:
         spaces.remove(space)
-
-    return spaces
 
 
 def get_labstat_entry_by_label(labstats_data, label):
