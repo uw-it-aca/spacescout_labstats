@@ -22,7 +22,8 @@ def get_space_search_parameters():
     This tells the server to return all spaces with has_online_labstats= true,
     with no limit.
     """
-    url = ("%s/api/v1/spot/?extended_info:has_k2", settings.SS_WEB_SERVER_HOST)
+    url = ("%s/api/v1/spot/?extended_info:has_k2=true&limit=0" %
+           settings.SS_WEB_SERVER_HOST)
     return url
 
 
@@ -68,13 +69,7 @@ def get_k2_data():
     Retrieves the data from the k2 instance and returns it.
     """
     req = requests.get()
-    req_json = req.json()
-    # parse the JSON into a dict
-    try:
-        k2_data = json.loads(req_json)
-    except ValueError as ex:
-        logger.warning("Bad json received from the stf-k2 server")
-        return None
+    k2_data = req.json()
 
     try:
         validate_k2_data(k2_data)

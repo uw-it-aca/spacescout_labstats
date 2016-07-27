@@ -1,6 +1,6 @@
 import logging
 from django.conf import settings
-from spacescout_labstats.utils import clean_spaces_labstats
+from spacescout_labstats import utils
 from SOAPpy import WSDL
 import json
 import traceback

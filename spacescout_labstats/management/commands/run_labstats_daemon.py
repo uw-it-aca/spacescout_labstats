@@ -4,8 +4,7 @@ the spaces that have corresponding labstats information with the number of
 machines available and similar information.
 """
 from django.core.management.base import BaseCommand
-from spacescout_labstats.utils import (upload_data, stop_process,
-                                       _get_tmp_directory)
+from spacescout_labstats import utils
 from django.conf import settings
 from optparse import make_option
 from spacescout_labstats.endpoints import seattle_labstats, online_labstats, k2
@@ -63,9 +62,9 @@ class Command(BaseCommand):
         if another version exists it will close that process.
         """
         if (self.process_exists()):
-            # TODO : refactor into utils/stop_process for DRY
+            # TODO : refactor into utils/utils.stop_process for DRY
             try:
-                files = os.listdir(_get_tmp_directory())
+                files = os.listdir(utils._get_tmp_directory())
             except OSError:
                 logger.warning("OSError encountered when attempting to get " +
                                "temporary files.")
@@ -77,7 +76,7 @@ class Command(BaseCommand):
                     pid = matches.group(1)
                     verbose = options["verbose"]
                     logger.info("Stopping an existing labstats_daemon")
-                    stop_process(pid, verbose)
+                    utils.stop_process(pid, verbose)
 
         atexit.register(self.remove_pid_file)
 
@@ -202,10 +201,11 @@ class Command(BaseCommand):
         endpoint.get_endpoint_data(spaces)
 
         # add the to_clean spaces back in
-        spaces.append(to_clean)
+        for space in to_clean:
+            spaces.append(space)
 
         # upload the space data to the server
-        response = upload_data(spaces)
+        response = utils.upload_data(spaces)
 
         # log any failures
         if response is not None and response['failure_descs']:
@@ -250,7 +250,7 @@ class Command(BaseCommand):
     # Returns true if an instance of the daemon is already running
     def process_exists(self):
         try:
-            files = os.listdir(_get_tmp_directory())
+            files = os.listdir(utils._get_tmp_directory())
         except OSError:
             sys.exit(0)
 
@@ -262,7 +262,7 @@ class Command(BaseCommand):
 
     # Returns the path for the file storing this process' PID
     def _get_pid_file_path(self):
-        return _get_tmp_directory() + "%s.pid" % (str(os.getpid()))
+        return utils._get_tmp_directory() + "%s.pid" % (str(os.getpid()))
 
     def should_stop(self):
         if os.path.isfile(self._get_stopfile_path()):
@@ -271,4 +271,4 @@ class Command(BaseCommand):
         return False
 
     def _get_stopfile_path(self):
-        return _get_tmp_directory() + "%s.stop" % (str(os.getpid()))
+        return utils._get_tmp_directory() + "%s.stop" % (str(os.getpid()))

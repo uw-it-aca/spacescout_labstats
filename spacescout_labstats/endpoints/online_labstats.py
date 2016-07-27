@@ -47,7 +47,7 @@ def validate_space(space):
                         str(space["id"]))
 
     if not utils.is_valid_uuid(space["extended_info"]["labstats_customer_id"]):
-        raise Exception("Customer ID is invalid for space " str(space["id"]))
+        raise Exception("Customer ID is invalid for space " + str(space["id"]))
 
     if "labstats_page_id" not in space["extended_info"]:
         raise Exception("Missing labstats_page_id for space " +
@@ -121,10 +121,6 @@ def get_customers(spaces):
                 continue
 
             customers[customer_id][page_id][space_label] = space['id']
-
-        # remove all spaces that had an error and should not be updated
-        for space in to_delete:
-            spaces.remove(space)
 
         return customers
 
