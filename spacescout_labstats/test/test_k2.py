@@ -22,7 +22,7 @@ class K2Test(TestCase):
                   "k2_loaded_spaces.json") as test_data_file:
             k2_loaded_spaces = json.load(test_data_file)
 
-        setattr(k2.settings, "K2_URL", "blah")
+        setattr(k2.settings, "K2_URL", "placeholder_value")
 
         k2.get_k2_data = replacement_get_k2_data
 
