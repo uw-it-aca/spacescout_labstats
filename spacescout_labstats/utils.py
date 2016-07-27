@@ -41,8 +41,6 @@ def upload_data(spaces):
     url = "%s/api/v1/spot" % settings.SS_WEB_SERVER_HOST
 
     for space in spaces:
-        if isinstance(space, list):
-            print space
         # if our space is malformed, then continue and log the error
         if not validate_space(space):
             logger.error("Malformed space encountered! Attmepting to log id")
