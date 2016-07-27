@@ -3,5 +3,3 @@ oauth2==1.5.211
 simplejson>=2.1
 soappy
 poster
-requests
-requests_mock
