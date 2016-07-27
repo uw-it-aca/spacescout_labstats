@@ -54,8 +54,7 @@ def get_endpoint_data(k2_spaces):
     the spaces, returning them to be updated
     """
     if not hasattr(settings, 'K2_URL'):
-        raise(ImproperlyConfigured("Required setting missing: "
-                                   "K2_URL"))
+        raise(Exception("Required setting missing: K2_URL"))
     k2_data = get_k2_data()
 
     # if the k2 server is not working, then clean the spaces and return
