@@ -113,13 +113,16 @@ class Command(BaseCommand):
         the updater process.
         """
         if not hasattr(settings, 'SS_WEB_SERVER_HOST'):
-            raise(Exception("Required setting missing: SS_WEB_SERVER_HOST"))
+            raise(ImproperlyConfigured("Required setting missing: "
+                                       "SS_WEB_SERVER_HOST"))
 
         if not hasattr(settings, 'SS_WEB_OAUTH_KEY'):
-            raise(Exception("Required setting missing: SS_WEB_OAUTH_KEY"))
+            raise(ImproperlyConfigured("Required setting missing: "
+                                       "SS_WEB_OAUTH_KEY"))
 
         if not hasattr(settings, 'SS_WEB_OAUTH_SECRET'):
-            raise(Exception("Required setting missing: SS_WEB_OAUTH_SECRET"))
+            raise(ImproperlyConfigured("Required setting missing: "
+                                       "SS_WEB_OAUTH_SECRET"))
 
         self.consumer = oauth2.Consumer(key=settings.SS_WEB_OAUTH_KEY,
                                         secret=settings.SS_WEB_OAUTH_SECRET)
@@ -136,7 +139,7 @@ class Command(BaseCommand):
 
             # add any additional endpoints here and at the import statement
             # at the top of this file
-            endpoints = [seattle_labstats, online_labstats, k2]
+            endpoints = [seattle_labstats, online_labstats]  # , k2]
 
             for endpoint in endpoints:
                 try:

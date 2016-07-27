@@ -53,6 +53,9 @@ def get_endpoint_data(k2_spaces):
     This method retrieves the data from the K2 server and then loads it into
     the spaces, returning them to be updated
     """
+    if not hasattr(settings, 'K2_URL'):
+        raise(ImproperlyConfigured("Required setting missing: "
+                                   "K2_URL"))
     k2_data = get_k2_data()
 
     # if the k2 server is not working, then clean the spaces and return
@@ -68,6 +71,8 @@ def get_k2_data():
     """
     Retrieves the data from the k2 instance and returns it.
     """
+
+    k2_url = settings.K2_URL
     req = requests.get()
     k2_data = req.json()
 
