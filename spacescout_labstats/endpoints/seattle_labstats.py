@@ -85,11 +85,6 @@ def load_labstats_data(labstats_spaces, groups):
                 # g.inUseCount g.offCount g.percentInUse
                 # g.totalCount g.unavailableCount
 
-            if "labstats_id" not in space['extended_info']:
-                logger.warning("No labstats_id in space " + space['name'] +
-                               str(space['id']))
-                clean_spaces_labstats([space])
-
             if space['extended_info']['labstats_id'] == g.groupId:
 
                 available = int(g.availableCount)
