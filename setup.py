@@ -12,5 +12,6 @@ setup(name='SpaceScout-Labstats',
                         'soappy',
                         'poster',
 			'requests',
+			'urllib3',
                        ],
      )
