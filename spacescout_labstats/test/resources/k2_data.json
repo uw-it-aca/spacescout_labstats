@@ -1,0 +1,626 @@
+{
+  "results": {
+    "divs": [
+      {
+        "id": "0000FFA4",
+        "name": "08Lab.LABS.Workstations.evans.Delegated",
+        "count": 1,
+        "total": 17
+      },
+      {
+        "id": "0000FFA5",
+        "name": "121Lab.LABS.Workstations.evans.Delegated",
+        "count": 3,
+        "total": 26
+      },
+      {
+        "id": "0000FFA7",
+        "name": "3dlab_bootcamp.labs.soart.Delegated",
+        "count": 0,
+        "total": 18
+      },
+      {
+        "id": "0000FF9F",
+        "name": "405.PhD.Workstations.evans.Delegated",
+        "count": 4,
+        "total": 7
+      },
+      {
+        "id": "0000FFA1",
+        "name": "409Lab.LABS.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 14
+      },
+      {
+        "id": "0000FF9D",
+        "name": "411.PhD.Workstations.evans.Delegated",
+        "count": 1,
+        "total": 3
+      },
+      {
+        "id": "0000FFA0",
+        "name": "412.PhD.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 6
+      },
+      {
+        "id": "0000FF65",
+        "name": "ADV.Staff.Workstations.evans.Delegated",
+        "count": 3,
+        "total": 3
+      },
+      {
+        "id": "0000FF89",
+        "name": "ALC Tablets",
+        "count": 0,
+        "total": 9
+      },
+      {
+        "id": "0000FF9A",
+        "name": "art-macrm",
+        "count": 0,
+        "total": 3
+      },
+      {
+        "id": "0000FFB2",
+        "name": "Asah.ViewPools.Gibson.forestry.Delegated",
+        "count": 4,
+        "total": 656
+      },
+      {
+        "id": "0000FFB3",
+        "name": "ATC.labs.lt-systems.uwit.Delegated",
+        "count": 0,
+        "total": 13
+      },
+      {
+        "id": "0000FFA3",
+        "name": "BALounge.drama.Delegated",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FF8F",
+        "name": "CheckoutLaptops.Workstations.evans.Delegated",
+        "count": 2,
+        "total": 18
+      },
+      {
+        "id": "0000FF67",
+        "name": "COM.Staff.Workstations.evans.Delegated",
+        "count": 3,
+        "total": 3
+      },
+      {
+        "id": "0000FF8B",
+        "name": "Commons.HSL.Public.Depts.lib.Delegated",
+        "count": 27,
+        "total": 122
+      },
+      {
+        "id": "0000FF90",
+        "name": "CoMotion Division",
+        "count": 1,
+        "total": 1
+      },
+      {
+        "id": "0000FF95",
+        "name": "CSSCR A Division",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FFD6",
+        "name": "CSSCR B division",
+        "count": 0,
+        "total": 31
+      },
+      {
+        "id": "0000FF8C",
+        "name": "CSSCR D Division",
+        "count": 0,
+        "total": 5
+      },
+      {
+        "id": "0000FFD5",
+        "name": "CSSCR S Divison",
+        "count": 19,
+        "total": 21
+      },
+      {
+        "id": "0000FF9E",
+        "name": "DeansOffice.Staff.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 4
+      },
+      {
+        "id": "0000FF7E",
+        "name": "DFS Share Test.Office Trust Center Location..Profile-Move....",
+        "count": 0,
+        "total": 2
+      },
+      {
+        "id": "0000FF6C",
+        "name": "DisplayStations.LABS.Workstations.evans.Delegated",
+        "count": 1,
+        "total": 1
+      },
+      {
+        "id": "0000FF64",
+        "name": "DO.Staff.Workstations.evans.Delegated",
+        "count": 5,
+        "total": 6
+      },
+      {
+        "id": "0000FF9C",
+        "name": "Drama HUT computers",
+        "count": 3,
+        "total": 17
+      },
+      {
+        "id": "0000FF98",
+        "name": "Drama PENT computers",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FFAA",
+        "name": "DXARTS Division",
+        "count": 4,
+        "total": 11
+      },
+      {
+        "id": "0000FF84",
+        "name": "Economics Division",
+        "count": 0,
+        "total": 13
+      },
+      {
+        "id": "0000FF77",
+        "name": "EMPA.Staff.Workstations.evans.Delegated",
+        "count": 2,
+        "total": 8
+      },
+      {
+        "id": "0000FFA6",
+        "name": "EPAR.Staff.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FF76",
+        "name": "Evans School Misc Computers",
+        "count": 3,
+        "total": 6
+      },
+      {
+        "id": "0000FF94",
+        "name": "Faculty.Workstations.evans.Delegated",
+        "count": 11,
+        "total": 23
+      },
+      {
+        "id": "0000FF68",
+        "name": "FIN.Staff.Workstations.evans.Delegated",
+        "count": 7,
+        "total": 8
+      },
+      {
+        "id": "0000FF7C",
+        "name": "Fiscal.Staff.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 4
+      },
+      {
+        "id": "0000FFCA",
+        "name": "GPOTest.UWITImg.Foster.Public.Depts.lib.Delegated",
+        "count": 1,
+        "total": 10
+      },
+      {
+        "id": "0000FFAD",
+        "name": "grad_students.soart.Delegated",
+        "count": 0,
+        "total": 2
+      },
+      {
+        "id": "0000FFAB",
+        "name": "HSLIB domain",
+        "count": 0,
+        "total": 3
+      },
+      {
+        "id": "0000FFAE",
+        "name": "Images.lt-systems.uwit.Delegated",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FFC4",
+        "name": "Instruction Lab.Suzzallo.Public.Depts.lib.Delegated",
+        "count": 0,
+        "total": 30
+      },
+      {
+        "id": "0000FF88",
+        "name": "Instructor Stations.Commons.HSL.Public.Depts.lib.Delegated",
+        "count": 1,
+        "total": 4
+      },
+      {
+        "id": "0000FF79",
+        "name": "IT.Staff.Workstations.evans.Delegated",
+        "count": 4,
+        "total": 4
+      },
+      {
+        "id": "0000FF63",
+        "name": "Kiana.ADV.Staff.Workstations.evans.Delegated",
+        "count": 1,
+        "total": 1
+      },
+      {
+        "id": "0000FF8A",
+        "name": "Kim.ViewPools.Gibson.forestry.Delegated",
+        "count": 0,
+        "total": 51
+      },
+      {
+        "id": "0000FF7B",
+        "name": "Kosack.Projects.Staff.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 5
+      },
+      {
+        "id": "0000FFAC",
+        "name": "Lab.ed.Delegated",
+        "count": 0,
+        "total": 17
+      },
+      {
+        "id": "0000FFBA",
+        "name": "labs.soart.Delegated",
+        "count": 1,
+        "total": 47
+      },
+      {
+        "id": "0000FF7A",
+        "name": "Library Checkout Macbooks",
+        "count": 4,
+        "total": 24
+      },
+      {
+        "id": "0000FF74",
+        "name": "LTCO.CheckoutLaptops.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 3
+      },
+      {
+        "id": "0000FF6A",
+        "name": "Mac.MGH.labs.lt-systems.uwit.Delegated",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FFCE",
+        "name": "Mac.OUGL.labs.lt-systems.uwit.Delegated",
+        "count": 71,
+        "total": 332
+      },
+      {
+        "id": "0000FFB5",
+        "name": "MacOS.ischool.Delegated",
+        "count": 0,
+        "total": 6
+      },
+      {
+        "id": "0000FFBB",
+        "name": "MGH-Classrooms.labs.lt-systems.uwit.Delegated",
+        "count": 2,
+        "total": 99
+      },
+      {
+        "id": "0000FF8D",
+        "name": "Misc LT Computers",
+        "count": 2,
+        "total": 4
+      },
+      {
+        "id": "0000FF83",
+        "name": "mobile_workstations.soart.Delegated",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FF6D",
+        "name": "NBEC.Staff.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 2
+      },
+      {
+        "id": "0000FF99",
+        "name": "Other Servers.Servers.csde.Delegated",
+        "count": 0,
+        "total": 2
+      },
+      {
+        "id": "0000FF62",
+        "name": "OUGL 102",
+        "count": 2,
+        "total": 23
+      },
+      {
+        "id": "0000FF61",
+        "name": "OUGL Third Floor",
+        "count": 2,
+        "total": 28
+      },
+      {
+        "id": "0000FF73",
+        "name": "OUGL.labs.lt-systems.uwit.Delegated",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FFC1",
+        "name": "PC.OUGL.labs.lt-systems.uwit.Delegated",
+        "count": 6,
+        "total": 19
+      },
+      {
+        "id": "0000FF93",
+        "name": "Political Science Lab",
+        "count": 3,
+        "total": 25
+      },
+      {
+        "id": "0000FF92",
+        "name": "Political Science Misc",
+        "count": 0,
+        "total": 3
+      },
+      {
+        "id": "0000FFC7",
+        "name": "PowerShell Logon Script.2012-Servers.Simulation Cluster.Servers",
+        "count": 21,
+        "total": 117
+      },
+      {
+        "id": "0000FFB4",
+        "name": "Powershell logon script.Profile-Move.Terminal Servers.Servers",
+        "count": 51,
+        "total": 1039
+      },
+      {
+        "id": "0000FF71",
+        "name": "RA.LABS.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FF87",
+        "name": "School of Art Misc",
+        "count": 0,
+        "total": 4
+      },
+      {
+        "id": "0000FFC5",
+        "name": "SCL.Workstations.sphsc.Delegated",
+        "count": 0,
+        "total": 13
+      },
+      {
+        "id": "0000FFBC",
+        "name": "soart.Delegated",
+        "count": 0,
+        "total": 8
+      },
+      {
+        "id": "0000FF7F",
+        "name": "Sociology Lab",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FF80",
+        "name": "Sociology TSGRAD",
+        "count": 2,
+        "total": 34
+      },
+      {
+        "id": "0000FFBF",
+        "name": "source.Delegated",
+        "count": 0,
+        "total": 13
+      },
+      {
+        "id": "0000FF86",
+        "name": "SPHSC2 Domain",
+        "count": 0,
+        "total": 2
+      },
+      {
+        "id": "0000FF66",
+        "name": "SS.Staff.Workstations.evans.Delegated",
+        "count": 5,
+        "total": 5
+      },
+      {
+        "id": "0000FFB0",
+        "name": "SSW Lab 018",
+        "count": 3,
+        "total": 23
+      },
+      {
+        "id": "0000FFA9",
+        "name": "SSW Lab 252",
+        "count": 0,
+        "total": 2
+      },
+      {
+        "id": "0000FFAF",
+        "name": "SSW Lab RC",
+        "count": 0,
+        "total": 12
+      },
+      {
+        "id": "0000FFB1",
+        "name": "SSW PhD",
+        "count": 3,
+        "total": 16
+      },
+      {
+        "id": "0000FFA8",
+        "name": "STF Laptop Checkout",
+        "count": 0,
+        "total": 3
+      },
+      {
+        "id": "0000FFB9",
+        "name": "Student Workstations.smea.Delegated",
+        "count": 0,
+        "total": 13
+      },
+      {
+        "id": "0000FF7D",
+        "name": "StudentServices.Staff.Workstations.evans.Delegated",
+        "count": 1,
+        "total": 3
+      },
+      {
+        "id": "0000FF75",
+        "name": "TA.LABS.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 3
+      },
+      {
+        "id": "0000FF6B",
+        "name": "Test.Information Technology Services.Staff.Depts.lib.Delegated",
+        "count": 1,
+        "total": 1
+      },
+      {
+        "id": "0000FFB8",
+        "name": "test.UWITImg.Suzzallo.Public.Depts.lib.Delegated",
+        "count": 1,
+        "total": 10
+      },
+      {
+        "id": "0000FF78",
+        "name": "TestOU.Workstations.evans.Delegated",
+        "count": 0,
+        "total": 1
+      },
+      {
+        "id": "0000FF85",
+        "name": "The Daily Division",
+        "count": 1,
+        "total": 4
+      },
+      {
+        "id": "0000FF96",
+        "name": "Unclaimed Computers",
+        "count": 1,
+        "total": 2
+      },
+      {
+        "id": "0000FFC0",
+        "name": "UWITImg.Allen North.Public.Depts.lib.Delegated",
+        "count": 10,
+        "total": 27
+      },
+      {
+        "id": "0000FFC9",
+        "name": "UWITImg.Allen South.Public.Depts.lib.Delegated",
+        "count": 3,
+        "total": 40
+      },
+      {
+        "id": "0000FFC8",
+        "name": "UWITImg.Art Library.Public.Depts.lib.Delegated",
+        "count": 0,
+        "total": 12
+      },
+      {
+        "id": "0000FFCC",
+        "name": "UWITImg.Engineering.Public.Depts.lib.Delegated",
+        "count": 2,
+        "total": 14
+      },
+      {
+        "id": "0000FFCB",
+        "name": "UWITImg.Foster.Public.Depts.lib.Delegated",
+        "count": 5,
+        "total": 42
+      },
+      {
+        "id": "0000FFBD",
+        "name": "UWITImg.Gould.Public.Depts.lib.Delegated",
+        "count": 0,
+        "total": 5
+      },
+      {
+        "id": "0000FFB7",
+        "name": "UWITImg.Gowen.Public.Depts.lib.Delegated",
+        "count": 0,
+        "total": 8
+      },
+      {
+        "id": "0000FFC2",
+        "name": "UWITImg.HSL.Public.Depts.lib.Delegated",
+        "count": 2,
+        "total": 42
+      },
+      {
+        "id": "0000FFB6",
+        "name": "UWITImg.Hutchinson.Public.Depts.lib.Delegated",
+        "count": 0,
+        "total": 6
+      },
+      {
+        "id": "0000FFC3",
+        "name": "UWITImg.Music.Public.Depts.lib.Delegated",
+        "count": 2,
+        "total": 8
+      },
+      {
+        "id": "0000FFBE",
+        "name": "UWITImg.Padelford.Public.Depts.lib.Delegated",
+        "count": 2,
+        "total": 3
+      },
+      {
+        "id": "0000FFC6",
+        "name": "UWITImg.Suzzallo.Public.Depts.lib.Delegated",
+        "count": 7,
+        "total": 85
+      },
+      {
+        "id": "0000FF97",
+        "name": "‪ViewMasters.Gibson.forestry.Delegated",
+        "count": 1,
+        "total": 2
+      },
+      {
+        "id": "0000FF91",
+        "name": "Workstations.ed.Delegated",
+        "count": 0,
+        "total": 4
+      },
+      {
+        "id": "0000FF8E",
+        "name": "Workstations.lt-systems.uwit.Delegated",
+        "count": 0,
+        "total": 2
+      }
+    ],
+    "maps": [
+      "CSSCR B division",
+      "Mac.OUGL.labs.lt-systems.uwit.Delegated"
+    ],
+    "closed": [
+      "Untitled Time Set 1"
+    ],
+    "time": "2016-07-26 11:43:02"
+  }
+}
