@@ -1,13 +1,11 @@
 """
 This file contians tests for online_labstats.py
 """
-from django.test import TestCase
 from spacescout_labstats.endpoints import online_labstats
-from utils_test import get_test_data_directory
-import json
+from . import LabstatsTestCase
 
 
-class OnlineLabstatsTest(TestCase):
+class OnlineLabstatsTest(LabstatsTestCase):
 
     def test_get_labstats_customers(self):
         """
@@ -15,9 +13,7 @@ class OnlineLabstatsTest(TestCase):
         format intended.
         """
         # load the content and garbage collect the file object
-        with open(get_test_data_directory() +
-                  "bothell_labstats_spaces.json") as test_data_file:
-            test_json = json.load(test_data_file)
+        test_json = self.load_json_file('bothell_labstats_spaces.json')
 
         individual_page_dict = {
                                     "UW2 Lower Level Kiosks": 257,
@@ -39,32 +35,28 @@ class OnlineLabstatsTest(TestCase):
         self.assertEqual(customers, customers_dict)
 
     def test_get_labstat_by_label(self):
-        with open(get_test_data_directory() +
-                  "online_labstats_data.json") as test_data_file:
-            online_labstats_data = json.load(test_data_file)
+        online_labstats_data = self.load_json_file('online_labstats_data.json')
 
         lab = online_labstats.get_labstat_entry_by_label(online_labstats_data,
                                                          "Open Learning Lab "
                                                          "(UW2-140) Mac")
 
-        intended_lab = """{
-          \"Label\": \"Open Learning Lab (UW2-140) Mac\",
-          "InUse": 0,
-          "Available": 17,
-          "Offline": 0,
-          "TurnedOn": 17,
-          "Total": 17,
-          "OrderNum": 1
-        }"""
-
-        intended_lab = json.loads(intended_lab)
+        intended_lab = {
+            "Label": "Open Learning Lab (UW2-140) Mac",
+            "InUse": 0,
+            "Available": 17,
+            "Offline": 0,
+            "TurnedOn": 17,
+            "Total": 17,
+            "OrderNum": 1
+        }
 
         self.assertEqual(lab, intended_lab)
 
         lab = online_labstats.get_labstat_entry_by_label(online_labstats_data,
                                                          "nfeshufa;elks")
 
-        self.assertTrue(lab is None)
+        self.assertIsNone(lab)
 
     def test_load_labstats_data(self):
         # TODO : test this with bad data somehow
@@ -72,17 +64,13 @@ class OnlineLabstatsTest(TestCase):
         This tests the utility method that performs the loading of the online
         labstats data into the spaces.
         """
-        with open(get_test_data_directory() +
-                  "bothell_labstats_spaces.json") as test_data_file:
-            labstats_spaces = json.load(test_data_file)
+        labstats_spaces = self.load_json_file('bothell_labstats_spaces.json')
 
-        with open(get_test_data_directory() +
-                  "loaded_bothell_labstats_spaces.json") as test_data_file:
-            loaded_labstats_spaces = json.load(test_data_file)
+        loaded_labstats_spaces = self.load_json_file(
+            'loaded_bothell_labstats_spaces.json')
 
-        with open(get_test_data_directory() +
-                  "online_labstats_data.json") as test_data_file:
-            online_labstats_data = json.load(test_data_file)
+        online_labstats_data = self.load_json_file(
+            'online_labstats_data.json')
 
         customers = online_labstats.get_customers(labstats_spaces)
 
@@ -100,9 +88,7 @@ class OnlineLabstatsTest(TestCase):
         """
         Tests the data validation specific to the online labstats endpoint
         """
-        with open(get_test_data_directory() +
-                  "bothell_labstats_spaces.json") as test_data_file:
-            labstats_spaces = json.load(test_data_file)
+        labstats_spaces = self.load_json_file('bothell_labstats_spaces.json')
 
         for space in labstats_spaces:
             try:
@@ -110,17 +96,17 @@ class OnlineLabstatsTest(TestCase):
             except Exception as ex:
                 self.fail("Good data should not fail validation")
 
-        labstats_spaces[0]['extended_info'].pop('labstats_customer_id')
+        del labstats_spaces[0]['extended_info']['labstats_customer_id']
 
         with self.assertRaises(Exception):
             online_labstats.validate_space(labstats_spaces[0])
 
-        labstats_spaces[1]['extended_info'].pop('labstats_label')
+        del labstats_spaces[1]['extended_info']['labstats_label']
 
         with self.assertRaises(Exception):
             online_labstats.validate_space(labstats_spaces[1])
 
-        labstats_spaces[2]['extended_info'].pop('labstats_page_id')
+        del labstats_spaces[2]['extended_info']['labstats_page_id']
 
         with self.assertRaises(Exception):
             online_labstats.validate_space(labstats_spaces[2])
