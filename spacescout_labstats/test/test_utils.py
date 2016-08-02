@@ -32,7 +32,7 @@ class UtilsTest(LabstatsTestCase):
 
         self.assertEqual(labstats_data, cleaned_data)
 
-    def validate_space(self):
+    def test_validate_space(self):
         """
         This validates a space, ensuring that universal fields (id and etag)
         haven't been corrupted.
