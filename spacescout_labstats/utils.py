@@ -44,8 +44,8 @@ def upload_data(spaces):
         # if our space is malformed, then continue and log the error
         if not validate_space(space):
             logger.error("Malformed space encountered! Attmepting to log id")
-            if 'id' in space.keys():
-                logger.error("Malformed space id : " + str(space['id']))
+            if 'id' in space:
+                logger.error("Malformed space id : %s" % space['id'])
 
             continue
 
@@ -56,7 +56,7 @@ def upload_data(spaces):
         # should always be PUT since we are only updating spaces
         method = 'PUT'
 
-        space_headers = {"X-OAuth-User": "%s" % "labstats_daemon",
+        space_headers = {"X-OAuth-User": "labstats_daemon",
                          "Content-Type": "application/json",
                          "Accept": "application/json"}
 
@@ -70,7 +70,24 @@ def upload_data(spaces):
 
         # Responses 200 and 201 mean we've succeeded
         # 200 is OK, 201 is Created
-        if resp['status'] != '200' and resp['status'] != '201':
+        if resp['status'] in (200, 201):
+            # log the success by adding it to the return data
+            success_names.append({'name': space['name'], 'method': method})
+
+            if content:
+                url1 = space_url
+            elif resp['location']:
+                url1 = '%s/image' % resp['location']
+            else:
+                hold = {
+                    'fname': space['name'],
+                    'flocation': image,
+                    'freason': "could not find space idea; images not posted",
+                }
+                warning_descs.append(hold)
+                break
+
+        else:
             # if there's another status, log the error
 
             try:
@@ -88,27 +105,8 @@ def upload_data(spaces):
                 'freason': freason,
             }
             failure_descs.append(hold)
-        else:
-            # log the success by adding it to the return data
-            success_names.append({'name': space['name'], 'method': method})
 
-            if content:
-                url1 = space_url
-            elif resp['location']:
-                url1 = '%s/image' % resp['location']
-            else:
-                hold = {
-                    'fname': space['name'],
-                    'flocation': image,
-                    'freason': "could not find space idea; images not posted",
-                }
-                warning_descs.append(hold)
-                break
-
-        if method == 'POST':
-            posts.append(space['name'])
-        elif method == 'PUT':
-            puts.append(space['name'])
+        puts.append(space['name'])
 
     # return results
     return {
@@ -140,7 +138,7 @@ def stop_process(pid, verbose):
                 logger.info("Waiting")
 
             # wait for 15 seconds for the other process to die
-            for i in range(0, 15):
+            for i in xrange(0, 15):
                 if verbose:
                     logger.info(".")
                 time.sleep(1)
@@ -189,12 +187,8 @@ def is_valid_uuid(uuid):
     Returns a MatchObject which evaluates to true (but is not equal to) if
     the UUID string is valid, and None if it is not.
     """
-    # check the length, as the regex will not catch additional characters
-    if len(uuid) is not 36:
-        return None
-
-    pattern = re.compile("[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab]"
-                         "[0-9a-f]{3}-[0-9a-f]{12}")
+    pattern = re.compile("^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab]"
+                         "[0-9a-f]{3}-[0-9a-f]{12}$")
     return pattern.match(uuid)
 
 
@@ -227,29 +221,27 @@ def validate_space(space):
 
     Returns True/False
     """
-    try:
-        if isinstance(space, basestring):
+    if isinstance(space, basestring):
+        try:
             space = json.loads(space)
 
-    except JSONDecodeError as ex:
-        logger.warning("Invalid JSON format.")
-        return false
+        except ValueError:
+            logger.warning("Invalid JSON format.")
+            return False
 
     if not isinstance(space, dict):
         return False
 
-    # check for keys in the dict
-    if ('id' not in space.keys() or
-        'name' not in space.keys() or
-        'extended_info' not in space.keys() or
-            'etag' not in space.keys()):
-        return False
-
-    # ensure that the fields are the right type
-    if (not isinstance(space['etag'], basestring) or
-        not isinstance(space['id'], int) or
-        not isinstance(space['extended_info'], dict) or
-            not isinstance(space['id'], int)):
-        return False
+    # Expected keys and their types
+    expected = {'id': int,
+                'name': basestring,
+                'etag': basestring,
+                'extended_info': dict}
+    # Ensure each key exists and is of the expected type
+    for key, typ in expected.items():
+        if key not in space:
+            return False
+        if not isinstance(space[key], typ):
+            return False
 
     return True

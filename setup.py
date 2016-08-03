@@ -13,5 +13,6 @@ setup(name='SpaceScout-Labstats',
                         'poster',
                         'requests',
                         'urllib3',
+                        'mock'
                        ],
       )
