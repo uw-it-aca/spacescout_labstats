@@ -11,7 +11,8 @@ setup(name='SpaceScout-Labstats',
                         'simplejson>=2.1',
                         'soappy',
                         'poster',
-			'requests',
-			'urllib3',
+                        'requests',
+                        'urllib3',
+                        'mock'
                        ],
-     )
+      )

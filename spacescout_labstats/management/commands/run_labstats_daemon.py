@@ -211,7 +211,7 @@ class Command(BaseCommand):
         if response is not None and response['failure_descs']:
             errors = {}
             for failure in response['failure_descs']:
-                if type(failure['freason']) == list:
+                if isinstance(failure['freason'], list):
                     errors.update({failure['flocation']: []})
                     for reason in failure['freason']:
                         errors[failure['flocation']].append(reason)
@@ -222,21 +222,15 @@ class Command(BaseCommand):
             logger.warning("Errors putting to the server: %s", str(errors))
 
     def read_pid_file(self):
-        if os.path.isfile(self._get_pid_file_path()):
-            return True
-        return False
+        return os.path.isfile(self._get_pid_file_path())
 
     def create_pid_file(self):
-        handle = open(self._get_pid_file_path(), 'w')  # return file object
-        handle.write(str(os.getpid()))  # write process id into file
-        handle.close()  # no longer writable and readable
-        return
+        with open(self._get_pid_file_path(), 'w') as handle:
+            handle.write(str(os.getpid()))
 
     def create_stop_file(self):
-        handle = open(self._get_stopfile_path(), 'w')
-        handle.write(str(os.getpid()))
-        handle.close()
-        return
+        with open(self._get_stopfile_path(), 'w') as handle:
+            handle.write(str(os.getpid()))
 
     def remove_pid_file(self):
         os.remove(self._get_pid_file_path())
