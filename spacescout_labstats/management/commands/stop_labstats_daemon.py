@@ -3,6 +3,7 @@ This provides a management command that stops the labstats daemon
 """
 from django.core.management.base import BaseCommand
 from optparse import make_option
+from spacescout_labstats.utils import _get_tmp_directory, stop_process
 import time
 import signal
 import os
@@ -21,6 +22,7 @@ class Command(BaseCommand):
                     action="store_true",
                     help='This will forceably terminate any running updaters. '
                          'Not recommended.'),
+
         make_option('--verbose',
                     dest='verbose',
                     default=False,
@@ -32,9 +34,13 @@ class Command(BaseCommand):
         force = options["force"]
 
         try:
-            files = os.listdir("/tmp/updater")
+            files = os.listdir(_get_tmp_directory())
         except OSError:
+            logger.warning("OSError encountered when attempting to get " +
+                           "temporary files. Daemon could not be stopped")
             sys.exit(0)
+
+        # get the file with the PID of the other labstats daemons
         for filename in files:
             matches = re.match(r"^([0-9]+).pid$", filename)
             if matches:
@@ -43,24 +49,28 @@ class Command(BaseCommand):
                     self.kill_process(pid)
                 else:
                     verbose = options["verbose"]
-                    if stop_process.stop_process(pid, verbose):
+                    if stop_process(pid, verbose):
                         sys.exit(0)
                     else:
                         sys.exit(1)
 
     def kill_process(self, pid):
+        """
+        Kills the process with the passed PID and removes its PID file.
+        """
         try:
             os.kill(int(pid), signal.SIGTERM)
             time.sleep(1)
+
             try:
                 os.getpgid(int(pid))
                 os.kill(int(pid), signal.SIGKILL)
             except:
                 pass
-            if os.path.isfile("/tmp/updater/%s.stop" % pid):
-                os.remove("/tmp/updater/%s.stop" % pid)
+            if os.path.isfile(_get_tmp_directory() + "%s.stop" % pid):
+                os.remove(_get_tmp_directory() + "%s.stop" % pid)
 
-            if os.path.isfile("/tmp/updater/%s.pid" % pid):
-                os.remove("/tmp/updater/%s.pid" % pid)
+            if os.path.isfile(_get_tmp_directory() + "%s.pid" % pid):
+                os.remove(_get_tmp_directory() + "%s.pid" % pid)
         except:
             pass
