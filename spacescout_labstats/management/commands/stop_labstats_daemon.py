@@ -9,7 +9,6 @@ import signal
 import os
 import sys
 import re
-import stop_process
 
 
 class Command(BaseCommand):
