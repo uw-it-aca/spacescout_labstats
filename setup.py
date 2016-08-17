@@ -9,6 +9,8 @@ setup(name='SpaceScout-Labstats',
                         'Django>=1.4,<1.5',
                         'oauth2<=1.5.211',
                         'simplejson>=2.1',
+			# wstools 0.4.4 has a bug that we need to avoid
+                        'wstools<=0.4.3',
                         'soappy',
                         'poster',
                         'requests',
