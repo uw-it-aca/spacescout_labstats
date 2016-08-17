@@ -142,8 +142,8 @@ class Command(BaseCommand):
                 try:
                     self.load_endpoint_data(endpoint)
                 except Exception as ex:
-                    logger.error("Uncaught exception for endpoint " +
-                                 endpoint.get_name() + "\n" +
+                    logger.error("Uncaught exception for endpoint, " +
+                                 endpoint.get_name() + " " + str(ex) + "\n" +
                                  traceback.format_exc())
 
             # then wait for update_delay minutes (default 15)
