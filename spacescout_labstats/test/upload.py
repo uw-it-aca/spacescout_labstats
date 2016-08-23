@@ -29,7 +29,7 @@ class UploadTest(LabstatsTestCase):
         # Fake a success from the server
         with patch.object(oauth.Client, 'request') as mock:
 
-            mock.return_value = ({'status': 200}, 'it worked')
+            mock.return_value = ({'status': '200'}, 'it worked')
             result = utils.upload_data(fake_spaces)
 
         last_call = mock.mock_calls[-1]
