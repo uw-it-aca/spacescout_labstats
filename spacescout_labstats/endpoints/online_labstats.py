@@ -73,7 +73,6 @@ def get_endpoint_data(labstats_spaces):
             # labstats data
             if response is None:
                 utils.clean_spaces_labstats(labstats_spaces)
-                logger.error("Retrieval of labstats spaces failed")
                 return
 
             page = customers[customer][page]
@@ -141,8 +140,8 @@ def get_online_labstats_data(customer, page):
 
         spaces = response.json()
     except Exception as ex:
-        logger.error("Retrieving labstats page failed! Exception is"
-                     " %s", ex)
+        logger.error("Retrieving labstats page failed! %s is"
+                     " %s", type(ex), ex)
         return None
     except ValueError as ex:
         logger.error("Invalid json received from online labstats service!"

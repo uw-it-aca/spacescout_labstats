@@ -142,7 +142,7 @@ class Command(BaseCommand):
                 try:
                     self.load_endpoint_data(endpoint)
                 except Exception as ex:
-                    logger.error("Uncaught exception for endpoint, " +
+                    logger.error("Uncaught " + type(ex) + " for endpoint, " +
                                  endpoint.get_name() + " " + str(ex) + "\n" +
                                  traceback.format_exc())
 
