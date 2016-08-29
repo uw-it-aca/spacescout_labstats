@@ -142,9 +142,9 @@ class Command(BaseCommand):
                 try:
                     self.load_endpoint_data(endpoint)
                 except Exception as ex:
-                    logger.error("Uncaught " + type(ex) + " for endpoint, " +
-                                 endpoint.get_name() + " " + str(ex) + "\n" +
-                                 traceback.format_exc())
+                    logger.error("Uncaught " + str(type(ex)) +
+                                 " for endpoint, " + endpoint.get_name() +
+                                 " " + str(ex) + "\n" + traceback.format_exc())
 
             # then wait for update_delay minutes (default 15)
             if not run_once:
@@ -164,6 +164,11 @@ class Command(BaseCommand):
         try:
             url = endpoint.get_space_search_parameters()
             resp, content = self.client.request(url, 'GET')
+
+            if(resp.status == 401):
+                logger.error("Labstats daemon has outdated OAuth credentials!")
+                return
+
             spaces = json.loads(content)
 
         except ValueError as ex:
