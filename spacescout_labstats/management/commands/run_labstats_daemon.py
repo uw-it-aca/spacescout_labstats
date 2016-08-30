@@ -99,8 +99,8 @@ class Command(BaseCommand):
             try:
                 self.controller(options["update_delay"], options["run_once"])
             except Exception as ex:
-                logger.error("Error running the controller: %s", str(ex) +
-                             "\n" + traceback.format_exc())
+                logger.error("Uncaught error running the controller",
+                             exc_info=1)
 
         else:
             logger.info("Starting the updater as an interactive process")
@@ -142,9 +142,8 @@ class Command(BaseCommand):
                 try:
                     self.load_endpoint_data(endpoint)
                 except Exception as ex:
-                    logger.error("Uncaught " + str(type(ex)) +
-                                 " for endpoint, " + endpoint.get_name() +
-                                 " " + str(ex) + "\n" + traceback.format_exc())
+                    logger.error("Uncaught exception for endpoint, " +
+                                 endpoint.get_name(), exc_info=1)
 
             # then wait for update_delay minutes (default 15)
             if not run_once:
@@ -173,7 +172,7 @@ class Command(BaseCommand):
 
         except ValueError as ex:
             logger.warning("JSON Exception found! Malformed data passed from"
-                           "spotseeker_server")
+                           "spotseeker_server", exc_info=1)
             return
 
         to_remove = []
@@ -193,7 +192,7 @@ class Command(BaseCommand):
             try:
                 endpoint.validate_space(space)
             except Exception as ex:
-                logger.warning("Space invalid : " + str(ex))
+                logger.warning("Space invalid", exc_info=1)
                 utils.clean_spaces_labstats(space)
                 to_clean.append(space)
 

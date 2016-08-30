@@ -57,7 +57,7 @@ def get_endpoint_data(labstats_spaces):
         groups = get_seattle_labstats_data()
     except SOAPTimeoutError as ex:
         logger.error("SOAPTimeoutError encountered, Seattle labstats"
-                     " timed out")
+                     " timed out", exc_info=1)
         return
 
     # if data retrieval failed, then clean the spaces and log the error
@@ -77,8 +77,8 @@ def get_seattle_labstats_data():
         groups = stats.GetGroupedCurrentStats().GroupStat
     except AttributeError as ex:
         # Temporary fix for debugging AttributeError
-        logger.error("AttributeError encountered, " +
-                     stats.GetGroupedCurrentStats())
+        logger.error("AttributeError encountered with " +
+                     stats.GetGroupedCurrentStats(), exc_info=1)
         return
     return groups
 

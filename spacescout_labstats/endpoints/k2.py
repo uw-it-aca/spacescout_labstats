@@ -78,7 +78,7 @@ def get_k2_data():
     try:
         validate_k2_data(k2_data)
     except Exception as ex:
-        logger.warning(str(ex))
+        logger.warning("K2 validation failed", exc_info=1)
         return None
 
     k2_data = k2_data["results"]["divs"]
