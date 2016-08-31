@@ -32,6 +32,11 @@ class Command(BaseCommand):
                     action='store_true',
                     help='This will set the updater to run as a daemon.'),
 
+        make_option('--interactive',
+                    dest='daemon',
+                    action='store_false',
+                    help='This will set the updater to run interactively.'),
+
         make_option('--update-delay',
                     dest='update_delay',
                     type='int',
