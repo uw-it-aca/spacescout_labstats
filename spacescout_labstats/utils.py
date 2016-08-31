@@ -70,7 +70,7 @@ def upload_data(spaces):
 
         # Responses 200 and 201 mean we've succeeded
         # 200 is OK, 201 is Created
-        if resp['status'] in (200, 201):
+        if resp['status'] in ('200', '201'):
             # log the success by adding it to the return data
             success_names.append({'name': space['name'], 'method': method})
 
@@ -89,7 +89,6 @@ def upload_data(spaces):
 
         else:
             # if there's another status, log the error
-
             try:
                 error = json.loads(content)
                 flocation = error.keys()[0]
