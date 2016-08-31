@@ -56,8 +56,8 @@ def get_endpoint_data(labstats_spaces):
     try:
         groups = get_seattle_labstats_data()
     except SOAPTimeoutError as ex:
-        logger.error("SOAPTimeoutError encountered, Seattle labstats"
-                     " timed out", exc_info=1)
+        logger.warning("SOAPTimeoutError encountered, Seattle labstats"
+                       " timed out", exc_info=1)
         return
 
     # if data retrieval failed, then clean the spaces and log the error
