@@ -145,6 +145,7 @@ def load_techloan_type_to_item(item, tech_type):
     iei["access_limit_role"] = True
     iei["access_role_students"] = True
 
+
 def get_techloan_data_by_id(techloan_data, techloan_id):
     """
     Goes through a list of techloan data entries and returns the one matching
