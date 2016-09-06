@@ -208,6 +208,27 @@ def validate_techloan_data_entry(techloan_data_entry):
     if "name" not in techloan_data_entry:
         raise Exception("Missing name in techloan data entry!")
 
+    if "description" not in techloan_data_entry:
+        raise Exception("Missing description in techloan data entry!")
+
+    if "make" not in techloan_data_entry:
+        raise Exception("Missing make in techloan data entry!")
+
+    if "model" not in techloan_data_entry:
+        raise Exception("Missing model in techloan data entry!")
+
+    if "manual_url" not in techloan_data_entry:
+        raise Exception("Missing manual_url in techloan data entry!")
+
+    if "image_url" not in techloan_data_entry:
+        raise Exception("Missing image_url in techloan data entry!")
+
+    if "check_out_days" not in techloan_data_entry:
+        raise Exception("Missing check_out_days in techloan data entry!")
+
+    if "customer_type_id" not in techloan_data_entry:
+        raise Exception("Missing customer_type_id in techloan data entry!")
+
     if "num_active" not in techloan_data_entry:
         raise Exception("Missing num_active in techloan data entry!")
 
