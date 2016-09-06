@@ -51,12 +51,6 @@ def get_endpoint_data(techloan_spaces):
         raise(Exception("Required setting missing: CTE_TECHLOAN_URL"))
     techloan_data = get_techloan_data()
 
-    # if the techloan server is not working, then clean the spaces and return
-    if techloan_data is None:
-        utils.clean_spaces_labstats(techloan_spaces)
-        logger.error("techloan data retrieval failed!")
-        return
-
     load_techloan_data_into_spaces(techloan_spaces, techloan_data)
 
 
