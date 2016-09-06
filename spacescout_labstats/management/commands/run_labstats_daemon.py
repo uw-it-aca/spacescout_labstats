@@ -198,7 +198,7 @@ class Command(BaseCommand):
                 endpoint.validate_space(space)
             except Exception as ex:
                 logger.warning("Space invalid", exc_info=1)
-                utils.clean_spaces_labstats(space)
+                utils.clean_spaces_labstats([space])
                 to_clean.append(space)
 
         # if our endpoint rejects spaces, then save them until after the update
