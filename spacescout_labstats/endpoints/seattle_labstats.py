@@ -53,12 +53,16 @@ def get_endpoint_data(labstats_spaces):
     # for spaces that have corresponding labstats.
     upload_spaces = []
 
-    groups = get_seattle_labstats_data()
+    try:
+        groups = get_seattle_labstats_data()
+    except SOAPTimeoutError as ex:
+        logger.warning("SOAPTimeoutError encountered, Seattle labstats"
+                       " timed out", exc_info=1)
+        return
 
     # if data retrieval failed, then clean the spaces and log the error
     if groups is None:
         utils.clean_spaces_labstats(labstats_spaces)
-        logger.error("Retrieving Seattle labstats data failed!")
         return
 
     load_labstats_data(labstats_spaces, groups)
@@ -68,8 +72,14 @@ def get_seattle_labstats_data():
     """
     Retrieves the labstats information from the seattle labstats service
     """
-    stats = WSDL.Proxy(settings.LABSTATS_URL)
-    groups = stats.GetGroupedCurrentStats().GroupStat
+    try:
+        stats = WSDL.Proxy(settings.LABSTATS_URL)
+        groups = stats.GetGroupedCurrentStats().GroupStat
+    except AttributeError as ex:
+        # Temporary fix for debugging AttributeError
+        logger.error("AttributeError encountered with " +
+                     stats.GetGroupedCurrentStats(), exc_info=1)
+        return
     return groups
 
 

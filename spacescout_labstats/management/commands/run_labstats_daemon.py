@@ -7,7 +7,8 @@ from django.core.management.base import BaseCommand
 from spacescout_labstats import utils
 from django.conf import settings
 from optparse import make_option
-from spacescout_labstats.endpoints import seattle_labstats, online_labstats, k2
+from spacescout_labstats.endpoints import seattle_labstats, online_labstats, \
+    cte_techloan, k2
 import os
 import sys
 import time
@@ -30,6 +31,11 @@ class Command(BaseCommand):
                     default=True,
                     action='store_true',
                     help='This will set the updater to run as a daemon.'),
+
+        make_option('--interactive',
+                    dest='daemon',
+                    action='store_false',
+                    help='This will set the updater to run interactively.'),
 
         make_option('--update-delay',
                     dest='update_delay',
@@ -99,8 +105,8 @@ class Command(BaseCommand):
             try:
                 self.controller(options["update_delay"], options["run_once"])
             except Exception as ex:
-                logger.error("Error running the controller: %s", str(ex) +
-                             "\n" + traceback.format_exc())
+                logger.error("Uncaught error running the controller",
+                             exc_info=1)
 
         else:
             logger.info("Starting the updater as an interactive process")
@@ -136,15 +142,15 @@ class Command(BaseCommand):
 
             # add any additional endpoints here and at the import statement
             # at the top of this file
-            endpoints = [seattle_labstats, online_labstats]  # , k2]
+            endpoints = [seattle_labstats, online_labstats, cte_techloan] \
+                # , k2]
 
             for endpoint in endpoints:
                 try:
                     self.load_endpoint_data(endpoint)
                 except Exception as ex:
                     logger.error("Uncaught exception for endpoint, " +
-                                 endpoint.get_name() + " " + str(ex) + "\n" +
-                                 traceback.format_exc())
+                                 endpoint.get_name(), exc_info=1)
 
             # then wait for update_delay minutes (default 15)
             if not run_once:
@@ -164,11 +170,16 @@ class Command(BaseCommand):
         try:
             url = endpoint.get_space_search_parameters()
             resp, content = self.client.request(url, 'GET')
+
+            if(resp.status == 401):
+                logger.error("Labstats daemon has outdated OAuth credentials!")
+                return
+
             spaces = json.loads(content)
 
         except ValueError as ex:
             logger.warning("JSON Exception found! Malformed data passed from"
-                           "spotseeker_server")
+                           "spotseeker_server", exc_info=1)
             return
 
         to_remove = []
@@ -188,8 +199,8 @@ class Command(BaseCommand):
             try:
                 endpoint.validate_space(space)
             except Exception as ex:
-                logger.warning("Space invalid : " + str(ex))
-                utils.clean_spaces_labstats(space)
+                logger.warning("Space invalid", exc_info=1)
+                utils.clean_spaces_labstats([space])
                 to_clean.append(space)
 
         # if our endpoint rejects spaces, then save them until after the update
