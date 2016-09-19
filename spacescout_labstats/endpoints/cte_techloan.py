@@ -160,7 +160,7 @@ def get_space_item_by_type_id(type_id, space_items):
     """
     for item in space_items:
         if 'cte_type_id' in item['extended_info'] \
-                and item['extended_info']['cte_type_id'] == type_id:
+                and int(item['extended_info']['cte_type_id']) == type_id:
             return item
 
     return None
