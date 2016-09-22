@@ -51,6 +51,11 @@ def get_endpoint_data(techloan_spaces):
         raise(Exception("Required setting missing: CTE_TECHLOAN_URL"))
     techloan_data = get_techloan_data()
 
+    if techloan_data is None:
+        while len(techloan_spaces) > 0:
+            del techloan_spaces[0]
+        return
+
     load_techloan_data_into_spaces(techloan_spaces, techloan_data)
 
 
@@ -120,7 +125,7 @@ def load_techloan_type_to_item(item, tech_type):
 
     iei = item["extended_info"]
     if tech_type["description"]:
-        iei["i_description"] = tech_type["description"][:350]
+        iei["i_description"] = utils.clean_html(tech_type["description"][:350])
     iei["i_brand"] = tech_type["make"]
     iei["i_model"] = tech_type["model"]
     if tech_type["manual_url"]:

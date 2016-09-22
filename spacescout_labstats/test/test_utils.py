@@ -54,3 +54,11 @@ class UtilsTest(LabstatsTestCase):
 
         test_json[3]['id'] = str(test_json[3]['id'])
         self.assertFalse(utils.validate_space(test_json[3]))
+
+    def test_clean_html(self):
+        html = ("<strong>Html string</strong>", "<bold>Other html</bold>",)
+        cleaned_string = ("Html string", "Other html",)
+
+        for string, cleaned in zip(html, cleaned_string):
+            result = utils.clean_html(string)
+            self.assertEqual(result, cleaned)
