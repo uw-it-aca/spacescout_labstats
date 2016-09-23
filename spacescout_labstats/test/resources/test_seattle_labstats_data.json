@@ -1,0 +1,343 @@
+[{
+    "availableCount": "0",
+    "groupName": "Suzzallo Library",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "25",
+    "inUseCount": "0"
+}, {
+    "availableCount": "25",
+    "groupName": "SUZ Instruction Lab",
+    "unavailableCount": "0",
+    "offCount": "5",
+    "totalCount": "30",
+    "percentInUse": "0",
+    "groupId": "73",
+    "inUseCount": "0"
+}, {
+    "availableCount": "23",
+    "groupName": "SUZ Ground Floor",
+    "unavailableCount": "0",
+    "offCount": "1",
+    "totalCount": "26",
+    "percentInUse": "0.07692308",
+    "groupId": "34",
+    "inUseCount": "2"
+}, {
+    "availableCount": "3",
+    "groupName": "SUZ 3rd Floor",
+    "unavailableCount": "0",
+    "offCount": "5",
+    "totalCount": "8",
+    "percentInUse": "0",
+    "groupId": "35",
+    "inUseCount": "0"
+}, {
+    "availableCount": "25",
+    "groupName": "SUZ 1st Floor / Reference",
+    "unavailableCount": "0",
+    "offCount": "6",
+    "totalCount": "34",
+    "percentInUse": "0.0882353",
+    "groupId": "33",
+    "inUseCount": "3"
+}, {
+    "availableCount": "0",
+    "groupName": "Research Commons",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "66",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "Red Room A",
+    "unavailableCount": "0",
+    "offCount": "1",
+    "totalCount": "1",
+    "percentInUse": "0",
+    "groupId": "83",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "RC Booth F",
+    "unavailableCount": "0",
+    "offCount": "1",
+    "totalCount": "1",
+    "percentInUse": "0",
+    "groupId": "80",
+    "inUseCount": "0"
+}, {
+    "availableCount": "1",
+    "groupName": "RC Booth C",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "1",
+    "percentInUse": "0",
+    "groupId": "79",
+    "inUseCount": "0"
+}, {
+    "availableCount": "1",
+    "groupName": "RC Booth B",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "1",
+    "percentInUse": "0",
+    "groupId": "78",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "PACCAR Hall",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "62",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "Odegaard Undergraduate Library",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "7",
+    "inUseCount": "0"
+}, {
+    "availableCount": "2",
+    "groupName": "Music Library",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "2",
+    "percentInUse": "0",
+    "groupId": "39",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "Music Building",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "38",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "Mary Gates Hall",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "12",
+    "inUseCount": "0"
+}, {
+    "availableCount": "5",
+    "groupName": "Listening Center",
+    "unavailableCount": "0",
+    "offCount": "1",
+    "totalCount": "6",
+    "percentInUse": "0",
+    "groupId": "40",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "Hutchinson Hall",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "64",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "Green Room D",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "81",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "Green Room A",
+    "unavailableCount": "0",
+    "offCount": "1",
+    "totalCount": "1",
+    "percentInUse": "0",
+    "groupId": "82",
+    "inUseCount": "0"
+}, {
+    "availableCount": "18",
+    "groupName": "GovPub / GIS Lab",
+    "unavailableCount": "0",
+    "offCount": "2",
+    "totalCount": "21",
+    "percentInUse": "0.04761905",
+    "groupId": "13",
+    "inUseCount": "1"
+}, {
+    "availableCount": "0",
+    "groupName": "Gould Hall",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "60",
+    "inUseCount": "0"
+}, {
+    "availableCount": "1",
+    "groupName": "Foster Discussion Area",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "1",
+    "percentInUse": "0",
+    "groupId": "63",
+    "inUseCount": "0"
+}, {
+    "availableCount": "36",
+    "groupName": "Foster Computing Area",
+    "unavailableCount": "0",
+    "offCount": "8",
+    "totalCount": "47",
+    "percentInUse": "0.06382979",
+    "groupId": "26",
+    "inUseCount": "3"
+}, {
+    "availableCount": "0",
+    "groupName": "Engineering Library",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "28",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "ELIC Instruction Lab",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "49",
+    "inUseCount": "0"
+}, {
+    "availableCount": "8",
+    "groupName": "ELB 1st Floor",
+    "unavailableCount": "0",
+    "offCount": "2",
+    "totalCount": "12",
+    "percentInUse": "0.166666672",
+    "groupId": "48",
+    "inUseCount": "2"
+}, {
+    "availableCount": "6",
+    "groupName": "East Asia Library",
+    "unavailableCount": "0",
+    "offCount": "2",
+    "totalCount": "8",
+    "percentInUse": "0",
+    "groupId": "56",
+    "inUseCount": "0"
+}, {
+    "availableCount": "6",
+    "groupName": "Drama Library",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "6",
+    "percentInUse": "0",
+    "groupId": "65",
+    "inUseCount": "0"
+}, {
+    "availableCount": "5",
+    "groupName": "Built Environments Library",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "5",
+    "percentInUse": "0",
+    "groupId": "61",
+    "inUseCount": "0"
+}, {
+    "availableCount": "10",
+    "groupName": "Art Library",
+    "unavailableCount": "0",
+    "offCount": "1",
+    "totalCount": "12",
+    "percentInUse": "0.0833333358",
+    "groupId": "37",
+    "inUseCount": "1"
+}, {
+    "availableCount": "0",
+    "groupName": "Art Building",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "27",
+    "inUseCount": "0"
+}, {
+    "availableCount": "0",
+    "groupName": "Allen Library",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "0",
+    "percentInUse": "1",
+    "groupId": "24",
+    "inUseCount": "0"
+}, {
+    "availableCount": "18",
+    "groupName": "ALB Ground Floor North",
+    "unavailableCount": "0",
+    "offCount": "2",
+    "totalCount": "26",
+    "percentInUse": "0.230769232",
+    "groupId": "54",
+    "inUseCount": "6"
+}, {
+    "availableCount": "4",
+    "groupName": "ALB 3rd Floor South",
+    "unavailableCount": "0",
+    "offCount": "1",
+    "totalCount": "5",
+    "percentInUse": "0",
+    "groupId": "53",
+    "inUseCount": "0"
+}, {
+    "availableCount": "8",
+    "groupName": "ALB 2nd Floor South",
+    "unavailableCount": "0",
+    "offCount": "3",
+    "totalCount": "12",
+    "percentInUse": "0.0833333358",
+    "groupId": "52",
+    "inUseCount": "1"
+}, {
+    "availableCount": "8",
+    "groupName": "ALB 1st Floor South",
+    "unavailableCount": "0",
+    "offCount": "4",
+    "totalCount": "12",
+    "percentInUse": "0",
+    "groupId": "59",
+    "inUseCount": "0"
+}, {
+    "availableCount": "2",
+    "groupName": "5K iMacs Media Production",
+    "unavailableCount": "0",
+    "offCount": "0",
+    "totalCount": "9",
+    "percentInUse": "0.7777778",
+    "groupId": "85",
+    "inUseCount": "7"
+}, {
+    "availableCount": "0",
+    "groupName": "064 (ATC Lab)",
+    "unavailableCount": "0",
+    "offCount": "11",
+    "totalCount": "11",
+    "percentInUse": "0",
+    "groupId": "11",
+    "inUseCount": "0"
+}]

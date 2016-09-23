@@ -1,0 +1,1262 @@
+[{
+    "capacity": 55,
+    "name": "Computing Area",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "noise_level": "moderate",
+        "auto_labstats_total": 47,
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "26",
+        "num_computers": "55",
+        "has_outlets": "true",
+        "location_description": "Foster Library, Paccar Hall, Ground floor",
+        "auto_labstats_available": 44,
+        "has_computers": "true",
+        "food_nearby": "building",
+        "owner": "Foster Library",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/1",
+    "available_hours": {
+        "monday": [
+            ["07:00", "23:00"]
+        ],
+        "tuesday": [
+            ["07:00", "23:00"]
+        ],
+        "friday": [
+            ["08:00", "18:00"]
+        ],
+        "wednesday": [
+            ["07:00", "23:00"]
+        ],
+        "thursday": [
+            ["07:00", "23:00"]
+        ],
+        "sunday": [
+            ["13:00", "22:00"]
+        ],
+        "saturday": [
+            ["08:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.362460+00:00",
+    "etag": "7fdb03736a9ba1ba3fda78f89771b23977789215",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 1,
+    "location": {
+        "floor": "Lower level",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.307929",
+        "latitude": "47.659441",
+        "building_name": "Paccar Hall (PCAR)"
+    }
+}, {
+    "capacity": null,
+    "name": "Discussion Area",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "noise_level": "moderate",
+        "auto_labstats_total": 1,
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "63",
+        "has_outlets": "true",
+        "location_description": "Foster Library, Paccar Hall, Ground floor",
+        "auto_labstats_available": 1,
+        "food_nearby": "building",
+        "owner": "Foster Library",
+        "has_labstats": "true",
+        "has_displays": "true",
+        "campus": "seattle",
+        "has_whiteboards": "true"
+    },
+    "uri": "/api/v1/spot/2",
+    "available_hours": {
+        "monday": [
+            ["07:00", "23:00"]
+        ],
+        "tuesday": [
+            ["07:00", "23:00"]
+        ],
+        "friday": [
+            ["08:00", "18:00"]
+        ],
+        "wednesday": [
+            ["07:00", "23:00"]
+        ],
+        "thursday": [
+            ["07:00", "23:00"]
+        ],
+        "sunday": [
+            ["13:00", "22:00"]
+        ],
+        "saturday": [
+            ["08:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.419952+00:00",
+    "etag": "f66b1f3b4e0cdbcec8170886c87f734e71aa3a5f",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 2,
+    "location": {
+        "floor": "Lower level",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.307929",
+        "latitude": "47.659441",
+        "building_name": "Paccar Hall (PCAR)"
+    }
+}, {
+    "capacity": null,
+    "name": "Allen South 1st Floor Area",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Au/Wi Interim:\nM-F: 9am-5pm",
+        "noise_level": "silent",
+        "auto_labstats_total": 12,
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "59",
+        "num_computers": "6",
+        "location_description": "Allen Library South, 1st floor",
+        "auto_labstats_available": 12,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/3",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.478950+00:00",
+    "etag": "aa33f3a9655384c383e70f13a9423ef9fffd29e8",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 3,
+    "location": {
+        "floor": "1st floor",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.307079",
+        "latitude": "47.655515",
+        "building_name": "Allen Library (ALB) South"
+    }
+}, {
+    "capacity": null,
+    "name": "Allen North 2nd Floor Area",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Au/Wi Interim:\nM-F: 9am-5pm",
+        "noise_level": "silent",
+        "has_printing": "true",
+        "labstats_id": "57",
+        "location_description": "Allen Library North, 2nd floor",
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/4",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-19T21:32:31.628635+00:00",
+    "etag": "7229067a7a4ffae693748e295d49644dcc6af30c",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 4,
+    "location": {
+        "floor": "2nd floor",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": -122.30718,
+        "latitude": 47.6556,
+        "building_name": "Allen Library (ALB) North"
+    }
+}, {
+    "capacity": null,
+    "name": "Allen 2nd N/S Bridge",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Au/Wi Interim:\nM-F: 9am-5pm",
+        "noise_level": "silent",
+        "auto_labstats_total": 12,
+        "has_printing": "true",
+        "labstats_id": "52",
+        "location_description": "Allen Library, 2nd floor",
+        "auto_labstats_available": 11,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/5",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.535178+00:00",
+    "etag": "3bb022499a81abe9687e150be9244ae7ddf54b3d",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 5,
+    "location": {
+        "floor": "2nd floor",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.307079",
+        "latitude": "47.655544",
+        "building_name": "Allen Library (ALB)"
+    }
+}, {
+    "capacity": null,
+    "name": "Allen 3rd N/S Bridge",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Au/Wi Interim:\nM-F: 9am-5pm",
+        "noise_level": "silent",
+        "auto_labstats_total": 5,
+        "has_printing": "true",
+        "labstats_id": "53",
+        "location_description": "Allen Library, 3rd floor",
+        "auto_labstats_available": 5,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/7",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.594191+00:00",
+    "etag": "1cc2181222a9cf4bc58886a49cc6496f1dc97321",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 7,
+    "location": {
+        "floor": "3rd floor",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.306982",
+        "latitude": "47.655579",
+        "building_name": "Allen Library (ALB)"
+    }
+}, {
+    "capacity": null,
+    "name": "Suzzallo Reference Area",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Au/Wi Interim:\nM-F: 9am-5pm",
+        "noise_level": "quiet",
+        "auto_labstats_total": 34,
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "33",
+        "num_computers": "30",
+        "location_description": "Suzzallo Library, 1st floor",
+        "auto_labstats_available": 31,
+        "has_natural_light": "true",
+        "food_nearby": "building",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "has_displays": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/8",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.654905+00:00",
+    "etag": "9081b87406bada137c39781eee644f53af661680",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 8,
+    "location": {
+        "floor": "1st floor",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.308303",
+        "latitude": "47.65586",
+        "building_name": "Suzzallo Library (SUZ)"
+    }
+}, {
+    "capacity": 8,
+    "name": "Group Study",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Interim:\nM-F: 1pm-5pm",
+        "noise_level": "quiet",
+        "has_scanner": "true",
+        "has_printing": "true",
+        "labstats_id": "42",
+        "location_description": "Math Library, Padelford Hall, Room C306",
+        "has_natural_light": "true",
+        "food_nearby": "building",
+        "owner": "Mathematics Research Library",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/9",
+    "available_hours": {
+        "monday": [
+            ["09:00", "17:00"]
+        ],
+        "tuesday": [
+            ["09:00", "17:00"]
+        ],
+        "friday": [
+            ["09:00", "17:00"]
+        ],
+        "wednesday": [
+            ["09:00", "17:00"]
+        ],
+        "thursday": [
+            ["09:00", "17:00"]
+        ],
+        "sunday": [],
+        "saturday": []
+    },
+    "manager": "",
+    "last_modified": "2016-07-19T21:32:32.506195+00:00",
+    "etag": "f6b85f534b3400326f229c05dcd7983b295dd7e9",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 9,
+    "location": {
+        "floor": "Main floor",
+        "height_from_sea_level": null,
+        "room_number": "C306",
+        "longitude": -122.304161,
+        "latitude": 47.657206,
+        "building_name": "Padelford Hall (PDL)"
+    }
+}, {
+    "capacity": 12,
+    "name": "Drama Library",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Interim:\nM-F: 1pm-5pm",
+        "noise_level": "quiet",
+        "auto_labstats_total": 6,
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "65",
+        "num_computers": "9",
+        "has_outlets": "true",
+        "location_description": "Hutchinson Hall, Room 145",
+        "auto_labstats_available": 6,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "owner": "Drama Library",
+        "has_labstats": "true",
+        "has_displays": "true",
+        "has_projector": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/10",
+    "available_hours": {
+        "monday": [
+            ["09:00", "17:00"]
+        ],
+        "tuesday": [
+            ["09:00", "17:00"]
+        ],
+        "friday": [
+            ["09:00", "17:00"]
+        ],
+        "wednesday": [
+            ["09:00", "17:00"]
+        ],
+        "thursday": [
+            ["09:00", "17:00"]
+        ],
+        "sunday": [],
+        "saturday": []
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.702247+00:00",
+    "etag": "772edcb99cf93312cb6f023eb9429ce7272da8df",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 10,
+    "location": {
+        "floor": "1st floor",
+        "height_from_sea_level": null,
+        "room_number": "145",
+        "longitude": "-122.306478",
+        "latitude": "47.659572",
+        "building_name": "Hutchinson Hall (HUT)"
+    }
+}, {
+    "capacity": null,
+    "name": "Art Library",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Interim:\nM-F: 1pm-5pm",
+        "auto_labstats_total": 12,
+        "noise_level": "quiet",
+        "has_printing": "true",
+        "labstats_id": "37",
+        "num_computers": "12",
+        "has_outlets": "true",
+        "location_description": "Art Building, Room 101",
+        "auto_labstats_available": 11,
+        "has_natural_light": "true",
+        "food_nearby": "building",
+        "owner": "Art Library",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/11",
+    "available_hours": {
+        "monday": [
+            ["09:00", "17:00"]
+        ],
+        "tuesday": [
+            ["09:00", "17:00"]
+        ],
+        "friday": [
+            ["09:00", "17:00"]
+        ],
+        "wednesday": [
+            ["09:00", "17:00"]
+        ],
+        "thursday": [
+            ["09:00", "17:00"]
+        ],
+        "sunday": [],
+        "saturday": []
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.750153+00:00",
+    "etag": "87c418ca863f78baf020ed39c600aa909314bf29",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 11,
+    "location": {
+        "floor": "1st floor",
+        "height_from_sea_level": null,
+        "room_number": "101",
+        "longitude": "-122.306344",
+        "latitude": "47.658167",
+        "building_name": "Art Building (ART)"
+    }
+}, {
+    "capacity": null,
+    "name": "EAL Reading Room",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "auto_labstats_total": 8,
+        "noise_level": "quiet",
+        "has_printing": "true",
+        "labstats_id": "56",
+        "num_computers": "13",
+        "has_outlets": "true",
+        "location_description": "East Asia Library, Gowen Hall, Room 322",
+        "auto_labstats_available": 8,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "owner": "East Asia Library",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/12",
+    "available_hours": {
+        "monday": [
+            ["09:00", "17:00"]
+        ],
+        "tuesday": [
+            ["09:00", "17:00"]
+        ],
+        "friday": [
+            ["09:00", "17:00"]
+        ],
+        "wednesday": [
+            ["09:00", "17:00"]
+        ],
+        "thursday": [
+            ["09:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.803196+00:00",
+    "etag": "65bb0986d8fca031cde75398e056b1c9b3648bff",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 12,
+    "location": {
+        "floor": "3rd floor",
+        "height_from_sea_level": null,
+        "room_number": "322",
+        "longitude": "-122.3078",
+        "latitude": "47.656375",
+        "building_name": "Gowen Hall (GWN)"
+    }
+}, {
+    "capacity": null,
+    "name": "Music Library",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 1pm-5pm",
+        "auto_labstats_total": 2,
+        "noise_level": "quiet",
+        "has_printing": "true",
+        "labstats_id": "39",
+        "num_computers": "2",
+        "has_outlets": "true",
+        "location_description": "Music Building, Room 113",
+        "auto_labstats_available": 2,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "owner": "Music Library",
+        "has_labstats": "true",
+        "has_displays": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/13",
+    "available_hours": {
+        "monday": [
+            ["09:00", "17:00"]
+        ],
+        "tuesday": [
+            ["09:00", "17:00"]
+        ],
+        "friday": [
+            ["09:00", "17:00"]
+        ],
+        "wednesday": [
+            ["09:00", "17:00"]
+        ],
+        "thursday": [
+            ["09:00", "17:00"]
+        ],
+        "sunday": [],
+        "saturday": []
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.849877+00:00",
+    "etag": "9f6e01efb716448032a00e9e91afc43840c11372",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 13,
+    "location": {
+        "floor": "1st floor",
+        "height_from_sea_level": null,
+        "room_number": "113",
+        "longitude": "-122.306105",
+        "latitude": "47.657733",
+        "building_name": "Music Building (MUS)"
+    }
+}, {
+    "capacity": null,
+    "name": "Engineering 1st Floor Area",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "noise_level": "quiet",
+        "auto_labstats_total": 12,
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "37",
+        "num_computers": "20",
+        "location_description": "Engineering Library",
+        "auto_labstats_available": 11,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle",
+        "has_whiteboards": "true"
+    },
+    "uri": "/api/v1/spot/14",
+    "available_hours": {
+        "monday": [
+            ["08:00", "18:00"]
+        ],
+        "tuesday": [
+            ["08:00", "18:00"]
+        ],
+        "friday": [
+            ["08:00", "17:00"]
+        ],
+        "wednesday": [
+            ["08:00", "18:00"]
+        ],
+        "thursday": [
+            ["08:00", "18:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": []
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.898876+00:00",
+    "etag": "5c3a9c5f06bf1d8be9888d97b29b89b2ca19663c",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 14,
+    "location": {
+        "floor": "1st floor",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.304507",
+        "latitude": "47.654636",
+        "building_name": "Engineering Library (ELB)"
+    }
+}, {
+    "capacity": null,
+    "name": "Research Commons Main Space",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Au/Wi Interim:\nM-F: 9am-5pm",
+        "has_natural_light": "true",
+        "noise_level": "moderate",
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "67",
+        "num_computers": "15",
+        "owner": "Research Commons",
+        "location_description": "Research Commons, Allen Library South, Ground floor ",
+        "has_computers": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle",
+        "has_whiteboards": "true"
+    },
+    "uri": "/api/v1/spot/16",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-19T21:32:33.949148+00:00",
+    "etag": "abb92de0c9584b33ca8c518fb7c70ded526c055b",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "true",
+    "id": 16,
+    "location": {
+        "floor": "Lower level",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": -122.30711,
+        "latitude": 47.655446,
+        "building_name": "Allen Library (ALB) South"
+    }
+}, {
+    "capacity": null,
+    "name": "Built Environments Library",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Interim: M-F: 1pm-5pm",
+        "noise_level": "silent",
+        "auto_labstats_total": 5,
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "61",
+        "has_outlets": "true",
+        "location_description": "Gould Hall, Room 334",
+        "auto_labstats_available": 5,
+        "has_natural_light": "true",
+        "food_nearby": "building",
+        "owner": "Built Environments Library",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/24",
+    "available_hours": {
+        "monday": [
+            ["09:00", "17:00"]
+        ],
+        "tuesday": [
+            ["09:00", "17:00"]
+        ],
+        "friday": [
+            ["09:00", "17:00"]
+        ],
+        "wednesday": [
+            ["09:00", "17:00"]
+        ],
+        "thursday": [
+            ["09:00", "17:00"]
+        ],
+        "sunday": [],
+        "saturday": []
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.946417+00:00",
+    "etag": "92b6a9d23aa1f06fb6d94046172c090a271f1f20",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 24,
+    "location": {
+        "floor": "3rd floor",
+        "height_from_sea_level": null,
+        "room_number": "334",
+        "longitude": "-122.312518",
+        "latitude": "47.654761",
+        "building_name": "Gould Hall (GLD)"
+    }
+}, {
+    "capacity": 60,
+    "name": "MGH Media Studio",
+    "external_id": null,
+    "extended_info": {
+        "noise_level": "quiet",
+        "has_scanner": "true",
+        "has_printing": "true",
+        "labstats_id": "1",
+        "num_computers": "57",
+        "location_description": "Mary Gates Hall, Ground floor, Room 066",
+        "has_computers": "true",
+        "food_nearby": "building",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "has_displays": "true",
+        "has_projector": "true",
+        "campus": "seattle",
+        "has_whiteboards": "true"
+    },
+    "uri": "/api/v1/spot/25",
+    "available_hours": {
+        "monday": [],
+        "tuesday": [],
+        "friday": [],
+        "wednesday": [],
+        "thursday": [],
+        "sunday": [],
+        "saturday": []
+    },
+    "manager": "",
+    "last_modified": "2016-07-19T21:32:35.530299+00:00",
+    "etag": "e1a7430f3e90ba670b47ff21a6835382fa445793",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 25,
+    "location": {
+        "floor": "Lower level",
+        "height_from_sea_level": null,
+        "room_number": "066",
+        "longitude": -122.308045,
+        "latitude": 47.654707,
+        "building_name": "Mary Gates Hall (MGH)"
+    }
+}, {
+    "capacity": null,
+    "name": "Allen Raven Computers",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "auto_labstats_total": 26,
+        "noise_level": "variable",
+        "has_printing": "true",
+        "labstats_id": "54",
+        "location_description": "Allen Library North, Ground floor",
+        "auto_labstats_available": 20,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/28",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:17.996391+00:00",
+    "etag": "acc5718dce6e010ba27fc58df2b03ffc6017f056",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 28,
+    "location": {
+        "floor": "Ground floor",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.307065",
+        "latitude": "47.655778",
+        "building_name": "Allen Library (ALB) North"
+    }
+}, {
+    "capacity": null,
+    "name": "Suzzallo Instruction Lab",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "auto_labstats_total": 30,
+        "noise_level": "quiet",
+        "has_whiteboards": "true",
+        "has_printing": "true",
+        "labstats_id": "73",
+        "num_computers": "30",
+        "access_notes": "Available to students when workshops are not in session; see posted schedule. Food and drinks not allowed in space.",
+        "location_description": "Suzzallo Library, 1st floor, Room 102A",
+        "auto_labstats_available": 30,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "has_projector": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/29",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:18.052049+00:00",
+    "etag": "67dc4d314778d931f16c18742b24576774b3bb68",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "true",
+    "id": 29,
+    "location": {
+        "floor": "1",
+        "height_from_sea_level": null,
+        "room_number": "102A",
+        "longitude": "-122.308496",
+        "latitude": "47.656105",
+        "building_name": "Suzzallo Library (SUZ)"
+    }
+}, {
+    "capacity": null,
+    "name": "GIS Lab",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "noise_level": "quiet",
+        "auto_labstats_total": 21,
+        "has_printing": "true",
+        "labstats_id": "13",
+        "num_computers": "21",
+        "access_notes": "Available to students when workshops are not in session; see posted schedule.",
+        "location_description": "Suzzallo Library, Ground floor, Room G004",
+        "auto_labstats_available": 20,
+        "has_computers": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/30",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:18.109403+00:00",
+    "etag": "9610b417df03047f3bfe4e35d441c6febb6a2f7b",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "true",
+    "id": 30,
+    "location": {
+        "floor": "Ground",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.308322",
+        "latitude": "47.655895",
+        "building_name": "Suzzallo Library (SUZ)"
+    }
+}, {
+    "capacity": null,
+    "name": "Gov Pubs Study Area",
+    "external_id": null,
+    "extended_info": {
+        "has_computers": "true",
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "auto_labstats_total": 26,
+        "noise_level": "quiet",
+        "has_printing": "true",
+        "labstats_id": "34",
+        "location_description": "Suzzallo Library, Ground floor",
+        "auto_labstats_available": 24,
+        "has_natural_light": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/31",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:18.166354+00:00",
+    "etag": "cbf85216b1d36565e88150b56aa289d2a43cd237",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 31,
+    "location": {
+        "floor": "Ground",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.308111",
+        "latitude": "47.655935",
+        "building_name": "Suzzallo Library (SUZ)"
+    }
+}, {
+    "capacity": null,
+    "name": "Media Center Computers",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 9am-5pm",
+        "noise_level": "variable",
+        "auto_labstats_total": 8,
+        "has_printing": "true",
+        "labstats_id": "35",
+        "location_description": "Suzzallo Library, 3rd floor",
+        "auto_labstats_available": 8,
+        "has_computers": "true",
+        "food_nearby": "neighboring",
+        "has_outlets": "true",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/32",
+    "available_hours": {
+        "monday": [
+            ["08:00", "19:00"]
+        ],
+        "tuesday": [
+            ["08:00", "19:00"]
+        ],
+        "friday": [],
+        "wednesday": [
+            ["08:00", "19:00"]
+        ],
+        "thursday": [
+            ["08:00", "17:00"]
+        ],
+        "sunday": [
+            ["13:00", "17:00"]
+        ],
+        "saturday": [
+            ["13:00", "17:00"]
+        ]
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:18.235174+00:00",
+    "etag": "fba35f577b7b47321c90e9bab60e4c76be4d932f",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 32,
+    "location": {
+        "floor": "3",
+        "height_from_sea_level": null,
+        "room_number": "",
+        "longitude": "-122.307566",
+        "latitude": "47.655729",
+        "building_name": "Suzzallo Library (SUZ)"
+    }
+}, {
+    "capacity": null,
+    "name": "Music Library Listening Center",
+    "external_id": null,
+    "extended_info": {
+        "hours_notes": "Holiday hours may vary. Extended hours during finals. Interim:\nM-F: 1pm-5pm",
+        "noise_level": "variable",
+        "auto_labstats_total": 6,
+        "has_printing": "true",
+        "has_scanner": "true",
+        "labstats_id": "40",
+        "num_computers": "16",
+        "location_description": "Music Building, Room 19",
+        "auto_labstats_available": 6,
+        "food_nearby": "neighboring",
+        "has_labstats": "true",
+        "campus": "seattle"
+    },
+    "uri": "/api/v1/spot/33",
+    "available_hours": {
+        "monday": [
+            ["09:00", "17:00"]
+        ],
+        "tuesday": [
+            ["09:00", "17:00"]
+        ],
+        "friday": [
+            ["09:00", "17:00"]
+        ],
+        "wednesday": [
+            ["09:00", "17:00"]
+        ],
+        "thursday": [
+            ["09:00", "17:00"]
+        ],
+        "sunday": [],
+        "saturday": []
+    },
+    "manager": "",
+    "last_modified": "2016-07-21T23:48:18.306134+00:00",
+    "etag": "4e8b9ee88ec3b4f04ac3f16c691e88dcbf6fddb4",
+    "type": [],
+    "images": [],
+    "organization": "",
+    "display_access_restrictions": "",
+    "id": 33,
+    "location": {
+        "floor": "Ground",
+        "height_from_sea_level": null,
+        "room_number": "19",
+        "longitude": "-122.305789",
+        "latitude": "47.657577",
+        "building_name": "Music Building (MUS)"
+    }
+}]
