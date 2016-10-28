@@ -65,7 +65,8 @@ def get_techloan_data():
     """
 
     techloan_url = settings.CTE_TECHLOAN_URL
-    req = requests.get(techloan_url + "api/v1/type/?scope=extended",
+    req = requests.get(techloan_url +
+                       "api/v2/type/?embed=availability&embed=class",
                        verify=False)
     techloan_data = req.json()
 
@@ -104,7 +105,7 @@ def load_techloan_data_into_spaces(techloan_spaces, techloan_data):
                     'name': "%s %s (%d day)" % (tech_type["make"],
                                                 tech_type["model"],
                                                 tech_type["check_out_days"]),
-                    'category': 'Technology Loan',
+                    'category': '',
                     'subcategory': '',
                     'extended_info': {
                         'cte_type_id': tech_type["id"],
@@ -121,7 +122,8 @@ def load_techloan_data_into_spaces(techloan_spaces, techloan_data):
 def load_techloan_type_to_item(item, tech_type):
     if tech_type["name"]:
         item["name"] = tech_type["name"][:50]
-    item["subcategory"] = tech_type["class"]["name"]
+    item["category"] = tech_type["_embedded"]["class"]["category"]
+    item["subcategory"] = tech_type["_embedded"]["class"]["name"]
 
     iei = item["extended_info"]
     if tech_type["description"]:
@@ -130,19 +132,18 @@ def load_techloan_type_to_item(item, tech_type):
     iei["i_model"] = tech_type["model"]
     if tech_type["manual_url"]:
         iei["i_manual_url"] = tech_type["manual_url"]
-    if tech_type["image_url"]:
-        iei["i_image_url"] = tech_type["image_url"]
     iei["i_checkout_period"] = tech_type["check_out_days"]
+    iei["i_is_stf"] = tech_type["stf_funded"]
     iei["i_quantity"] = tech_type["num_active"]
-    iei["i_available"] = \
-        tech_type["availability"][0]["num_available"]
+    iei["i_num_available"] = \
+        tech_type["_embedded"]["availability"][0]["num_available"]
 
     # Kludge, customer type 4 ("UW Student") is the only type which can (and
     # must) be reserved on-line. Otherwise treated as first-come, first-serve.
     if tech_type["customer_type_id"] == 4:
         iei["i_reservation_required"] = True
-    iei["access_limit_role"] = True
-    iei["access_role_students"] = True
+    iei["i_access_limit_role"] = True
+    iei["i_access_role_students"] = True
 
 
 def get_techloan_data_by_id(techloan_data, techloan_id):
@@ -190,6 +191,7 @@ def validate_techloan_data(techloan_data):
             validate_techloan_data_entry(data)
         except Exception as ex:
             logger.warning("Bad data retrieved from the techloan instance! " +
+                           str(ex) + " " +
                            str(data))
             to_remove.append(data)
 
@@ -234,11 +236,25 @@ def validate_techloan_data_entry(techloan_data_entry):
     if "customer_type_id" not in techloan_data_entry:
         raise Exception("Missing customer_type_id in techloan data entry!")
 
+    if "stf_funded" not in techloan_data_entry:
+        raise Exception("Missing stf_funded in techloan data entry!")
+
     if "num_active" not in techloan_data_entry:
         raise Exception("Missing num_active in techloan data entry!")
 
-    if "availability" not in techloan_data_entry:
-        raise Exception("Missing availability in techloan data entry!")
+    if "_embedded" not in techloan_data_entry or \
+            "class" not in techloan_data_entry["_embedded"]:
+        raise Exception("Missing class in techloan data entry!")
 
-    if "num_available" not in techloan_data_entry["availability"][0]:
-        raise Exception("No \'num_available\' in techloan data entry!")
+    if "name" not in techloan_data_entry["_embedded"]["class"]:
+        raise Exception("Missing class name in techloan data entry!")
+
+    if "category" not in techloan_data_entry["_embedded"]["class"]:
+        raise Exception("Missing class category in techloan data entry!")
+
+    if "_embedded" not in techloan_data_entry or \
+            "availability" not in techloan_data_entry["_embedded"] or \
+            not len(techloan_data_entry["_embedded"]["availability"]) or \
+            "num_available" not in \
+            techloan_data_entry["_embedded"]["availability"][0]:
+        raise Exception("Missing availability in techloan data entry!")
