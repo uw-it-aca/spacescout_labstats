@@ -92,7 +92,7 @@ def load_techloan_data_into_spaces(techloan_spaces, techloan_data):
             continue
 
         for item in space["items"]:
-            item["extended_info"]["i_is_active"] = False
+            item["extended_info"].pop("i_is_active", None)
 
         tech_types = get_techloan_data_by_id(
             techloan_data, space["extended_info"]["cte_techloan_id"])
@@ -115,7 +115,7 @@ def load_techloan_data_into_spaces(techloan_spaces, techloan_data):
                 space["items"].append(item)
 
             # update the item
-            item["extended_info"]["i_is_active"] = True
+            item["extended_info"]["i_is_active"] = "true"
             load_techloan_type_to_item(item, tech_type)
 
 
@@ -133,7 +133,10 @@ def load_techloan_type_to_item(item, tech_type):
     if tech_type["manual_url"]:
         iei["i_manual_url"] = tech_type["manual_url"]
     iei["i_checkout_period"] = tech_type["check_out_days"]
-    iei["i_is_stf"] = tech_type["stf_funded"]
+    if tech_type["stf_funded"]:
+        iei["i_is_stf"] = "true"
+    else:
+        iei.pop("i_is_stf", None)
     iei["i_quantity"] = tech_type["num_active"]
     iei["i_num_available"] = \
         tech_type["_embedded"]["availability"][0]["num_available"]
@@ -141,9 +144,11 @@ def load_techloan_type_to_item(item, tech_type):
     # Kludge, customer type 4 ("UW Student") is the only type which can (and
     # must) be reserved on-line. Otherwise treated as first-come, first-serve.
     if tech_type["customer_type_id"] == 4:
-        iei["i_reservation_required"] = True
-    iei["i_access_limit_role"] = True
-    iei["i_access_role_students"] = True
+        iei["i_reservation_required"] = "true"
+    else:
+        iei.pop("i_reservation_required", None)
+    iei["i_access_limit_role"] = "true"
+    iei["i_access_role_students"] = "true"
 
 
 def get_techloan_data_by_id(techloan_data, techloan_id):
