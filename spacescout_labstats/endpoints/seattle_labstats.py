@@ -2,6 +2,7 @@ import logging
 from django.conf import settings
 from spacescout_labstats import utils
 from SOAPpy import WSDL
+from SOAPpy.Client import SOAPTimeoutError
 import json
 import traceback
 
