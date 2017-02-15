@@ -68,6 +68,12 @@ def get_techloan_data():
     req = requests.get(techloan_url +
                        "api/v2/type/?embed=availability&embed=class",
                        verify=False)
+
+    if(req.status_code != 200):
+        logger.warning("CTE Techloan request failed with code: " +
+                       req.status_code)
+        return None
+
     techloan_data = req.json()
 
     try:
