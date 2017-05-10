@@ -71,7 +71,7 @@ def get_techloan_data():
 
     if(req.status_code != 200):
         logger.warning("CTE Techloan request failed with code: " +
-                       req.status_code)
+                       str(req.status_code))
         return None
 
     techloan_data = req.json()
