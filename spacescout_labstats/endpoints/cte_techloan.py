@@ -68,6 +68,12 @@ def get_techloan_data():
     req = requests.get(techloan_url +
                        "api/v2/type/?embed=availability&embed=class",
                        verify=False)
+
+    if(req.status_code != 200):
+        logger.warning("CTE Techloan request failed with code: " +
+                       str(req.status_code))
+        return None
+
     techloan_data = req.json()
 
     try:
@@ -141,9 +147,7 @@ def load_techloan_type_to_item(item, tech_type):
     iei["i_num_available"] = \
         tech_type["_embedded"]["availability"][0]["num_available"]
 
-    # Kludge, customer type 4 ("UW Student") is the only type which can (and
-    # must) be reserved on-line. Otherwise treated as first-come, first-serve.
-    if tech_type["customer_type_id"] == 4:
+    if tech_type["reservable"]:
         iei["i_reservation_required"] = "true"
     else:
         iei.pop("i_reservation_required", None)
