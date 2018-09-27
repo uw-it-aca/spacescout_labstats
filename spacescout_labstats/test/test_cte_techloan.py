@@ -105,6 +105,28 @@ class CTETechloanTest(LabstatsTestCase):
         with self.assertRaises(Exception):
             cte_techloan.get_endpoint_data(test_json)
 
+    def test_get_space_item_by_type_id(self):
+        """
+        Tests that the correct space with a cte_type_id that matches the given
+        type_id. Also tests that 'None' is returned when not found
+        """
+        # Test with a list of spaces that have the matching cte_type_id
+        valid_spaces = self.load_json_file('cte_techloan.json')
+        returned = cte_techloan.get_space_item_by_type_id(1, valid_spaces)
+        # Should return a single space with the correct id
+        self.assertEqual(valid_spaces[0], returned)
+
+        # Test with a list of spaces that are valid but dont have a matching id
+        valid_spaces[0]["extended_info"]["cte_type_id"] = 2
+        returned = cte_techloan.get_space_item_by_type_id(1, valid_spaces)
+        self.assertIs(returned, None)
+
+        # Test with a list of spaces that do not have a cte_type_id
+        invalid_spaces = [{}]
+        invalid_spaces[0]["extended_info"] = {}
+        returned = cte_techloan.get_space_item_by_type_id(1, invalid_spaces)
+        self.assertIs(returned, None)
+
     def test_validate_techloan_data(self):
         """
         Tests that techloan data is validated appropriately and that
