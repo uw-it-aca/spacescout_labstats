@@ -105,7 +105,31 @@ class CTETechloanTest(LabstatsTestCase):
         with self.assertRaises(Exception):
             cte_techloan.get_endpoint_data(test_json)
 
+    def test_validate_techloan_data(self):
+        """
+        Tests that techloan data is validated appropriately and that
+        exceptions are raised with invalid techloan data versions
+        """
+        valid_type_data = self.load_json_file('cte_techloan_type_data.json')
+        # Test validation with data that is of dict type instead of list
+        invalid_type_data = {}
+        with self.assertRaises(Exception):
+            cte_techloan.validate_techloan_data(invalid_type_data)
+
+        invalid_entry_data = [{}]
+        # Test validation with data of correct type containing an invalid entry
+        # This should remove the single invalid entry in the invalid entry data
+        cte_techloan.validate_techloan_data(invalid_entry_data)
+        self.assertEqual(invalid_entry_data, [])
+
+        # Test with data that is of correct type with a valid entry
+        cte_techloan.validate_techloan_data(valid_type_data)
+
     def test_validate_techloan_data_entry(self):
+        """
+        Tests that a given techloan data entry is validated appropriately
+        by testing that each required/necessary field is present in the entry
+        """
         data_entry = {}
         with self.assertRaises(Exception):
             cte_techloan.validate_techloan_data_entry(data_entry)

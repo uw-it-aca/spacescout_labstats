@@ -12,10 +12,10 @@
         "last_modified": null,
         "_links": {
           "self": {
-            "href": "https://www.cte.uw.edu/tools/techloan/api/v2/class/7/?format=json"
+            "href": "https://www.XXXXXXXXXX.edu/"
           },
           "types": {
-            "href": "https://www.cte.uw.edu/tools/techloan/api/v2/type/?format=json?class_id=7"
+            "href": "https://www.XXXXXXXXXX.edu/"
           }
         },
         "id": 7,
@@ -27,7 +27,7 @@
           "date_available": "2018-09-25",
           "_links": {
             "type": {
-              "href": "https://www.cte.uw.edu/tools/techloan/api/v2/type/22/?format=json"
+              "href": "https://www.XXXXXXXXXX.edu/"
             }
           },
           "num_available": 20,
@@ -40,24 +40,24 @@
     "make": "Da-Lite (6 ft)",
     "stf_funded": true,
     "equipment_class_id": 7,
-    "image_url": "https://stlp.uw.edu/images/equipment_thumbs/screen.jpg",
-    "manual_url": "http://www.da-lite.com/products/install_pdfs/92.pdf",
+    "image_url": "https://www.XXXXXXXXXX.edu/XXX.jpeg",
+    "manual_url": "https://www.XXXXXXXXXX.edu/XXX.pdf",
     "num_active": 21,
     "_links": {
       "equipment": {
-        "href": "https://www.cte.uw.edu/tools/techloan/api/v2/equipment/?format=json?type_id=22"
+        "href": "https://www.XXXXXXXXXX.edu/"
       },
       "self": {
-        "href": "https://www.cte.uw.edu/tools/techloan/api/v2/type/22/?format=json"
+        "href": "https://www.XXXXXXXXXX.edu/"
       },
       "availability": {
-        "href": "https://www.cte.uw.edu/tools/techloan/api/v2/availability/?format=json?type_id=22"
+        "href": "https://www.XXXXXXXXXX.edu/"
       },
       "class": {
-        "href": "https://www.cte.uw.edu/tools/techloan/api/v2/class/7/?format=json"
+        "href": "https://www.XXXXXXXXXX.edu/"
       },
       "location": {
-        "href": "https://www.cte.uw.edu/tools/techloan/api/v2/location/1/?format=json"
+        "href": "https://www.XXXXXXXXXX.edu/"
       }
     },
     "model": "83316 (7-day)"
