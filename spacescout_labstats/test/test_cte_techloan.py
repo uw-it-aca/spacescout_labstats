@@ -105,6 +105,23 @@ class CTETechloanTest(LabstatsTestCase):
         with self.assertRaises(Exception):
             cte_techloan.get_endpoint_data(test_json)
 
+    def test_get_techloan_data_by_id(self):
+        """
+        Tests that the returned techloan_data has a equipment_location_id
+        that matches the given id. Also tests that an empty list is
+        returned when not found
+        """
+        # Test with a list of data that have the matching techloan_id
+        valid_data = self.load_json_file('cte_techloan_type_data.json')
+        returned = cte_techloan.get_techloan_data_by_id(valid_data, 1)
+        # Should return a list with data that has the correct id
+        self.assertEqual(valid_data, returned)
+
+        # Test with a list with data thats valid but doesnt match the id
+        valid_data[0]["equipment_location_id"] = 2
+        returned = cte_techloan.get_techloan_data_by_id(valid_data, 1)
+        self.assertEqual(returned, [])
+
     def test_get_space_item_by_type_id(self):
         """
         Tests that the correct space with a cte_type_id that matches the given
