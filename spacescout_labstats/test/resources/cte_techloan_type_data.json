@@ -4,7 +4,7 @@
     "check_out_days": 7,
     "last_modified": "2018-06-25T09:58:49.403000",
     "customer_type_id": 4,
-    "id": 22,
+    "id": 1,
     "reservable": true,
     "_embedded": {
       "class": {

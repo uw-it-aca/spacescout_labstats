@@ -1,10 +1,12 @@
 """
 This file contians tests for cte_techloan.py
 """
-from django.conf import settings
-from django.test.utils import override_settings
 import requests
 from mock import patch, Mock
+
+from django.conf import settings
+from django.test.utils import override_settings
+
 from spacescout_labstats.endpoints import cte_techloan
 from . import LabstatsTestCase
 
@@ -104,6 +106,24 @@ class CTETechloanTest(LabstatsTestCase):
         del settings.CTE_TECHLOAN_URL
         with self.assertRaises(Exception):
             cte_techloan.get_endpoint_data(test_json)
+
+    def test_load_techloan_data_into_spaces(self):
+        test_spaces = self.load_json_file('cte_techloan.json')
+        test_data = self.load_json_file('cte_techloan_type_data.json')
+        cte_techloan.load_techloan_data_into_spaces(test_spaces, test_data)
+        self.assertEqual(
+            test_spaces[0]["items"][0]["extended_info"]["i_is_active"],
+            'true')
+
+        # Test with a non-matching cte_type_id
+        test_spaces = self.load_json_file('cte_techloan.json')
+        test_spaces[0]["items"][0]["extended_info"]["cte_type_id"] = 22
+        cte_techloan.load_techloan_data_into_spaces(test_spaces, test_data)
+
+        # Test without a cte_techloan_id in extended info (logs a warning)
+        test_spaces = self.load_json_file('cte_techloan.json')
+        del test_spaces[0]["extended_info"]["cte_techloan_id"]
+        cte_techloan.load_techloan_data_into_spaces(test_spaces, test_data)
 
     def test_get_techloan_data_by_id(self):
         """

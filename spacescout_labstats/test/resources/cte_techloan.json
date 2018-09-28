@@ -35,6 +35,8 @@
         "category": "Placeholder Category",
         "subcategory": "Laptop Computer",
         "extended_info": {
+          "cte_type_id": 1,
+          "i_is_active": true,
           "i_quantity": "10",
           "i_model": "Macbook Pro",
           "i_check_out_period": "7",
@@ -48,6 +50,7 @@
         "category": "Placeholder Category",
         "subcategory": "Laptop Computer",
         "extended_info": {
+          "cte_type_id": 100,
           "i_quantity": "12",
           "i_model": "Latitude E5440",
           "i_check_out_period": "14",
