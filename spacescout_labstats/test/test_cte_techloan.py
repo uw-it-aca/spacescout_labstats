@@ -108,6 +108,7 @@ class CTETechloanTest(LabstatsTestCase):
             cte_techloan.get_endpoint_data(test_json)
 
     def test_load_techloan_data_into_spaces(self):
+        # Initial test with matching cte_type_id in data and spaces
         test_spaces = self.load_json_file('cte_techloan.json')
         test_data = self.load_json_file('cte_techloan_type_data.json')
         cte_techloan.load_techloan_data_into_spaces(test_spaces, test_data)
@@ -115,7 +116,7 @@ class CTETechloanTest(LabstatsTestCase):
             test_spaces[0]["items"][0]["extended_info"]["i_is_active"],
             'true')
 
-        # Test with a non-matching cte_type_id
+        # Test with a non-matching cte_type_id in space item
         test_spaces = self.load_json_file('cte_techloan.json')
         test_spaces[0]["items"][0]["extended_info"]["cte_type_id"] = 22
         cte_techloan.load_techloan_data_into_spaces(test_spaces, test_data)
@@ -124,6 +125,33 @@ class CTETechloanTest(LabstatsTestCase):
         test_spaces = self.load_json_file('cte_techloan.json')
         del test_spaces[0]["extended_info"]["cte_techloan_id"]
         cte_techloan.load_techloan_data_into_spaces(test_spaces, test_data)
+
+    def test_load_techloan_type_to_item(self):
+        test_spaces = self.load_json_file('cte_techloan.json')
+        test_items = test_spaces[0]["items"]
+        test_data = self.load_json_file('cte_techloan_type_data.json')
+        tech_type = test_data[0]
+
+        # Test with all fields populated in tech_type
+        cte_techloan.load_techloan_type_to_item(test_items[0], tech_type)
+        # Assert that the fields were populated
+        self.assertEqual(test_items[0]["category"],
+                         tech_type["_embedded"]["class"]["category"])
+        self.assertEqual(test_items[0]["extended_info"]["i_manual_url"],
+                         tech_type["manual_url"])
+        self.assertEqual(test_items[0]["extended_info"]["i_is_stf"], "true")
+        self.assertEqual(
+            test_items[0]["extended_info"]["i_reservation_required"], "true")
+
+        # Test without reservable and stf_funded fields in data
+        tech_type["stf_funded"] = None
+        tech_type["reservable"] = None
+        # Assert that the blank fields are not populated
+        cte_techloan.load_techloan_type_to_item(test_items[1], tech_type)
+        self.assertEqual('i_is_stf' in test_items[1]["extended_info"], False)
+        self.assertEqual(
+            'i_reservation_required' in test_items[1]["extended_info"], False)
+
 
     def test_get_techloan_data_by_id(self):
         """
