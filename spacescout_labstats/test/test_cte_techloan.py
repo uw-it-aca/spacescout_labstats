@@ -13,6 +13,7 @@ from . import LabstatsTestCase
 
 class CTETechloanTest(LabstatsTestCase):
 
+    @override_settings(SS_WEB_SERVER_HOST="xxx")
     def test_get_space_search_parameters(self):
         """
         Tests that the url constructed for GET requests to spotseeker_server
@@ -39,12 +40,8 @@ class CTETechloanTest(LabstatsTestCase):
         a 'cte_techloan_id' is in the extended info of a space
         """
         test_json = self.load_json_file('cte_techloan.json')
-
-        for space in test_json:
-            try:
-                cte_techloan.validate_space(space)
-            except Exception as ex:
-                self.fail("Valid data should not fail validation!")
+        # Run validation with a valid space, ensure it passes
+        cte_techloan.validate_space(test_json[0])
 
         del test_json[0]['extended_info']['cte_techloan_id']
 
@@ -108,6 +105,10 @@ class CTETechloanTest(LabstatsTestCase):
             cte_techloan.get_endpoint_data(test_json)
 
     def test_load_techloan_data_into_spaces(self):
+        """
+        Tests that techloan data is loaded into the corresponding
+        items within a space that match the type_id of the data
+        """
         # Initial test with matching cte_type_id in data and spaces
         test_spaces = self.load_json_file('cte_techloan.json')
         test_data = self.load_json_file('cte_techloan_type_data.json')
@@ -176,19 +177,20 @@ class CTETechloanTest(LabstatsTestCase):
         """
         # Test with a list of spaces that have the matching cte_type_id
         valid_spaces = self.load_json_file('cte_techloan.json')
-        returned = cte_techloan.get_space_item_by_type_id(1, valid_spaces)
+        items = valid_spaces[0]["items"]
+        returned = cte_techloan.get_space_item_by_type_id(1, items)
         # Should return a single space with the correct id
-        self.assertEqual(valid_spaces[0], returned)
+        self.assertEqual(items[0], returned)
 
         # Test with a list of spaces that are valid but dont have a matching id
-        valid_spaces[0]["extended_info"]["cte_type_id"] = 2
-        returned = cte_techloan.get_space_item_by_type_id(1, valid_spaces)
+        items[0]["extended_info"]["cte_type_id"] = 2
+        returned = cte_techloan.get_space_item_by_type_id(1, items)
         self.assertIs(returned, None)
 
         # Test with a list of spaces that do not have a cte_type_id
-        invalid_spaces = [{}]
-        invalid_spaces[0]["extended_info"] = {}
-        returned = cte_techloan.get_space_item_by_type_id(1, invalid_spaces)
+        invalid_items = [{}]
+        invalid_items[0]["extended_info"] = {}
+        returned = cte_techloan.get_space_item_by_type_id(1, invalid_items)
         self.assertIs(returned, None)
 
     def test_validate_techloan_data(self):

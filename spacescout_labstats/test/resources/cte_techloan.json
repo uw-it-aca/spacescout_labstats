@@ -6,7 +6,6 @@
     "extended_info": {
       "has_cte_techloan": "true",
       "cte_techloan_id": "1",
-      "cte_type_id": 1,
       "app_type": "tech"
     },
     "uri": "/api/v1/spot/13",
