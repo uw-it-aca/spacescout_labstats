@@ -13,9 +13,6 @@ from . import LabstatsTestCase
 
 class CTETechloanTest(LabstatsTestCase):
 
-    def test_hello(self):
-        self.assertTrue(True)
-
     def test_get_space_search_parameters(self):
         """
         Tests that the url constructed for GET requests to spotseeker_server
@@ -26,7 +23,8 @@ class CTETechloanTest(LabstatsTestCase):
                         "extended_info:has_cte_techloan=true&"
                         "limit=0") % (server_host)
         # Assert that the retireved url matches the expected url
-        self.assertEquals(expected_url, cte_techloan.get_space_search_parameters())
+        self.assertEquals(
+             expected_url, cte_techloan.get_space_search_parameters())
 
     def test_get_name(self):
         """
@@ -91,10 +89,12 @@ class CTETechloanTest(LabstatsTestCase):
         test_json = self.load_json_file('cte_techloan.json')
         test_json_data = self.load_json_file('cte_techloan_type_data.json')
         # Test getting endpoint data with valid spaces and space data succeeds
-        with patch.object(cte_techloan, 'get_techloan_data', return_value=test_json_data):
+        with patch.object(cte_techloan, 'get_techloan_data',
+                          return_value=test_json_data):
             cte_techloan.get_endpoint_data(test_json)
         # Test getting endpoint data with invalid data returns None
-        with patch.object(cte_techloan, 'get_techloan_data', return_value=None):
+        with patch.object(cte_techloan, 'get_techloan_data',
+                          return_value=None):
             self.assertIs(cte_techloan.get_endpoint_data(test_json), None)
 
     @override_settings(CTE_TECHLOAN_URL="xxx")
@@ -151,7 +151,6 @@ class CTETechloanTest(LabstatsTestCase):
         self.assertEqual('i_is_stf' in test_items[1]["extended_info"], False)
         self.assertEqual(
             'i_reservation_required' in test_items[1]["extended_info"], False)
-
 
     def test_get_techloan_data_by_id(self):
         """
