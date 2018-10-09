@@ -8,6 +8,7 @@ from django.conf import settings
 from django.test.utils import override_settings
 
 from spacescout_labstats.endpoints import cte_techloan
+from spacescout_labstats.endpoints.cte_techloan import logging
 from . import LabstatsTestCase
 
 
@@ -87,8 +88,9 @@ class CTETechloanTest(LabstatsTestCase):
         test_json_data = self.load_json_file('cte_techloan_type_data.json')
         # Test getting endpoint data with valid spaces and space data succeeds
         with patch.object(cte_techloan, 'get_techloan_data',
-                          return_value=test_json_data):
+                          return_value=test_json_data) as mock:
             cte_techloan.get_endpoint_data(test_json)
+            mock.assert_called_once()
         # Test getting endpoint data with invalid data returns None
         with patch.object(cte_techloan, 'get_techloan_data',
                           return_value=None):
@@ -118,14 +120,23 @@ class CTETechloanTest(LabstatsTestCase):
             'true')
 
         # Test with a non-matching cte_type_id in space item
+        self.assertEqual(len(test_spaces[0]["items"]), 3)
         test_spaces = self.load_json_file('cte_techloan.json')
         test_spaces[0]["items"][0]["extended_info"]["cte_type_id"] = 22
         cte_techloan.load_techloan_data_into_spaces(test_spaces, test_data)
+        self.assertEqual(len(test_spaces[0]["items"]), 4)
 
         # Test without a cte_techloan_id in extended info (logs a warning)
         test_spaces = self.load_json_file('cte_techloan.json')
         del test_spaces[0]["extended_info"]["cte_techloan_id"]
-        cte_techloan.load_techloan_data_into_spaces(test_spaces, test_data)
+        # Patch the logger in cte_techloan
+        mock_log = Mock()
+        with patch('spacescout_labstats.endpoints' +
+                   '.cte_techloan.logger') as mock_log:
+            cte_techloan.load_techloan_data_into_spaces(
+                test_spaces, test_data)
+            # Assert that it logs a warning
+            mock_log.warning.assert_called_once()
 
     def test_load_techloan_type_to_item(self):
         test_spaces = self.load_json_file('cte_techloan.json')
@@ -211,7 +222,9 @@ class CTETechloanTest(LabstatsTestCase):
         self.assertEqual(invalid_entry_data, [])
 
         # Test with data that is of correct type with a valid entry
+        expected_data = valid_type_data
         cte_techloan.validate_techloan_data(valid_type_data)
+        self.assertEqual(expected_data, valid_type_data)
 
     def test_validate_techloan_data_entry(self):
         """
