@@ -1,0 +1,65 @@
+[
+  {
+    "description": "The 6ft projection screen is 80 inches diagonally, and the 8ft is 100 inches diagonally when standing. These screens can  be pulled directly out of the casing and stand up on their own. The casing is around six feet, or eight feet, long but is  manageable since it is relatively lightweight.",
+    "check_out_days": 7,
+    "last_modified": "2018-06-25T09:58:49.403000",
+    "customer_type_id": 4,
+    "id": 1,
+    "reservable": true,
+    "_embedded": {
+      "class": {
+        "category": "computer_accessories",
+        "last_modified": null,
+        "_links": {
+          "self": {
+            "href": "https://www.XXXXXXXXXX.edu/"
+          },
+          "types": {
+            "href": "https://www.XXXXXXXXXX.edu/"
+          }
+        },
+        "id": 7,
+        "name": "Projection Screen"
+      },
+      "availability": [
+        {
+          "equipment_type_id": 22,
+          "date_available": "2018-09-25",
+          "_links": {
+            "type": {
+              "href": "https://www.XXXXXXXXXX.edu/"
+            }
+          },
+          "num_available": 20,
+          "bookable": false
+        }
+      ]
+    },
+    "name": "Dalite 6-ft Projection Screen",
+    "equipment_location_id": 1,
+    "make": "Da-Lite (6 ft)",
+    "stf_funded": true,
+    "equipment_class_id": 7,
+    "image_url": "https://www.XXXXXXXXXX.edu/XXX.jpeg",
+    "manual_url": "https://www.XXXXXXXXXX.edu/XXX.pdf",
+    "num_active": 21,
+    "_links": {
+      "equipment": {
+        "href": "https://www.XXXXXXXXXX.edu/"
+      },
+      "self": {
+        "href": "https://www.XXXXXXXXXX.edu/"
+      },
+      "availability": {
+        "href": "https://www.XXXXXXXXXX.edu/"
+      },
+      "class": {
+        "href": "https://www.XXXXXXXXXX.edu/"
+      },
+      "location": {
+        "href": "https://www.XXXXXXXXXX.edu/"
+      }
+    },
+    "model": "83316 (7-day)"
+  }
+]
