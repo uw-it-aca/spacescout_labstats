@@ -99,18 +99,18 @@ class OnlineLabstatsTest(LabstatsTestCase):
             spaces = online_labstats.get_online_labstats_data(customer, page)
             self.assertEqual(test_spaces, spaces)
 
-        with patch.object(requests, 'get', return_value=None) as (
-                mock_get), patch('spacescout_labstats.endpoints.' +
-                                 'online_labstats.logger') as mock_log:
+        with patch.object(requests, 'get', return_value=None) as \
+                mock_get, patch('spacescout_labstats.endpoints.' +
+                                'online_labstats.logger') as mock_log:
                 mock_get.side_effect = Exception()
                 ret = online_labstats.get_online_labstats_data(customer, page)
                 mock_log.error.assert_called_with('Retrieving labstats' +
                                                   ' page failed!', exc_info=1)
                 self.assertIs(ret, None)
 
-        with patch.object(requests, 'get', return_value=None) as (
-                mock_get), patch('spacescout_labstats.endpoints.' +
-                                 'online_labstats.logger') as mock_log:
+        with patch.object(requests, 'get', return_value=None) as \
+                mock_get, patch('spacescout_labstats.endpoints.' +
+                                'online_labstats.logger') as mock_log:
                 mock_get.side_effect = ValueError()
                 ret = online_labstats.get_online_labstats_data(customer, page)
                 mock_log.error.assert_called_with('Retrieving labstats' +
