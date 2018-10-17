@@ -13,7 +13,7 @@ setup(name='SpaceScout-Labstats',
                         'soappy',
                         'poster',
                         'requests',
-                        'urllib3',
+                        'urllib3<1.24',
                         'mock',
                        ],
       )
