@@ -139,12 +139,12 @@ def get_online_labstats_data(customer, page):
                                 verify=False)
 
         spaces = response.json()
-    except Exception as ex:
-        logger.error("Retrieving labstats page failed!", exc_info=1)
-        return None
     except ValueError as ex:
         logger.error("Invalid json received from online labstats service!"
                      "Body is " + response.content, exc_info=1)
+        return None
+    except Exception as ex:
+        logger.error("Retrieving labstats page failed!", exc_info=1)
         return None
 
     return spaces

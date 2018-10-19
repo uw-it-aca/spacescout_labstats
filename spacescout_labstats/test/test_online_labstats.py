@@ -3,6 +3,7 @@ This file contians tests for online_labstats.py
 """
 import requests
 from mock import patch, Mock
+from requests.models import Response
 
 from django.test.utils import override_settings
 from django.conf import settings
@@ -108,13 +109,17 @@ class OnlineLabstatsTest(LabstatsTestCase):
                                                   ' page failed!', exc_info=1)
                 self.assertIs(ret, None)
 
-        with patch.object(requests, 'get', return_value=None) as mock_get:
+        bad_resp = Response()
+        bad_resp.status_code = 200
+        bad_resp._content = b'{ "key" : "a", \\x}'
+        with patch.object(requests, 'get', return_value=bad_resp) as mock_get:
             with patch('spacescout_labstats.endpoints.' +
                        'online_labstats.logger') as mock_log:
-                mock_get.side_effect = ValueError()
                 ret = online_labstats.get_online_labstats_data(customer, page)
-                mock_log.error.assert_called_with('Retrieving labstats' +
-                                                  ' page failed!', exc_info=1)
+                mock_log.error.assert_called_with('Invalid json received' +
+                                                  ' from online labstats '
+                                                  'service!Body is { "key" ' +
+                                                  ': "a", \\x}', exc_info=1)
                 self.assertIs(ret, None)
 
     def test_get_labstat_by_label(self):
