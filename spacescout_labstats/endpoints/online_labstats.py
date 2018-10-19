@@ -116,7 +116,7 @@ def get_customers(spaces):
                 other_id = customers[customer_id][page_id][space_label]
                 logger.warning("There appear to be multiple spaces with the"
                                "label \'" + space_label+"\',space #" +
-                               space['id'] + " and " + str(other_id))
+                               str(space['id']) + " and " + str(other_id))
                 continue
 
             customers[customer_id][page_id][space_label] = space['id']
@@ -139,12 +139,12 @@ def get_online_labstats_data(customer, page):
                                 verify=False)
 
         spaces = response.json()
-    except Exception as ex:
-        logger.error("Retrieving labstats page failed!", exc_info=1)
-        return None
     except ValueError as ex:
         logger.error("Invalid json received from online labstats service!"
                      "Body is " + response.content, exc_info=1)
+        return None
+    except Exception as ex:
+        logger.error("Retrieving labstats page failed!", exc_info=1)
         return None
 
     return spaces
@@ -159,7 +159,7 @@ def load_labstats_data(spaces, labstats_data, page_dict):
         space = utils.get_space_from_spaces(spaces, space_id)
 
         if space is None:
-            logger.warning("space " + space_id + " missing from spaces!")
+            logger.warning("space " + str(space_id) + " missing from spaces!")
             continue
 
         # retrieve the labstat info for this space
@@ -169,7 +169,7 @@ def load_labstats_data(spaces, labstats_data, page_dict):
 
         if space_labstat is None:
             logger.warning("Labstat entry not found for label %s and space #" +
-                           space['id'], space["extended_info"]
+                           str(space['id']), space["extended_info"]
                            ["labstats_label"])
             utils.clean_spaces_labstats([space])
             continue

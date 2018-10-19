@@ -1,0 +1,169 @@
+[
+    {
+        "available_hours": {
+            "friday": [
+                [
+                    "06:30",
+                    "17:30"
+                ]
+            ],
+            "monday": [
+                [
+                    "06:30",
+                    "22:30"
+                ]
+            ],
+            "saturday": [
+                [
+                    "08:00",
+                    "18:00"
+                ]
+            ],
+            "sunday": [
+                [
+                    "12:00",
+                    "20:00"
+                ]
+            ],
+            "thursday": [
+                [
+                    "06:30",
+                    "22:30"
+                ]
+            ],
+            "tuesday": [
+                [
+                    "06:30",
+                    "22:30"
+                ]
+            ],
+            "wednesday": [
+                [
+                    "06:30",
+                    "22:30"
+                ]
+            ]
+        },
+        "capacity": null,
+        "display_access_restrictions": "",
+        "etag": "3756c62d5836adab96b4d5ff6a61d5106188a949",
+        "extended_info": {
+            "campus": "bothell",
+            "editors": "amyv",
+            "food_nearby": "building",
+            "has_computers": "true",
+            "has_online_labstats": "true",
+            "has_outlets": "true",
+            "has_whiteboards": "true",
+            "hours_notes": "Interim hours vary.  See http://www.uwb.edu/safety/hours",
+            "labstats_customer_id": "749b5ac3-597f-4316-957c-abe939800634",
+            "labstats_label": "UW2 Lower Level Kiosks",
+            "labstats_page_id": "1002",
+            "location_description": "UW2, Lower Level 2 near vending",
+            "noise_level": "moderate",
+            "orientation": "vending",
+            "owner": "UW Bothell",
+            "auto_labstats_total": "1"
+        },
+        "external_id": null,
+        "id": 257,
+        "images": [],
+        "last_modified": "2016-07-20T17:10:33.497519+00:00",
+        "location": {
+            "building_name": "Bothell Building UW2",
+            "floor": "L2",
+            "height_from_sea_level": null,
+            "latitude": 47.758669,
+            "longitude": -122.191287,
+            "room_number": "20"
+        },
+        "manager": "amyv",
+        "name": "LL Study Area",
+        "organization": "",
+        "type": [],
+        "uri": "/api/v1/spot/257"
+    },
+    {
+        "available_hours": {
+            "friday": [
+                [
+                    "06:30",
+                    "17:30"
+                ]
+            ],
+            "monday": [
+                [
+                    "06:30",
+                    "22:30"
+                ]
+            ],
+            "saturday": [
+                [
+                    "08:00",
+                    "18:00"
+                ]
+            ],
+            "sunday": [
+                [
+                    "12:00",
+                    "20:00"
+                ]
+            ],
+            "thursday": [
+                [
+                    "06:30",
+                    "22:30"
+                ]
+            ],
+            "tuesday": [
+                [
+                    "06:30",
+                    "22:30"
+                ]
+            ],
+            "wednesday": [
+                [
+                    "06:30",
+                    "22:30"
+                ]
+            ]
+        },
+        "capacity": 5,
+        "display_access_restrictions": "",
+        "etag": "47dae8ab989bb34aacb77ace35594aecdb7b7631",
+        "extended_info": {
+            "campus": "bothell",
+            "editors": "amyv",
+            "food_nearby": "building",
+            "has_computers": "true",
+            "has_online_labstats": "true",
+            "has_outlets": "true",
+            "has_whiteboards": "true",
+            "hours_notes": "Interim hours vary.  See http://www.uwb.edu/safety/hours",
+            "labstats_customer_id": "749b5ac3-597f-4316-957c-abe939800634",
+            "labstats_label": "UW2 First Floor Kiosks",
+            "labstats_page_id": "1002",
+            "location_description": "UW2, 1st floor, above the Commons",
+            "noise_level": "moderate",
+            "orientation": "elevator lobby",
+            "owner": "UW Bothell"
+        },
+        "external_id": null,
+        "id": 258,
+        "images": [],
+        "last_modified": "2016-07-20T17:08:37.426242+00:00",
+        "location": {
+            "building_name": "Bothell Building UW2",
+            "floor": "1",
+            "height_from_sea_level": null,
+            "latitude": 47.758563,
+            "longitude": -122.191225,
+            "room_number": "104"
+        },
+        "manager": "amyv",
+        "name": "1st Floor Study Area",
+        "organization": "",
+        "type": [],
+        "uri": "/api/v1/spot/258"
+    }
+]
