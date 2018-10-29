@@ -1,0 +1,84 @@
+[
+  {
+    "capacity": null,
+    "name": "Tech Loan Office",
+    "display_access_restrictions": "",
+    "extended_info": {
+      "has_cte_techloan": "true",
+      "cte_techloan_id": "1",
+      "app_type": "tech"
+    },
+    "uri": "/api/v1/spot/13",
+    "available_hours": {
+      "monday": [],
+      "tuesday": [],
+      "friday": [],
+      "wednesday": [],
+      "thursday": [],
+      "sunday": [],
+      "saturday": []
+    },
+    "manager": "",
+    "etag": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "location": {
+      "floor": "",
+      "height_from_sea_level": null,
+      "room_number": "",
+      "longitude": null,
+      "latitude": null,
+      "building_name": "Kane Hall (KNE)"
+    },
+    "last_modified": "2018-08-09T19:10:31.392284+00:00",
+    "items": [
+      {
+        "category": "Placeholder Category",
+        "subcategory": "Laptop Computer",
+        "extended_info": {
+          "cte_type_id": 1,
+          "i_is_active": true,
+          "i_quantity": "10",
+          "i_model": "Macbook Pro",
+          "i_check_out_period": "7",
+          "i_brand": "Apple"
+        },
+        "images": [],
+        "id": 1,
+        "name": "Apple Macbook Pro"
+      },
+      {
+        "category": "Placeholder Category",
+        "subcategory": "Laptop Computer",
+        "extended_info": {
+          "cte_type_id": 100,
+          "i_quantity": "12",
+          "i_model": "Latitude E5440",
+          "i_check_out_period": "14",
+          "i_brand": "Dell"
+        },
+        "images": [],
+        "id": 2,
+        "name": "Dell Latitude E5440"
+      },
+      {
+        "category": "Placeholder Category",
+        "subcategory": "Portable Audio System",
+        "extended_info": {
+          "i_quantity": "5",
+          "i_model": "Passport P-150",
+          "i_check_out_period": "7",
+          "i_brand": "Fender"
+        },
+        "images": [],
+        "id": 3,
+        "name": "Fender Passport P-150"
+      }
+    ],
+    "images": [],
+    "organization": "",
+    "type": [
+      "checkout"
+    ],
+    "id": 13,
+    "external_id": null
+  }
+]

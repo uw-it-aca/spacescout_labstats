@@ -1,11 +1,54 @@
 """
 This file contians tests for online_labstats.py
 """
+import requests
+from mock import patch, Mock
+from requests.models import Response
+
+from django.test.utils import override_settings
+from django.conf import settings
+
 from spacescout_labstats.endpoints import online_labstats
 from . import LabstatsTestCase
 
 
 class OnlineLabstatsTest(LabstatsTestCase):
+
+    @override_settings(SS_WEB_SERVER_HOST="xxx")
+    def test_get_space_search_parameters(self):
+        """
+        Tests that the url constructed for requests to spotseeker_server
+        is correct and generated as expected
+        """
+        server_host = settings.SS_WEB_SERVER_HOST
+        url = "%s/api/v1/spot/?extended_info:has_online_labstats=true&limit=0"\
+            % (server_host)
+        # Assert that the retrieved url matches the expected url
+        self.assertEquals(url, online_labstats.get_space_search_parameters())
+
+    def test_get_name(self):
+        """
+        Tests that the name of the endpoint is correct (logging purposes)
+        """
+        expected_name = "Online Labstats"
+        self.assertEqual(expected_name, online_labstats.get_name())
+
+    def test_get_endpoint_data(self):
+        test_spaces = self.load_json_file('online_labstats_spaces.json')
+        # First, get endpoint data with spaces that have appropriate e_i
+        with patch.object(online_labstats, 'load_labstats_data') as mock:
+            online_labstats.get_endpoint_data(test_spaces)
+            mock.assert_called_once()
+
+        # Get endpoint without any labstats data
+        self.assertTrue(
+            'auto_labstats_total' in test_spaces[0]['extended_info'])
+        with patch.object(online_labstats, 'get_online_labstats_data',
+                          return_value=None):
+            online_labstats.get_endpoint_data(test_spaces)
+        # Assert that the space is cleaned, signifying that this case is ran
+        self.assertTrue(
+            'auto_labstats_total' not in test_spaces[0]['extended_info'])
 
     def test_get_labstats_customers(self):
         """
@@ -31,8 +74,53 @@ class OnlineLabstatsTest(LabstatsTestCase):
         pages_dict = {1002: individual_page_dict}
         customers_dict = {"749b5ac3-597f-4316-957c-abe939800634": pages_dict}
         customers = online_labstats.get_customers(test_json)
-
         self.assertEqual(customers, customers_dict)
+
+        # Get customers from spaces that have duplicate labstats lables
+        test_spaces = self.load_json_file('online_labstats_spaces.json')
+        # Mimic duplicate lables by setting the lables to be the same
+        test_label = test_spaces[0]["extended_info"]["labstats_label"]
+        test_spaces[1]["extended_info"]["labstats_label"] = test_label
+
+        with patch('spacescout_labstats.endpoints' +
+                   '.online_labstats.logger') as mock_log:
+            online_labstats.get_customers(test_spaces)
+            mock_log.warning.assert_called_once()
+
+    def test_get_online_labstats_data(self):
+        test_spaces = self.load_json_file('online_labstats_spaces.json')
+        mock = Mock()
+        mock.status_code = 200
+        mock.json = Mock(return_value=test_spaces)
+        customers = online_labstats.get_customers(test_spaces)
+        customer = customers['749b5ac3-597f-4316-957c-abe939800634']
+        page = customer[1002]
+        # test a successful get request & assert the returned spaces match
+        with patch.object(requests, 'get', return_value=mock):
+            spaces = online_labstats.get_online_labstats_data(customer, page)
+            self.assertEqual(test_spaces, spaces)
+
+        with patch.object(requests, 'get', return_value=None) as mock_get:
+            with patch('spacescout_labstats.endpoints.' +
+                       'online_labstats.logger') as mock_log:
+                mock_get.side_effect = Exception()
+                ret = online_labstats.get_online_labstats_data(customer, page)
+                mock_log.error.assert_called_with('Retrieving labstats' +
+                                                  ' page failed!', exc_info=1)
+                self.assertIs(ret, None)
+
+        bad_resp = Response()
+        bad_resp.status_code = 200
+        bad_resp._content = b'{ "key" : "a", \\x}'
+        with patch.object(requests, 'get', return_value=bad_resp) as mock_get:
+            with patch('spacescout_labstats.endpoints.' +
+                       'online_labstats.logger') as mock_log:
+                ret = online_labstats.get_online_labstats_data(customer, page)
+                mock_log.error.assert_called_with('Invalid json received' +
+                                                  ' from online labstats '
+                                                  'service!Body is { "key" ' +
+                                                  ': "a", \\x}', exc_info=1)
+                self.assertIs(ret, None)
 
     def test_get_labstat_by_label(self):
         online_labstats_data = self.load_json_file('online_labstats_data.json')
@@ -83,6 +171,31 @@ class OnlineLabstatsTest(LabstatsTestCase):
                                            page)
 
         self.assertEqual(labstats_spaces, loaded_labstats_spaces)
+
+        # Test with bad data
+        page = {
+            'UW Husky Hall Kiosks': 273
+        }
+        online_labstats_data["Groups"] = online_labstats_data["Groups"][:1]
+        test_spaces = self.load_json_file('online_labstats_spaces.json')[:1]
+        with patch('spacescout_labstats.endpoints' +
+                   '.online_labstats.logger') as mock_log:
+            online_labstats.load_labstats_data(test_spaces,
+                                               online_labstats_data,
+                                               page)
+            mock_log.warning.assert_called_with('space 273 missing' +
+                                                ' from spaces!')
+            mock_log.reset_mock()
+
+            page = {
+                'UW2 Lower Level Kiosks': 257
+            }
+            online_labstats.load_labstats_data(test_spaces,
+                                               online_labstats_data,
+                                               page)
+            mock_log.warning.assert_called_with('Labstat entry not found for' +
+                                                ' label %s and space #257',
+                                                u'UW2 Lower Level Kiosks')
 
     def test_validate_space(self):
         """
