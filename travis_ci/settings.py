@@ -163,8 +163,6 @@ LOGGING = {
 import random
 SECRET_KEY = "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])
 
-LABSTATS_URL = ''
-
 LS_CENTER_LAT = '47.655003'
 LS_CENTER_LON = '-122.306864'
 LS_SEARCH_DISTANCE = '3000'

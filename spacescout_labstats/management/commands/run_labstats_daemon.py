@@ -7,8 +7,7 @@ from django.core.management.base import BaseCommand
 from spacescout_labstats import utils
 from django.conf import settings
 from optparse import make_option
-from spacescout_labstats.endpoints import seattle_labstats, online_labstats, \
-    cte_techloan, k2
+from spacescout_labstats.endpoints import online_labstats, cte_techloan
 import os
 import sys
 import time
@@ -142,8 +141,7 @@ class Command(BaseCommand):
 
             # add any additional endpoints here and at the import statement
             # at the top of this file
-            endpoints = [seattle_labstats, online_labstats, cte_techloan] \
-                # , k2]
+            endpoints = [online_labstats, cte_techloan]
 
             for endpoint in endpoints:
                 try:
