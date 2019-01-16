@@ -77,6 +77,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+LS_CENTER_LAT = '47.655003'
+LS_CENTER_LON = '-122.306864'
+LS_SEARCH_DISTANCE = '3000'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
