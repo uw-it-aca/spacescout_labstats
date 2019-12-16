@@ -8,7 +8,7 @@ import json
 import urllib3
 from django.conf import settings
 
-requests.packages.urllib3.disable_warnings()
+urllib3.disable_warnings()
 
 
 logger = logging.getLogger(__name__)
@@ -141,7 +141,7 @@ def get_online_labstats_data(customer, page):
         spaces = response.json()
     except ValueError as ex:
         logger.error("Invalid json received from online labstats service!"
-                     "Body is " + response.content, exc_info=1)
+                     "Body is " + str(response.content.decode()), exc_info=1)
         return None
     except Exception as ex:
         logger.error("Retrieving labstats page failed!", exc_info=1)
@@ -154,7 +154,7 @@ def load_labstats_data(spaces, labstats_data, page_dict):
     """
     Loads the data retrieved from the online labstats service into the spaces.
     """
-    for page_id, space_id in page_dict.iteritems():
+    for page_id, space_id in page_dict.items():
         # get the space by it's id in page_dict
         space = utils.get_space_from_spaces(spaces, space_id)
 

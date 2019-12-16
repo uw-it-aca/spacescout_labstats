@@ -7,13 +7,13 @@ setup(name='SpaceScout-Labstats',
       description='Labstats bridge for SpaceScout',
       install_requires=[
                         'Django<1.9,>=1.4',
-                        'oauth2<=1.5.211',
+                        'oauth2==1.9.0.post1',
                         'simplejson>=2.1',
-                        'wstools<=0.4.3',  # wstools 0.4.4 has a bug
+                        'wstools-py3',  # wstools 0.4.4 has a bug
                         'soappy',
-                        'poster',
+                        'poster3',
                         'requests',
-                        'urllib3<1.24',
+                        'urllib3',
                         'mock',
                        ],
       )

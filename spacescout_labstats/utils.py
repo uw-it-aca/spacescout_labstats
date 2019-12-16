@@ -1,15 +1,18 @@
-from poster.streaminghttp import register_openers
-from poster.encode import multipart_encode
+from poster3.streaminghttp import register_openers
+from poster3.encode import multipart_encode
 from django.http import HttpResponse
 from django.conf import settings
 import oauth2 as oauth
-import urllib2
 import json
 import logging
 import time
 import os
 import re
 import sys
+try:
+    basestring
+except NameError:
+    basestring = str
 
 logger = logging.getLogger(__name__)
 
@@ -208,7 +211,7 @@ def _get_tmp_directory():
     creates it if it does not exist
     """
     if not os.path.isdir("/tmp/updater/"):
-        os.mkdir("/tmp/updater/", 0700)
+        os.mkdir("/tmp/updater/", 0o700)
     return "/tmp/updater/"
 
 
